@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AppLock</string>
+    <string name="module_desc">防止应用被侧滑杀死或一键清理</string>
 </resources>

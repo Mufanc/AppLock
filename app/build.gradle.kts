@@ -1,6 +1,5 @@
-import java.util.Date
-import java.util.Locale
 import java.text.SimpleDateFormat
+import java.util.*
 
 val versionNamePrefix = "2.0.1"
 
@@ -39,6 +38,15 @@ android {
 }
 
 dependencies {
+    // xposed
+    compileOnly("de.robv.android.xposed:api:82")
+    compileOnly("de.robv.android.xposed:api:82:sources")
+    implementation("com.github.Mufanc:EasyHook:0.5.25")
+
+    // ui
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+
+    // default
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("com.google.android.material:material:1.5.0")

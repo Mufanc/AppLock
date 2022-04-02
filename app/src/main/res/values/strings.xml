@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">AppLock</string>
     <string name="module_desc">防止应用被侧滑杀死或一键清理</string>
+
+    <string name="title_home">AppLock</string>
+    <string name="title_dashboard">应用选择</string>
+    <string name="title_notifications">设置</string>
 </resources>

@@ -12,5 +12,11 @@
         <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
     </style>
 
+    <style name="DefaultCard" parent="Widget.MaterialComponents.CardView">
+        <item name="strokeWidth">0dp</item>
+        <item name="android:layout_marginHorizontal">20dp</item>
+        <item name="android:layout_marginVertical">5dp</item>
+    </style>
+
     <style name="Theme.AppLock" parent="Base.Theme.AppLock" />
 </resources>

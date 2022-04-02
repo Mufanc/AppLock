@@ -5,4 +5,11 @@
     <string name="title_home">AppLock</string>
     <string name="title_dashboard">应用选择</string>
     <string name="title_notifications">设置</string>
+
+    <string name="module_activated">模块已激活</string>
+    <string name="module_deactivate">模块未激活</string>
+    <string name="service_found">找到 PM 服务</string>
+    <string name="service_not_found">找不到 PM 服务</string>
+    <string name="hooker_working">钩子工作正常</string>
+    <string name="hooker_no_reply">钩子无响应</string>
 </resources>

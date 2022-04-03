@@ -25,23 +25,13 @@ class AppsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val model = ViewModelProvider(this)[AppsViewModel::class.java]
         model.loadAppList(requireActivity()) {
-            binding!!.apply {
+            binding?.apply {
                 progress.visibility = View.GONE
                 applist.apply {
                     layoutManager = LinearLayoutManager(
                         context, LinearLayoutManager.VERTICAL, false
                     )
                     adapter = AppListAdapter(model.appList)
-//                    (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-//                    layoutAnimation = LayoutAnimationController(
-//                        AnimationUtils.loadAnimation(
-//                            context,
-//                            R.anim.abc_grow_fade_in_from_bottom
-//                        )
-//                    ).apply {
-//                        order = LayoutAnimationController.ORDER_NORMAL
-//                        delay = 0.3F
-//                    }
                 }
             }
         }

@@ -44,21 +44,17 @@ android {
 }
 
 dependencies {
-    // xposed
     compileOnly(project(":hidden-api-stub"))
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")
     implementation("com.github.Mufanc:EasyHook:0.5.25")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
-
-    // ui
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
-
-    // default
+    implementation("androidx.preference:preference:1.2.0")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("com.google.android.material:material:1.5.0")

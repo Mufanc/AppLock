@@ -20,7 +20,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding!!.status = ViewModelProvider(this)[HomeViewModel::class.java]
+        binding?.status = ViewModelProvider(this)[HomeViewModel::class.java]
     }
 
     override fun onDestroyView() {

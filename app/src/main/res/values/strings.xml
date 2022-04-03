@@ -12,4 +12,17 @@
     <string name="service_not_found">找不到 PM 服务</string>
     <string name="hooker_working">钩子工作正常</string>
     <string name="hooker_no_reply">钩子无响应</string>
+
+    <string name="hide_icon_title">隐藏桌面图标</string>
+    <string name="hide_icon_summary">不显示本应用在启动器中的图标</string>
+    <string name="category_settings">设置</string>
+    <string name="category_about">关于</string>
+    <string name="module_author_title">模块作者</string>
+    <string name="module_author_summary">Mufanc</string>
+    <string name="project_url_title">项目地址</string>
+    <string name="project_url_summary">https://github.com/Mufanc/AppLock</string>
+    <string name="license_title">开放源代码协议</string>
+    <string name="license_summary">点击查看</string>
+
+    <string name="dismiss">关闭</string>
 </resources>

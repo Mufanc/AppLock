@@ -3,4 +3,11 @@
     <string-array name="xposed_scope">
         <item>android</item>
     </string-array>
+
+    <!-- project | license | link -->
+    <string-array name="license">
+        <item>Google - AndroidX | Apache License 2.0 | https://source.android.com/</item>
+        <item>JetBrains - Kotlin | Apache License 2.0 | https://github.com/JetBrains/kotlin</item>
+        <item>LSPosed - AndroidHiddenApiBypass | Apache License 2.0 | https://github.com/LSPosed/AndroidHiddenApiBypass</item>
+    </string-array>
 </resources>

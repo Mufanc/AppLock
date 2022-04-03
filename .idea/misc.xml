@@ -7,6 +7,8 @@
         <entry key="app/src/main/res/drawable-anydpi/ic_fragment_apps.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable-anydpi/ic_fragment_home.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable-anydpi/ic_fragment_settings.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_hide_icon.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_project_url.xml" value="0.2035" />
         <entry key="app/src/main/res/drawable-anydpi/ic_result_done.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable-anydpi/ic_result_failed.xml" value="0.1705" />
         <entry key="app/src/main/res/drawable-anydpi/ic_result_success.xml" value="0.1705" />
@@ -21,11 +23,14 @@
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/layout/view_action_card.xml" value="0.25" />
         <entry key="app/src/main/res/layout/view_apps_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/view_license_dialog.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/view_license_item.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/view_status_card.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/menu/fragment_apps_menu.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1705" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1705" />
+        <entry key="app/src/main/res/xml/preferences.xml" value="0.16145833333333334" />
       </map>
     </option>
   </component>

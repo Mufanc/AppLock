@@ -1,0 +1,31 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        app:title="@string/category_settings">
+
+        <SwitchPreferenceCompat app:key="hide_icon"
+            app:icon="@drawable/ic_hide_icon"
+            app:title="@string/hide_icon_title"
+            app:summary="@string/hide_icon_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:title="@string/category_about">
+
+        <Preference app:key="author"
+            app:title="@string/module_author_title"
+            app:summary="@string/module_author_summary" />
+
+        <Preference app:key="project_url"
+            app:icon="@drawable/ic_project_url"
+            app:title="@string/project_url_title"
+            app:summary="@string/project_url_summary" />
+
+        <Preference app:key="license"
+            app:title="@string/license_title"
+            app:summary="@string/license_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

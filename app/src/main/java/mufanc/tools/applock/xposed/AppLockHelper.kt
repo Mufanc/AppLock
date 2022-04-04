@@ -4,13 +4,17 @@ import android.app.ActivityThread
 import android.content.Context
 import android.os.Binder
 import android.os.Parcel
-import com.github.mufanc.easyhook.util.catch
-import com.github.mufanc.easyhook.util.findMethod
+import android.util.ArrayMap
+import com.github.mufanc.easyhook.util.*
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
+import miui.process.ProcessConfig
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
+import java.io.File
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 
 object AppLockHelper {
 
@@ -54,8 +58,46 @@ object AppLockHelper {
     }
 
     private object KillProcessHook : XC_MethodHook() {
-        override fun beforeHookedMethod(param: MethodHookParam?) {
 
+        // Compatible with different Android version
+        private lateinit var field1: Field
+        private lateinit var field2: Field
+        private lateinit var getKeySet: Method
+
+        private fun getPackageList(record: Any): Set<String> {
+            if (!this::field1.isInitialized) {
+                field1 = findField(record::class.java) {
+                    name == "pkgList" || name == "mPkgList"
+                }!!
+            }
+            val obj = field1.get(record)
+            @Suppress("Unchecked_Cast")
+            return if (obj is ArrayMap<*, *>) {  // Android 9
+                obj.keys as Set<String>
+            } else {  // Android 10+
+                if (!this::field2.isInitialized) {
+                    field2 = findField(obj::class.java) { name == "mPkgList" }!!
+                    getKeySet = findMethod(field2.get(obj)::class.java) { name == "keySet" }!!
+                }
+                getKeySet.invoke(field2.get(obj)) as Set<String>
+            }
+        }
+
+        override fun beforeHookedMethod(param: MethodHookParam) {
+            catch {
+                val killer = File("/proc/${Binder.getCallingPid()}/cmdline").readText().trim { it == '\u0000' }
+                if (KILLER_SET.contains(killer)) {
+                    val processRecord = param.args[0]
+
+                    getPackageList(processRecord).forEach {
+                        if (server.whitelist.contains(it)) {
+                            param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
+                            Log.i("@AppLock: ${processRecord.getField("processName")}")
+                            return
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -67,13 +109,13 @@ object AppLockHelper {
             TransactionHook
         )
 
-//        XposedBridge.hookMethod(
-//            findMethods("com.android.server.am.ProcessManagerService") {
-//                name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord"
-//            }.maxByOrNull {
-//                it.parameterCount
-//            },
-//            KillProcessHooker
-//        )
+        XposedBridge.hookMethod(
+            findMethods("com.android.server.am.ProcessManagerService") {
+                name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord"
+            }.maxByOrNull {
+                it.parameterCount
+            },
+            KillProcessHook
+        )
     }
 }

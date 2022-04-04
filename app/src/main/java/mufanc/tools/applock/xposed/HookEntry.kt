@@ -10,10 +10,11 @@ class HookEntry : HookHelper("AppLock") {
     override fun onHandleLoadPackage() {
         catch {
             when (lpparam.packageName) {
-                BuildConfig.APPLICATION_ID ->
+                BuildConfig.APPLICATION_ID -> {
                     findField(MyApplication::class.java.name) {
                         name == "isModuleActivated"
                     }!!.set(null, true)
+                }
                 "android" -> AppLockHelper.main()
             }
         }

@@ -4,6 +4,7 @@ import android.app.ActivityThread
 import android.content.Context
 import android.os.Binder
 import android.os.Parcel
+import com.github.mufanc.easyhook.util.catch
 import com.github.mufanc.easyhook.util.findMethod
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
@@ -13,7 +14,7 @@ import mufanc.tools.applock.MyApplication
 
 object AppLockHelper {
 
-    val server = AppLockManagerService()
+    val server by lazy { AppLockManagerService() }
     val client by lazy {
         MyApplication.processManager?.let {
             val data = Parcel.obtain()
@@ -35,16 +36,26 @@ object AppLockHelper {
         .mapIndexed { i, ch -> ch.toInt() shl (i * 8) }
         .sum()
 
-    private val context: Context by lazy {
-        ActivityThread.currentActivityThread().systemContext
+    private val KILLER_SET = setOf("com.miui.home", "com.android.systemui")
+
+    private val packageManager by lazy {
+        (ActivityThread.currentActivityThread().systemContext as Context).packageManager
     }
 
-    private object TransactionHooker : XC_MethodHook() {
+    private object TransactionHook : XC_MethodHook() {
         override fun beforeHookedMethod(param: MethodHookParam) {
-            if (param.args[0] != TRANSACTION_CODE) return
-            if (context.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return
-            (param.args[2] as Parcel).writeStrongBinder(server)
-            param.result = true
+            catch {
+                if (param.args[0] != TRANSACTION_CODE) return
+                if (packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return
+                (param.args[2] as Parcel).writeStrongBinder(server)
+                param.result = true
+            }
+        }
+    }
+
+    private object KillProcessHook : XC_MethodHook() {
+        override fun beforeHookedMethod(param: MethodHookParam?) {
+
         }
     }
 
@@ -53,7 +64,16 @@ object AppLockHelper {
             findMethod("miui.process.ProcessManagerNative") {
                 name == "onTransact"
             },
-            TransactionHooker
+            TransactionHook
         )
+
+//        XposedBridge.hookMethod(
+//            findMethods("com.android.server.am.ProcessManagerService") {
+//                name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord"
+//            }.maxByOrNull {
+//                it.parameterCount
+//            },
+//            KillProcessHooker
+//        )
     }
 }

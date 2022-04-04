@@ -12,7 +12,8 @@ import java.text.Collator
 import java.util.*
 
 class AppListAdapter(
-   private val appList: List<AppsViewModel.AppInfo>
+   private val appList: List<AppsViewModel.AppInfo>,
+   val lockedApps: MutableSet<String>
 ) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(), Filterable {
 
     private val filteredList = mutableListOf<AppsViewModel.AppInfo>()
@@ -50,6 +51,15 @@ class AppListAdapter(
             appIcon.setImageDrawable(appInfo.icon)
             appName.text = appInfo.appName
             packageName.text = appInfo.packageName
+            locked.isChecked = lockedApps.contains(appInfo.packageName)
+            locked.setOnCheckedChangeListener { view, checked ->
+                if (!view.isPressed) return@setOnCheckedChangeListener
+                if (checked) {
+                    lockedApps.add(appInfo.packageName)
+                } else {
+                    lockedApps.remove(appInfo.packageName)
+                }
+            }
         }
     }
 
@@ -62,6 +72,9 @@ class AppListAdapter(
                     values = appList.filter {
                         it.appName.lowercase().contains(query.toString().lowercase())
                     }.sortedWith { o1, o2 ->
+                        val c1 = lockedApps.contains(o1.packageName)
+                        val c2 = lockedApps.contains(o2.packageName)
+                        if (c1 != c2) return@sortedWith if (c1) -1 else 1
                         Collator.getInstance(Locale.getDefault()).compare(o1.appName, o2.appName)
                     }
                 }

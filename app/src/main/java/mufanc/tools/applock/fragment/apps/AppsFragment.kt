@@ -2,17 +2,19 @@ package mufanc.tools.applock.fragment.apps
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentAppsBinding
+import mufanc.tools.applock.xposed.AppLockHelper
 
 class AppsFragment : Fragment() {
 
     private var binding: FragmentAppsBinding? = null
+
+    private var adapter: AppListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
@@ -31,7 +33,10 @@ class AppsFragment : Fragment() {
                     layoutManager = LinearLayoutManager(
                         context, LinearLayoutManager.VERTICAL, false
                     )
-                    adapter = AppListAdapter(model.appList)
+                    adapter = AppListAdapter(
+                        model.appList,
+                        AppLockHelper.client?.readPackageList()?.toMutableSet() ?: mutableSetOf()
+                    ).also { this@AppsFragment.adapter = it }
                 }
             }
         }
@@ -46,7 +51,7 @@ class AppsFragment : Fragment() {
                 setOnQueryTextListener(
                     object : SearchView.OnQueryTextListener {
                         override fun onQueryTextChange(query: String): Boolean {
-                            (binding!!.applist.adapter as AppListAdapter).filter.filter(query)
+                            adapter?.apply { filter.filter(query) }
                             return true
                         }
 
@@ -54,14 +59,17 @@ class AppsFragment : Fragment() {
                     }
                 )
                 setOnCloseListener {
-                    (binding!!.applist.adapter as AppListAdapter).filter.filter("")
+                    adapter?.apply { filter.filter("") }
                     false
                 }
             }
 
         menu.findItem(R.id.save_app_list)
             .setOnMenuItemClickListener {
-                Toast.makeText(requireContext(), "Not Implemented!", Toast.LENGTH_SHORT).show()
+                adapter?.apply {
+                    AppLockHelper.client?.writePackageList(lockedApps.toTypedArray())
+                    filter.filter("")
+                }
                 true
             }
     }

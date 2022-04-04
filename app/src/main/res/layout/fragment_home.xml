@@ -18,6 +18,14 @@
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:status="@{status.isMiuiRom}"
+            app:title="@string/miui_version_title"
+            app:subtitle="@{status.versionSummary}" />
+
+        <mufanc.tools.applock.view.StatusCard
+            style="@style/DefaultCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:status="@{status.isModuleActivated}"
             app:title="@{status.isModuleActivated ? @string/module_activated : @string/module_deactivate}"
             app:subtitle="@{status.versionName}" />
@@ -28,7 +36,7 @@
             android:layout_height="wrap_content"
             app:status="@{status.isServiceFound}"
             app:title="@{status.isServiceFound ? @string/service_found : @string/service_not_found}"
-            app:subtitle="@{status.managerName}" />
+            app:subtitle="@{status.managerBinder}" />
 
         <mufanc.tools.applock.view.StatusCard
             style="@style/DefaultCard"

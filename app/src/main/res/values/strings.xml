@@ -26,4 +26,6 @@
     <string name="license_summary">点击查看</string>
 
     <string name="dismiss">关闭</string>
+    <string name="cancel">取消</string>
+    <string name="resolve_mode_title">应用列表获取方式</string>
 </resources>

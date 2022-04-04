@@ -4,10 +4,19 @@
         <item>android</item>
     </string-array>
 
-    <!-- project | license | link -->
     <string-array name="license">
+        <!-- project | license | url -->
         <item>Google - AndroidX | Apache License 2.0 | https://source.android.com/</item>
         <item>JetBrains - Kotlin | Apache License 2.0 | https://github.com/JetBrains/kotlin</item>
         <item>LSPosed - AndroidHiddenApiBypass | Apache License 2.0 | https://github.com/LSPosed/AndroidHiddenApiBypass</item>
+    </string-array>
+
+    <string-array name="resolve_mode_entries">
+        <item>获取具有桌面启动器的应用</item>
+        <item>获取所有非系统应用</item>
+    </string-array>
+    <string-array name="resolve_mode_values">
+        <item>category_launcher</item>
+        <item>non_system_apps</item>
     </string-array>
 </resources>

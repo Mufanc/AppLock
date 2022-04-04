@@ -12,8 +12,7 @@
         <item name="colorSecondaryContainer">@color/colorSecondaryContainer</item>
     </style>
 
-    <style name="DefaultCard" parent="Widget.MaterialComponents.CardView">
-        <item name="strokeWidth">0dp</item>
+    <style name="DefaultCard" parent="Widget.Material3.CardView.Filled" >
         <item name="android:layout_marginHorizontal">20dp</item>
         <item name="android:layout_marginVertical">5dp</item>
     </style>

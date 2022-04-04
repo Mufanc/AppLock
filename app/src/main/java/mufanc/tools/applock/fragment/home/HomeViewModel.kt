@@ -1,19 +1,19 @@
 package mufanc.tools.applock.fragment.home
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.xposed.AppLockHelper
 
 class HomeViewModel : ViewModel() {
     val isModuleActivated = MyApplication.isModuleActivated
     val isServiceFound = MyApplication.processManager != null
-    val isHookerWorking by lazy {
-        replyFromHook.value = "pid:12345, uid:1000"
-        true
-    }
+    val isHookerWorking = AppLockHelper.client != null
 
     val versionName = BuildConfig.VERSION_NAME
     val managerName = "${MyApplication.processManager}".removePrefix("android.os.")
-    val replyFromHook = MutableLiveData("Testing...")
+    val replyFromHook = AppLockHelper.client?.let {
+        val reply = it.handshake()
+        "pid:${reply[0]}, uid:${reply[1]}"
+    } ?: "failed."
 }

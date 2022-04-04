@@ -16,7 +16,7 @@ import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
-        
+
         preferenceManager.sharedPreferences!!.registerOnSharedPreferenceChangeListener(this)
     }
 

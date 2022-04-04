@@ -6,7 +6,6 @@ import android.os.ServiceManager
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 
 class MyApplication : Application() {
-
     companion object {
         init {
             HiddenApiBypass.setHiddenApiExemptions("")
@@ -14,10 +13,7 @@ class MyApplication : Application() {
 
         @JvmStatic
         var isModuleActivated = false
-        var processManager: IBinder? = ServiceManager.getService("ProcessManager")
-    }
 
-    override fun onCreate() {
-        super.onCreate()
+        val processManager: IBinder? = ServiceManager.getService("ProcessManager")
     }
 }

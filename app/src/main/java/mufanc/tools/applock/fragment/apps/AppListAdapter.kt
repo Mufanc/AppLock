@@ -12,7 +12,7 @@ import java.text.Collator
 import java.util.*
 
 class AppListAdapter(
-   private val appList: List<AppsViewModel.AppInfo>,
+   private val appList: MutableSet<AppsViewModel.AppInfo>,
    val lockedApps: MutableSet<String>
 ) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(), Filterable {
 

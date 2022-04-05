@@ -47,6 +47,7 @@ dependencies {
     compileOnly(project(":hidden-api-stub"))
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.Mufanc:EasyHook:0.5.25")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
     implementation("androidx.constraintlayout:constraintlayout:2.1.3")

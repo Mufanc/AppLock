@@ -40,6 +40,14 @@ class AppsFragment : Fragment() {
                 }
             }
         }
+        binding?.apply {
+            refresh.setOnRefreshListener {
+                model.loadAppList(requireActivity(), true) {
+                    adapter?.filter?.filter("")
+                    refresh.isRefreshing = false
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

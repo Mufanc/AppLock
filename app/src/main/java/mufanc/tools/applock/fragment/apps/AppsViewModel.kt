@@ -17,18 +17,19 @@ class AppsViewModel : ViewModel() {
         val icon: Drawable
     )
 
-    lateinit var appList: List<AppInfo>
+    val appList = mutableSetOf<AppInfo>()
 
-    fun loadAppList(activity: Activity, callback: () -> Unit) {
+    fun loadAppList(activity: Activity, refresh: Boolean = false, callback: () -> Unit) {
         thread {
-            if (!this::appList.isInitialized) {
+            if (refresh || appList.isEmpty()) {
                 val packageManager = activity.packageManager
                 val mode = PreferenceManager.getDefaultSharedPreferences(activity)
                     .getString(
                         "resolve_mode",
                         activity.resources.getStringArray(R.array.resolve_mode_values)[0]
                     )
-                appList = when (mode) {
+                appList.clear()
+                appList.addAll(when (mode) {
                     "category_launcher" -> packageManager
                         .queryIntentActivities(
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
@@ -53,7 +54,7 @@ class AppsViewModel : ViewModel() {
                             )
                         }
                     else -> throw RuntimeException()
-                }
+                })
             }
             activity.runOnUiThread(callback)
         }

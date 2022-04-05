@@ -1,6 +1,11 @@
 package mufanc.tools.applock.xposed
 
+import android.content.Context
+import android.os.Binder
+import android.os.IPowerManager
 import android.os.Process
+import android.os.ServiceManager
+import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import java.io.File
 
@@ -23,7 +28,17 @@ class AppLockManagerService : IAppLockManager.Stub() {
         .toMutableSet()
 
     override fun handshake(): IntArray {
-        return intArrayOf(Process.myPid(), Process.myUid())
+        return intArrayOf(BuildConfig.VERSION_CODE, Process.myPid(), Process.myUid())
+    }
+
+    override fun reboot() {
+        Binder.restoreCallingIdentity(
+            Binder.clearCallingIdentity().also {
+                IPowerManager.Stub.asInterface(
+                    ServiceManager.getService(Context.POWER_SERVICE)
+                ).reboot(false, null, false)
+            }
+        )
     }
 
     @Synchronized

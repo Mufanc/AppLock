@@ -15,9 +15,11 @@ class HomeViewModel : ViewModel() {
     val managerBinder = "${MyApplication.processManager}".removePrefix("android.os.")
 
     val isHookerWorking = AppLockHelper.client != null
+    var requireReboot = false
     val replyFromHook = AppLockHelper.client?.let {
-        val reply = it.handshake()
-        "pid:${reply[0]}, uid:${reply[1]}"
+        val (coreVersion, pid, uid) = it.handshake()
+        requireReboot = coreVersion < BuildConfig.VERSION_CODE
+        "pid:$pid, uid:$uid"
     } ?: "failed."
 
     private val miuiVersion = SystemProperties.get("ro.miui.ui.version.code")

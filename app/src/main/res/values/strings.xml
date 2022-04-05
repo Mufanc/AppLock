@@ -13,6 +13,10 @@
     <string name="service_not_found">找不到 PM 服务</string>
     <string name="hooker_working">钩子工作正常</string>
     <string name="hooker_no_reply">钩子无响应</string>
+    <string name="require_reboot">需要重启</string>
+    <string name="core_version_not_match">检测到模块与核心版本不匹配，可能无法正常配置功能，请先重启手机！</string>
+    <string name="reboot_now">立即重启</string>
+    <string name="reboot_later">稍后</string>
 
     <string name="hide_icon_title">隐藏桌面图标</string>
     <string name="hide_icon_summary">不显示本应用在启动器中的图标</string>
@@ -28,4 +32,8 @@
     <string name="dismiss">关闭</string>
     <string name="cancel">取消</string>
     <string name="resolve_mode_title">应用列表获取方式</string>
+    <string name="backup_applist_title">备份</string>
+    <string name="backup_applist_summary">备份上锁的应用列表</string>
+    <string name="restore_applist_title">恢复</string>
+    <string name="restore_applist_summary">恢复上锁的应用列表</string>
 </resources>

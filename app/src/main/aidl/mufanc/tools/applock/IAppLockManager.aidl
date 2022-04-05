@@ -1,7 +1,8 @@
 package mufanc.tools.applock;
 
 interface IAppLockManager {
-    int[] handshake();
-    void writePackageList(in String[] packageList);
-    String[] readPackageList();
+    int[] handshake() = 16777114;
+    oneway void reboot() = 0;
+    oneway void writePackageList(in String[] packageList) = 1;
+    String[] readPackageList() = 2;
 }

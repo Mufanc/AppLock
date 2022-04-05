@@ -21,6 +21,7 @@
         app:title="@string/category_about">
 
         <Preference app:key="author"
+            app:icon="@drawable/ic_module_author"
             app:title="@string/module_author_title"
             app:summary="@string/module_author_summary" />
 
@@ -30,6 +31,7 @@
             app:summary="@string/project_url_summary" />
 
         <Preference app:key="license"
+            app:icon="@drawable/ic_license"
             app:title="@string/license_title"
             app:summary="@string/license_summary" />
 

@@ -9,6 +9,7 @@
         <item>Google - AndroidX | Apache License 2.0 | https://source.android.com/</item>
         <item>JetBrains - Kotlin | Apache License 2.0 | https://github.com/JetBrains/kotlin</item>
         <item>LSPosed - AndroidHiddenApiBypass | Apache License 2.0 | https://github.com/LSPosed/AndroidHiddenApiBypass</item>
+        <item>Mufanc - EasyHook | MIT License | https://github.com/Mufanc/EasyHookkk</item>
     </string-array>
 
     <string-array name="resolve_mode_entries">

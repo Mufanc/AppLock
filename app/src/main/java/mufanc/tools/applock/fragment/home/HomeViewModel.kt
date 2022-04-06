@@ -24,5 +24,9 @@ class HomeViewModel : ViewModel() {
 
     private val miuiVersion = SystemProperties.get("ro.miui.ui.version.code")
     val isMiuiRom = miuiVersion.isNotEmpty()
-    val versionSummary = "Version: " + miuiVersion.ifBlank { "Unknown." }
+    val versionSummary: String = if (isMiuiRom) {
+        SystemProperties.get("ro.build.version.incremental")
+    } else {
+        "Unknown."
+    }
 }

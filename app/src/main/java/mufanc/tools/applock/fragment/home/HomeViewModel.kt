@@ -4,7 +4,9 @@ import android.os.SystemProperties
 import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.shizuku.ShizukuHelper
 import mufanc.tools.applock.xposed.AppLockHelper
+import rikka.shizuku.Shizuku
 
 class HomeViewModel : ViewModel() {
 
@@ -30,5 +32,6 @@ class HomeViewModel : ViewModel() {
         "Unknown."
     }
 
-    val isShizukuGranted = false
+    val isShizukuGranted = ShizukuHelper.checkPermission()
+    val selinuxContext = Shizuku.getSELinuxContext()
 }

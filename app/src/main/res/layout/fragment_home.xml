@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             app:status="@{status.isShizukuGranted}"
             app:title="@{status.isShizukuGranted ? @string/shizuku_granted : @string/shizuku_denied}"
-            app:subtitle="" />
+            app:subtitle="@{status.selinuxContext}" />
 
     </LinearLayout>
 

@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
+import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentHomeBinding
+import mufanc.tools.applock.shizuku.ShizukuHelper
 import mufanc.tools.applock.xposed.AppLockHelper
 
 class HomeFragment : Fragment() {
@@ -28,12 +29,10 @@ class HomeFragment : Fragment() {
         val model = ViewModelProvider(this)[HomeViewModel::class.java]
         binding?.status = model
         binding?.apply {
-            val mode = PreferenceManager.getDefaultSharedPreferences(requireContext())
-                .getString(
-                    "work_mode",
-                    requireContext().resources.getStringArray(R.array.resolve_mode_values)[0]
-                )
-            when (mode) {
+            shizukuStatus.setOnClickListener {
+                ShizukuHelper.requestPermission()
+            }
+            when (MyApplication.prefs.getString("work_mode", "xposed")) {
                 "xposed" -> {
                     shizukuStatus.visibility = View.GONE
                 }

@@ -21,7 +21,7 @@ class MaterialListPreference(
     override fun onClick() {
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
-            .setSingleChoiceItems(R.array.resolve_mode_entries, findIndexOfValue(value)) { dialog, index ->
+            .setSingleChoiceItems(entries, findIndexOfValue(value)) { dialog, index ->
                 if(callChangeListener(entryValues[index].toString())){
                     setValueIndex(index)
                 }

@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentHomeBinding
 import mufanc.tools.applock.xposed.AppLockHelper
@@ -25,7 +27,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val model = ViewModelProvider(this)[HomeViewModel::class.java]
         binding?.status = model
-        if (model.requireReboot) {
+        binding?.apply {
+            val mode = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getString(
+                    "work_mode",
+                    requireContext().resources.getStringArray(R.array.resolve_mode_values)[0]
+                )
+            when (mode) {
+                "xposed" -> {
+                    shizukuStatus.visibility = View.GONE
+                }
+                "shizuku" -> {
+                    moduleActivated.visibility = View.GONE
+                    hookerStatus.visibility = View.GONE
+                }
+            }
+        }
+        if (model.requireReboot && !BuildConfig.DEBUG) {
             MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.require_reboot)
                 .setMessage(R.string.core_version_not_match)

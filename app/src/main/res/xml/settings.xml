@@ -1,7 +1,13 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        app:title="@string/category_settings">
+    <PreferenceCategory app:title="@string/category_settings">
+
+        <mufanc.tools.applock.view.MaterialListPreference
+            app:key="work_mode"
+            app:icon="@drawable/ic_work_mode"
+            app:title="@string/work_mode_title"
+            app:entries="@array/work_mode_entries"
+            app:entryValues="@array/work_mode_values" />
 
         <SwitchPreferenceCompat app:key="hide_icon"
             app:icon="@drawable/ic_hide_icon"
@@ -17,8 +23,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        app:title="@string/category_about">
+    <PreferenceCategory app:title="@string/category_about">
 
         <Preference app:key="author"
             app:icon="@drawable/ic_module_author"

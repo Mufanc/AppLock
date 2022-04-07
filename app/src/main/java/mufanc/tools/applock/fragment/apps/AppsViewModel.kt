@@ -26,7 +26,7 @@ class AppsViewModel : ViewModel() {
                 val mode = PreferenceManager.getDefaultSharedPreferences(activity)
                     .getString(
                         "resolve_mode",
-                        activity.resources.getStringArray(R.array.resolve_mode_values)[0]
+                         activity.resources.getStringArray(R.array.resolve_mode_values)[0]
                     )
                 appList.clear()
                 appList.addAll(when (mode) {

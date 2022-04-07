@@ -29,4 +29,6 @@ class HomeViewModel : ViewModel() {
     } else {
         "Unknown."
     }
+
+    val isShizukuGranted = false
 }

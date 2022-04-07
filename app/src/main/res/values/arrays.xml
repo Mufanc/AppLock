@@ -20,4 +20,14 @@
         <item>category_launcher</item>
         <item>non_system_apps</item>
     </string-array>
+
+    <string-array name="work_mode_entries">
+        <item>Xposed</item>
+        <item>Shizuku (Beta)</item>
+    </string-array>
+    <string-array name="work_mode_values">
+        <item>xposed</item>
+        <item>shizuku</item>
+    </string-array>
+
 </resources>

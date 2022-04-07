@@ -7,15 +7,38 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
+import mufanc.tools.applock.view.MaterialListPreference
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
+
+        findPreference<MaterialListPreference>("work_mode")?.let { mode ->
+            val hideIcon = findPreference<SwitchPreferenceCompat>("hide_icon")
+            fun listener(value: Any) {
+                when (value) {
+                    "shizuku" -> hideIcon?.apply {
+                        isChecked = false
+                        isEnabled = false
+                    }
+                    "xposed" -> hideIcon?.apply {
+                        isEnabled = true
+                    }
+                }
+            }
+            listener(mode.value)
+            mode.setOnPreferenceChangeListener { _, value ->
+                listener(value)
+                true
+            }
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

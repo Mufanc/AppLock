@@ -12,10 +12,14 @@ class MaterialListPreference(
 ) : ListPreference(context, attributeSet) {
 
     override fun onAttached() {
-        value ?: run {
+        summary = entry
+    }
+
+    override fun getValue(): String {
+        super.getValue() ?: let {
             value = entryValues[0].toString()
         }
-        summary = entry
+        return super.getValue()
     }
 
     override fun onClick() {

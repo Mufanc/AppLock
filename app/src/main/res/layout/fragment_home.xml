@@ -23,6 +23,7 @@
             app:subtitle="@{status.versionSummary}" />
 
         <mufanc.tools.applock.view.StatusCard
+            android:id="@+id/module_activated"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,12 +40,22 @@
             app:subtitle="@{status.managerBinder}" />
 
         <mufanc.tools.applock.view.StatusCard
+            android:id="@+id/hooker_status"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{status.isHookerWorking}"
             app:title="@{status.isHookerWorking ? @string/hooker_working : @string/hooker_no_reply}"
             app:subtitle="@{status.replyFromHook}" />
+
+        <mufanc.tools.applock.view.StatusCard
+            android:id="@+id/shizuku_status"
+            style="@style/DefaultCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:status="@{status.isShizukuGranted}"
+            app:title="@{status.isShizukuGranted ? @string/shizuku_granted : @string/shizuku_denied}"
+            app:subtitle="" />
 
     </LinearLayout>
 

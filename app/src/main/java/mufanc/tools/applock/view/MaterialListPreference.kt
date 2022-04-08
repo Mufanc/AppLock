@@ -12,7 +12,7 @@ class MaterialListPreference(
 ) : ListPreference(context, attributeSet) {
 
     override fun onAttached() {
-        summary = entry
+        summary = entry ?: entries[0]
     }
 
     override fun getValue(): String {

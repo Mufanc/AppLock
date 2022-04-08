@@ -5,17 +5,50 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mufanc.easyhook.util.catch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
+import mufanc.tools.applock.util.ScopeDatabase
 import mufanc.tools.applock.view.MaterialListPreference
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private lateinit var backupScope: ActivityResultLauncher<String>
+
+    private lateinit var restoreScope: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        backupScope = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+            if (uri == null) return@registerForActivityResult
+            requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
+                stream.write(ScopeDatabase.readScope().joinToString("\n")
+                    .toByteArray(StandardCharsets.UTF_8))
+            }
+        }
+
+        restoreScope = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri == null) return@registerForActivityResult
+            catch {
+                requireContext().contentResolver.openInputStream(uri).use { stream ->
+                    val scope = BufferedReader(InputStreamReader(stream)).readLines().map { it.trim() }
+                    ScopeDatabase.writeScope(scope.toMutableSet())
+                }
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
@@ -63,6 +96,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                     }
                     .show()
             }
+            "backup_scope" -> backupScope.launch("AppLock ${Date()}.txt")
+            "restore_scope" -> restoreScope.launch(arrayOf("text/plain"))
         }
         return super.onPreferenceTreeClick(preference)
     }

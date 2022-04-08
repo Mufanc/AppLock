@@ -1,4 +1,5 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/category_settings">
 
@@ -20,6 +21,16 @@
             app:title="@string/resolve_mode_title"
             app:entries="@array/resolve_mode_entries"
             app:entryValues="@array/resolve_mode_values" />
+
+        <Preference app:key="backup_scope"
+            app:icon="@drawable/ic_backup"
+            app:title="@string/backup_scope_title"
+            android:summary="@string/backup_scope_summary" />
+
+        <Preference app:key="restore_scope"
+            app:icon="@drawable/ic_restore"
+            app:title="@string/restore_scope_title"
+            android:summary="@string/restore_scope_summary" />
 
     </PreferenceCategory>
 

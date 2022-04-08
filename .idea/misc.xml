@@ -18,7 +18,7 @@
         <entry key="app/src/main/res/drawable/view_action_card.xml" value="0.1705" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/layout/fragment_apps.xml" value="0.16145833333333334" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.16145833333333334" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.16145833333333334" />
         <entry key="app/src/main/res/layout/view_action_card.xml" value="0.25" />

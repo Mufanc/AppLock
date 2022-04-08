@@ -6,11 +6,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentAppsBinding
-import mufanc.tools.applock.shizuku.ShizukuHelper
-import mufanc.tools.applock.xposed.AppLockHelper
+import mufanc.tools.applock.util.Globals
 
 class AppsFragment : Fragment() {
 
@@ -77,15 +75,7 @@ class AppsFragment : Fragment() {
         menu.findItem(R.id.save_app_list)
             .setOnMenuItemClickListener {
                 adapter?.apply {
-                    when (MyApplication.prefs.getString("work_mode", "xposed")) {
-                        "xposed" -> AppLockHelper.client?.writePackageList(lockedApps.toTypedArray())
-                        "shizuku" -> {
-                            ShizukuHelper.writePackageList(lockedApps.toList())
-                            MyApplication.prefs.edit().also {
-                                it.putString("locked_app_list", lockedApps.joinToString("#"))
-                            }.apply()
-                        }
-                    }
+                    Globals.LOCKED_APPS = lockedApps
                     filter.filter("")
                 }
                 true

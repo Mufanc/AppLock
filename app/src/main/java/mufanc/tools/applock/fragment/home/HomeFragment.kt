@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
-import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentHomeBinding
-import mufanc.tools.applock.shizuku.ShizukuHelper
+import mufanc.tools.applock.util.Globals
 import mufanc.tools.applock.xposed.AppLockHelper
 
 class HomeFragment : Fragment() {
@@ -27,12 +26,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val model = ViewModelProvider(this)[HomeViewModel::class.java]
-        binding?.status = model
         binding?.apply {
-            shizukuStatus.setOnClickListener {
-                ShizukuHelper.requestPermission()
-            }
-            when (MyApplication.prefs.getString("work_mode", "xposed")) {
+            status = model
+            lifecycleOwner = this@HomeFragment
+            when (Globals.WORK_MODE) {
                 "xposed" -> {
                     shizukuStatus.visibility = View.GONE
                 }

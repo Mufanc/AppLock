@@ -1,12 +1,12 @@
 package mufanc.tools.applock.fragment.home
 
 import android.os.SystemProperties
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.shizuku.ShizukuHelper
 import mufanc.tools.applock.xposed.AppLockHelper
-import rikka.shizuku.Shizuku
 
 class HomeViewModel : ViewModel() {
 
@@ -32,6 +32,12 @@ class HomeViewModel : ViewModel() {
         "Unknown."
     }
 
-    val isShizukuGranted = ShizukuHelper.checkPermission()
-    val selinuxContext = Shizuku.getSELinuxContext()
+    val isShizukuGranted = MutableLiveData(ShizukuHelper.checkPermission())
+    val selinuxContext = MutableLiveData(ShizukuHelper.getSELinuxContext())
+    fun requestPermission() {
+        ShizukuHelper.requestPermission {
+            isShizukuGranted.value = ShizukuHelper.checkPermission()
+            selinuxContext.value = ShizukuHelper.getSELinuxContext()
+        }
+    }
 }

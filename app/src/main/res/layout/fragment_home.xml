@@ -53,6 +53,7 @@
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> status.requestPermission()}"
             app:status="@{status.isShizukuGranted}"
             app:title="@{status.isShizukuGranted ? @string/shizuku_granted : @string/shizuku_denied}"
             app:subtitle="@{status.selinuxContext}" />

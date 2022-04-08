@@ -6,8 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
-import mufanc.tools.applock.MyApplication
-import mufanc.tools.applock.xposed.AppLockHelper
+import mufanc.tools.applock.util.Globals
 import kotlin.concurrent.thread
 
 class AppsViewModel : ViewModel() {
@@ -19,25 +18,14 @@ class AppsViewModel : ViewModel() {
 
     val appList = mutableSetOf<AppInfo>()
 
-    val lockedAppList: MutableSet<String> get() =
-        when (MyApplication.prefs.getString("work_mode", "xposed")) {
-            "xposed" -> AppLockHelper.client?.readPackageList()?.toMutableSet()
-            "shizuku" -> {
-                MyApplication.prefs.getString("locked_app_list", "")!!.let {
-                    it.ifEmpty { return@let null }
-                    it.split("#").toMutableSet()
-                }
-            }
-            else -> throw RuntimeException()
-        } ?: mutableSetOf()
+    val lockedAppList: MutableSet<String> get() = Globals.LOCKED_APPS
 
     fun loadAppList(activity: Activity, refresh: Boolean = false, callback: () -> Unit) {
         thread {
             if (refresh || appList.isEmpty()) {
                 val packageManager = activity.packageManager
-                val mode = MyApplication.prefs.getString("resolve_mode", "category_launcher")
                 appList.clear()
-                appList.addAll(when (mode) {
+                appList.addAll(when (Globals.RESOLVE_MODE) {
                     "category_launcher" -> packageManager
                         .queryIntentActivities(
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),

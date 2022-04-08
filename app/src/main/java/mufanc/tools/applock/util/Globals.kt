@@ -11,20 +11,10 @@ object Globals {
     val WORK_MODE get() = MyApplication.prefs.getString("work_mode", "xposed")
 
     var LOCKED_APPS: MutableSet<String>
-        get() {
-            return when (WORK_MODE) {
-                "xposed" -> AppLockHelper.client?.readPackageList()?.toMutableSet()
-                "shizuku" -> {
-                    MyApplication.prefs.getString("locked_app_list", "")!!.let {
-                        it.ifEmpty { return@let null }
-                        it.split("#").toMutableSet()
-                    }
-                }
-                else -> throw RuntimeException()
-            } ?: mutableSetOf()
-        }
+        get() = ScopeDatabase.readScope()
         set(value) {
-            when (Globals.WORK_MODE) {
+            ScopeDatabase.writeScope(value)
+            when (WORK_MODE) {
                 "xposed" -> AppLockHelper.client?.writePackageList(value.toTypedArray())
                 "shizuku" -> {
                     ShizukuHelper.writePackageList(value.toList())

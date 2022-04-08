@@ -2,6 +2,7 @@ package mufanc.tools.applock.fragment.apps
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -76,6 +77,7 @@ class AppsFragment : Fragment() {
             .setOnMenuItemClickListener {
                 adapter?.apply {
                     Globals.LOCKED_APPS = lockedApps
+                    Toast.makeText(requireContext(), R.string.scope_saved, Toast.LENGTH_SHORT).show()
                     filter.filter("")
                 }
                 true

@@ -21,6 +21,9 @@
     <string name="shizuku_granted">Shizuku 已授权</string>
     <string name="shizuku_denied">Shizuku 未授权</string>
 
+    <!-- Apps Page  -->
+    <string name="scope_saved">保存成功</string>
+
     <!-- Settings Page  -->
     <string name="hide_icon_title">隐藏桌面图标</string>
     <string name="hide_icon_summary">不显示本应用在启动器中的图标</string>

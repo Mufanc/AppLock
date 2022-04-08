@@ -21,7 +21,7 @@ import java.lang.reflect.Method
 
 object AppLockHelper {
 
-    val server by lazy { AppLockManagerService() }
+    val server by lazy { AppLockManagerService(systemContext) }
     val client by lazy {
         MyApplication.processManager?.let {
             val data = Parcel.obtain()
@@ -45,8 +45,8 @@ object AppLockHelper {
 
     private val KILLER_SET = setOf("com.miui.home", "com.android.systemui")
 
-    private val packageManager by lazy {
-        (ActivityThread.currentActivityThread().systemContext as Context).packageManager
+    private val systemContext by lazy {
+        ActivityThread.currentActivityThread().systemContext as Context
     }
 
     private val processMaps by lazy {
@@ -65,7 +65,7 @@ object AppLockHelper {
         override fun beforeHookedMethod(param: MethodHookParam) {
             catch {
                 if (param.args[0] != TRANSACTION_CODE) return
-                if (packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return
+                if (systemContext.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return
                 (param.args[2] as Parcel).writeStrongBinder(server)
                 param.result = true
             }

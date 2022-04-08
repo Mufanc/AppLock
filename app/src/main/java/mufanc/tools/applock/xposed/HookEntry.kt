@@ -6,7 +6,7 @@ import com.github.mufanc.easyhook.util.findField
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
 
-class HookEntry : HookHelper("AppLock") {
+class HookEntry : HookHelper(MyApplication.TAG) {
     override fun onHandleLoadPackage() {
         catch {
             when (lpparam.packageName) {

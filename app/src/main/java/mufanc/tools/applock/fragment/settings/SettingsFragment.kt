@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
@@ -16,7 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
-import mufanc.tools.applock.util.ScopeDatabase
+import mufanc.tools.applock.util.Globals
 import mufanc.tools.applock.view.MaterialListPreference
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -34,7 +35,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         backupScope = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
-                stream.write(ScopeDatabase.readScope().joinToString("\n")
+                stream.write(Globals.LOCKED_APPS.joinToString("\n")
                     .toByteArray(StandardCharsets.UTF_8))
             }
         }
@@ -43,8 +44,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             if (uri == null) return@registerForActivityResult
             catch {
                 requireContext().contentResolver.openInputStream(uri).use { stream ->
-                    val scope = BufferedReader(InputStreamReader(stream)).readLines().map { it.trim() }
-                    ScopeDatabase.writeScope(scope.toMutableSet())
+                    val scope = BufferedReader(InputStreamReader(stream)).readLines()
+                        .map { it.trim() }.filter { it.isNotEmpty() }
+                    if (scope.all { it.matches("^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)+$".toRegex()) }) {
+                        Globals.LOCKED_APPS = scope.toMutableSet()
+                    } else {
+                        Toast.makeText(requireContext(), R.string.invalid_backup, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

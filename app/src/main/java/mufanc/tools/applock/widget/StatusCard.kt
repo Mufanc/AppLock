@@ -1,4 +1,4 @@
-package mufanc.tools.applock.view
+package mufanc.tools.applock.widget
 
 import android.content.Context
 import android.util.AttributeSet

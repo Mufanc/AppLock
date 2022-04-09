@@ -3,7 +3,7 @@
 
     <PreferenceCategory app:title="@string/category_settings">
 
-        <mufanc.tools.applock.view.MaterialListPreference
+        <mufanc.tools.applock.widget.MaterialListPreference
             app:key="work_mode"
             app:icon="@drawable/ic_work_mode"
             app:title="@string/work_mode_title"
@@ -15,7 +15,7 @@
             app:title="@string/hide_icon_title"
             app:summary="@string/hide_icon_summary" />
 
-        <mufanc.tools.applock.view.MaterialListPreference
+        <mufanc.tools.applock.widget.MaterialListPreference
             app:key="resolve_mode"
             app:icon="@drawable/ic_resolve_mode"
             app:title="@string/resolve_mode_title"

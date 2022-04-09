@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 import java.util.*
 
-val versionNamePrefix = "2.0.2"
+val versionNamePrefix = "2.1.0"
 
 plugins {
     id("com.android.application")

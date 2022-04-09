@@ -1,6 +1,8 @@
 package mufanc.tools.applock.util
 
+import android.widget.Toast
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.R
 import mufanc.tools.applock.shizuku.ShizukuHelper
 import mufanc.tools.applock.xposed.AppLockHelper
 
@@ -15,13 +17,12 @@ object Globals {
         set(value) {
             ScopeDatabase.writeScope(value)
             when (WORK_MODE) {
-                "xposed" -> AppLockHelper.client?.writePackageList(value.toTypedArray())
-                "shizuku" -> {
-                    ShizukuHelper.writePackageList(value.toList())
-                    MyApplication.prefs.edit().also {
-                        it.putString("locked_app_list", value.joinToString("#"))
-                    }.apply()
-                }
+                "xposed" ->
+                    AppLockHelper.client?.apply {
+                        writePackageList(value.toTypedArray())
+                        Toast.makeText(MyApplication.context, R.string.scope_saved, Toast.LENGTH_SHORT).show()
+                    }
+                "shizuku" -> ShizukuHelper.writePackageList(value.toList())
             }
         }
 

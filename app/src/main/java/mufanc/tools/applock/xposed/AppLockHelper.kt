@@ -85,7 +85,7 @@ object AppLockHelper {
             }
 
         private fun getPackageList(record: Any): Set<String> {
-            if (!this::field1.isInitialized) {
+            if (!::field1.isInitialized) {
                 field1 = findField(record::class.java) {
                     name == "pkgList" || name == "mPkgList"
                 }!!
@@ -95,7 +95,7 @@ object AppLockHelper {
             return if (obj is ArrayMap<*, *>) {  // Android 9
                 obj.keys as Set<String>
             } else {  // Android 10+
-                if (!this::field2.isInitialized) {
+                if (!::field2.isInitialized) {
                     field2 = findField(obj::class.java) { name == "mPkgList" }!!
                     getKeySet = findMethod(field2.get(obj)::class.java) { name == "keySet" }!!
                 }

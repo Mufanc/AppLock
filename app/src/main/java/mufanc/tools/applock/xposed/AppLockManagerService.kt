@@ -20,8 +20,9 @@ class AppLockManagerService(
             context.contentResolver.call(
                 Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider"),
                 "scope", null, null
-            )?.getStringArray("scope")?.toMutableSet()?.also {
-                result = it
+            )?.getStringArray("scope")?.also {
+                result = it.toMutableSet()
+                Log.i("Load scope from provider: ${it.contentToString()}")
             } ?: let {
                 Log.w("Failed to resolve whitelist!")
             }

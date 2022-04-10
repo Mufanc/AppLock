@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
+        window.decorView
+
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         binding.apply {

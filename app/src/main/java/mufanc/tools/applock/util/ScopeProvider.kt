@@ -12,6 +12,7 @@ import mufanc.tools.applock.MyApplication
 class ScopeProvider : ContentProvider() {
 
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle {
+        MyApplication.context = context!!
         val reply = Bundle()
         when (method) {
             "scope" -> {

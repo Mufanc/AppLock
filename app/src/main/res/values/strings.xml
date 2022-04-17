@@ -44,4 +44,6 @@
     <string name="restore_scope_summary">恢复 AppLock 作用域</string>
     <string name="work_mode_title">工作模式</string>
     <string name="invalid_backup">文件损坏！</string>
+
+    <string name="imported_scope">已成功导入旧版作用域</string>
 </resources>

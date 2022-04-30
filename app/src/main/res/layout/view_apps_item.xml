@@ -27,7 +27,9 @@
             app:layout_constraintStart_toEndOf="@+id/app_icon"
             app:layout_constraintEnd_toStartOf="@+id/locked"
             app:layout_constraintTop_toTopOf="@id/app_icon"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
         <TextView android:id="@+id/package_name"
             android:layout_width="0dp"

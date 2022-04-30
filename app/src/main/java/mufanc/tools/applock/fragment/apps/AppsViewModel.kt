@@ -49,6 +49,15 @@ class AppsViewModel : ViewModel() {
                                 it.loadIcon(packageManager)
                             )
                         }
+                    "all_apps" -> packageManager
+                        .getInstalledApplications(0)
+                        .map {
+                            AppInfo(
+                                it.loadLabel(packageManager).toString(),
+                                it.packageName,
+                                it.loadIcon(packageManager)
+                            )
+                        }
                     else -> throw RuntimeException()
                 })
             }

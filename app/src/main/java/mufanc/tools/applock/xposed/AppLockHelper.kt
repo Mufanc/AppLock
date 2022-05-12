@@ -89,6 +89,7 @@ object AppLockHelper {
                 field1 = findField(record::class.java) {
                     name == "pkgList" || name == "mPkgList"
                 }!!
+                field1.isAccessible = true
             }
             val obj = field1.get(record)
             @Suppress("Unchecked_Cast")
@@ -97,6 +98,7 @@ object AppLockHelper {
             } else {  // Android 10+
                 if (!::field2.isInitialized) {
                     field2 = findField(obj::class.java) { name == "mPkgList" }!!
+                    field2.isAccessible = true
                     getKeySet = findMethod(field2.get(obj)::class.java) { name == "keySet" }!!
                 }
                 getKeySet.invoke(field2.get(obj)) as Set<String>

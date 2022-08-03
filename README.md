@@ -1,5 +1,7 @@
 ## AppLock
 
+![Downloads](https://img.shields.io/github/downloads/Xposed-Modules-Repo/mufanc.tools.applock/total?color=green&label=Downloads&query=totalString)
+
 * 防止特定应用被侧滑杀死或一键清理
 
 * 理论上支持 Android 9~12，MIUI 12+

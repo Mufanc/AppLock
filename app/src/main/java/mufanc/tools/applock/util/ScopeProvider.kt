@@ -17,40 +17,21 @@ class ScopeProvider : ContentProvider() {
         when (method) {
             "scope" -> {
                 reply.putStringArray("scope", ScopeDatabase.readScope().toTypedArray())
-                Log.i(MyApplication.TAG, "send scope!")
+                Log.i(MyApplication.TAG, "@AppLock: send scope to server!")
             }
         }
         return reply
     }
 
-    override fun onCreate(): Boolean {
-        return true
-    }
+    override fun onCreate(): Boolean = true
 
-    // No other provider methods
-    override fun query(
-        uri: Uri,
-        projection: Array<String?>?,
-        selection: String?,
-        selectionArgs: Array<String?>?,
-        sortOrder: String?,
-    ): Cursor? {
-        return null
-    }
+    override fun query(p0: Uri, p1: Array<String?>?, p2: String?, p3: Array<String?>?, p4: String?): Cursor? = null
 
-    override fun getType(uri: Uri): String? {
-        return null
-    }
+    override fun getType(p0: Uri): String? = null
 
-    override fun insert(uri: Uri, p1: ContentValues?): Uri? {
-        return null
-    }
+    override fun insert(p0: Uri, p1: ContentValues?): Uri? = null
 
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        return 0
-    }
+    override fun delete(p0: Uri, p1: String?, p2: Array<out String>?): Int = 0
 
-    override fun update(uri: Uri, values: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
-        return 0
-    }
+    override fun update(p0: Uri, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int = 0
 }

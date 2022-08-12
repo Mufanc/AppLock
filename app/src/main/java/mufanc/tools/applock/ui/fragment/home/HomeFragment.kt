@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
-import mufanc.tools.applock.core.xposed.AppLockHelper
+import mufanc.tools.applock.core.xposed.AppLockManager
 import mufanc.tools.applock.databinding.FragmentHomeBinding
 import mufanc.tools.applock.util.Globals
 
@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
                 .setTitle(R.string.require_reboot)
                 .setMessage(R.string.core_version_not_match)
                 .setPositiveButton(R.string.reboot_now) { _, _ ->
-                    AppLockHelper.client?.reboot() ?: requireActivity().finish()
+                    AppLockManager.client?.reboot() ?: requireActivity().finish()
                 }
                 .setNegativeButton(R.string.reboot_later) { dialog, _ ->
                     dialog.dismiss()

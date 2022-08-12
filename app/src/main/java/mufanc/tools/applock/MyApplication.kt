@@ -6,10 +6,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.IBinder
 import android.os.ServiceManager
-import android.widget.Toast
 import androidx.preference.PreferenceManager
-import mufanc.tools.applock.core.xposed.AppLockHelper
-import mufanc.tools.applock.util.ScopeDatabase
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.sui.Sui
 
@@ -35,13 +32,5 @@ class MyApplication : Application() {
         Sui.init(BuildConfig.APPLICATION_ID)
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         context = applicationContext
-
-        AppLockHelper.client?.let {
-            val scope = it.importScopeFromOldVersion()
-            if (scope.isNotEmpty()) {
-                ScopeDatabase.writeScope(scope.toMutableSet())
-                Toast.makeText(this, R.string.imported_scope, Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 }

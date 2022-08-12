@@ -4,7 +4,7 @@ import android.widget.Toast
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
-import mufanc.tools.applock.core.xposed.AppLockHelper
+import mufanc.tools.applock.core.xposed.AppLockManager
 
 object Globals {
 
@@ -18,8 +18,8 @@ object Globals {
             ScopeDatabase.writeScope(value)
             when (WORK_MODE) {
                 "xposed" ->
-                    AppLockHelper.client?.apply {
-                        writePackageList(value.toTypedArray())
+                    AppLockManager.client?.apply {
+                        updateWhitelist(value.toTypedArray())
                         Toast.makeText(MyApplication.context, R.string.scope_saved, Toast.LENGTH_SHORT).show()
                     }
                 "shizuku" -> ShizukuHelper.writePackageList(value.toList())

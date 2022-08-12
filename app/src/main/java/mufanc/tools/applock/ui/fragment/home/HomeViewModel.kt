@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
-import mufanc.tools.applock.core.xposed.AppLockHelper
+import mufanc.tools.applock.core.xposed.AppLockManager
 
 class HomeViewModel : ViewModel() {
 
@@ -16,12 +16,12 @@ class HomeViewModel : ViewModel() {
     val isServiceFound = MyApplication.processManager != null
     val managerBinder = "${MyApplication.processManager}".removePrefix("android.os.")
 
-    val isHookerWorking = AppLockHelper.client != null
+    val isHookerWorking = AppLockManager.client != null
     var requireReboot = false
-    val replyFromHook = AppLockHelper.client?.let {
-        val (coreVersion, pid, uid) = it.handshake()
-        requireReboot = coreVersion < BuildConfig.VERSION_CODE
-        "pid:$pid, uid:$uid"
+    val replyFromHook = AppLockManager.client?.let {
+        val bundle = it.handshake()
+        requireReboot = bundle.getInt("version") < BuildConfig.VERSION_CODE
+        "pid:${bundle.getInt("pid")}, uid:${bundle.getInt("uid")}"
     } ?: "failed."
 
     private val miuiVersion = SystemProperties.get("ro.miui.ui.version.code")

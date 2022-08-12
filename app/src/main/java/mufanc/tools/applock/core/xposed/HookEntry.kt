@@ -17,6 +17,6 @@ class HookEntry : HookHelper(MyApplication.TAG) {  // Todo: 完善日志系统
                     .set(null, true)
             }
         }
-        AppLockHelper.main()
+        AppLockHelper.init()
     }
 }

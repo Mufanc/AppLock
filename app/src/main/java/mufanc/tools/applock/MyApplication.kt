@@ -8,8 +8,8 @@ import android.os.IBinder
 import android.os.ServiceManager
 import android.widget.Toast
 import androidx.preference.PreferenceManager
+import mufanc.tools.applock.core.xposed.AppLockHelper
 import mufanc.tools.applock.util.ScopeDatabase
-import mufanc.tools.applock.xposed.AppLockHelper
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.sui.Sui
 

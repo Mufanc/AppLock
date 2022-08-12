@@ -1,4 +1,4 @@
-package mufanc.tools.applock.fragment.apps
+package mufanc.tools.applock.ui.fragment.apps
 
 import java.nio.charset.Charset
 

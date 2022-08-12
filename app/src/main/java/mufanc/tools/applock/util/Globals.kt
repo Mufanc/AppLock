@@ -3,8 +3,8 @@ package mufanc.tools.applock.util
 import android.widget.Toast
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
-import mufanc.tools.applock.shizuku.ShizukuHelper
-import mufanc.tools.applock.xposed.AppLockHelper
+import mufanc.tools.applock.core.shizuku.ShizukuHelper
+import mufanc.tools.applock.core.xposed.AppLockHelper
 
 object Globals {
 

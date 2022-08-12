@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="status" type="mufanc.tools.applock.fragment.home.HomeViewModel" />
+        <variable name="status" type="mufanc.tools.applock.ui.fragment.home.HomeViewModel" />
     </data>
 
     <LinearLayout
@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
-        tools:context=".fragment.home.HomeFragment" >
+        tools:context=".ui.fragment.home.HomeFragment" >
 
-        <mufanc.tools.applock.widget.StatusCard
+        <mufanc.tools.applock.ui.widget.StatusCard
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             app:title="@string/miui_version_title"
             app:subtitle="@{status.versionSummary}" />
 
-        <mufanc.tools.applock.widget.StatusCard
+        <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/module_activated"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             app:title="@{status.isModuleActivated ? @string/module_activated : @string/module_deactivate}"
             app:subtitle="@{status.versionName}" />
 
-        <mufanc.tools.applock.widget.StatusCard
+        <mufanc.tools.applock.ui.widget.StatusCard
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             app:title="@{status.isServiceFound ? @string/service_found : @string/service_not_found}"
             app:subtitle="@{status.managerBinder}" />
 
-        <mufanc.tools.applock.widget.StatusCard
+        <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/hooker_status"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             app:title="@{status.isHookerWorking ? @string/hooker_working : @string/hooker_no_reply}"
             app:subtitle="@{status.replyFromHook}" />
 
-        <mufanc.tools.applock.widget.StatusCard
+        <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/shizuku_status"
             style="@style/DefaultCard"
             android:layout_width="match_parent"

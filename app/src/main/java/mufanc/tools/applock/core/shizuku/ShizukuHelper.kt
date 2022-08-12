@@ -1,4 +1,4 @@
-package mufanc.tools.applock.shizuku
+package mufanc.tools.applock.core.shizuku
 
 import android.content.pm.PackageManager
 import android.widget.Toast

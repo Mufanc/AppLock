@@ -1,4 +1,4 @@
-package mufanc.tools.applock.fragment.settings
+package mufanc.tools.applock.ui.fragment.settings
 
 import android.content.ComponentName
 import android.content.Intent
@@ -17,8 +17,8 @@ import mufanc.easyhook.wrapper.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
+import mufanc.tools.applock.ui.widget.MaterialListPreference
 import mufanc.tools.applock.util.Globals
-import mufanc.tools.applock.widget.MaterialListPreference
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets

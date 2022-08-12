@@ -1,4 +1,4 @@
-package mufanc.tools.applock.fragment.apps
+package mufanc.tools.applock.ui.fragment.apps
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +12,8 @@ import java.text.Collator
 import java.util.*
 
 class AppListAdapter(
-   private val appList: MutableSet<AppsViewModel.AppInfo>,
-   val lockedApps: MutableSet<String>
+    private val appList: MutableSet<AppsViewModel.AppInfo>,
+    val lockedApps: MutableSet<String>
 ) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(), Filterable {
 
     private val filteredList = mutableListOf<AppsViewModel.AppInfo>()

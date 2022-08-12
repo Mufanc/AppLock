@@ -1,4 +1,4 @@
-package mufanc.tools.applock.fragment.home
+package mufanc.tools.applock.ui.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
+import mufanc.tools.applock.core.xposed.AppLockHelper
 import mufanc.tools.applock.databinding.FragmentHomeBinding
 import mufanc.tools.applock.util.Globals
-import mufanc.tools.applock.xposed.AppLockHelper
 
 class HomeFragment : Fragment() {
 

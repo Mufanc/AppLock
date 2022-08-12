@@ -20,5 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class mufanc.tools.applock.xposed.HookEntry
+-keep class mufanc.tools.applock.core.xposed.HookEntry
 -keep class mufanc.tools.applock.MyApplication{*;}

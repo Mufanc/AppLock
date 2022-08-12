@@ -19,7 +19,7 @@
         <meta-data android:name="xposedminversion" android:value="82" />
         <meta-data android:name="xposedscope" android:resource="@array/xposed_scope" />
 
-        <activity android:name=".MainActivity"
+        <activity android:name=".ui.MainActivity"
             android:exported="true" >
 
             <intent-filter>
@@ -30,7 +30,7 @@
 
         <activity-alias android:name=".Launcher"
             android:exported="true"
-            android:targetActivity=".MainActivity" >
+            android:targetActivity=".ui.MainActivity" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
-            android:authorities="mufanc.tools.applock.shizuku"
+            android:authorities="mufanc.tools.applock.core.shizuku"
             android:multiprocess="false"
             android:enabled="true"
             android:exported="true"

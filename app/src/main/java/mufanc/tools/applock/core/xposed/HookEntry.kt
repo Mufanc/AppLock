@@ -1,4 +1,4 @@
-package mufanc.tools.applock.xposed
+package mufanc.tools.applock.core.xposed
 
 import mufanc.easyhook.wrapper.HookHelper
 import mufanc.easyhook.wrapper.annotation.XposedEntry

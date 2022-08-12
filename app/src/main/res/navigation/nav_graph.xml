@@ -7,19 +7,18 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="mufanc.tools.applock.fragment.home.HomeFragment"
+        android:name="mufanc.tools.applock.ui.fragment.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_apps"
-        android:name="mufanc.tools.applock.fragment.apps.AppsFragment"
+        android:name="mufanc.tools.applock.ui.fragment.apps.AppsFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_apps" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="mufanc.tools.applock.fragment.settings.SettingsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_settings" />
+        android:name="mufanc.tools.applock.ui.fragment.settings.SettingsFragment"
+        android:label="@string/title_notifications" />
 </navigation>

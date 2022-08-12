@@ -1,4 +1,4 @@
-package mufanc.tools.applock.xposed
+package mufanc.tools.applock.core.xposed
 
 import android.content.Context
 import android.net.Uri

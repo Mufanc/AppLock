@@ -1,12 +1,12 @@
-package mufanc.tools.applock.fragment.home
+package mufanc.tools.applock.ui.fragment.home
 
 import android.os.SystemProperties
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
-import mufanc.tools.applock.shizuku.ShizukuHelper
-import mufanc.tools.applock.xposed.AppLockHelper
+import mufanc.tools.applock.core.shizuku.ShizukuHelper
+import mufanc.tools.applock.core.xposed.AppLockHelper
 
 class HomeViewModel : ViewModel() {
 

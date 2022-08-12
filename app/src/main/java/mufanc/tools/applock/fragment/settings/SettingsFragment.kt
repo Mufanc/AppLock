@@ -12,8 +12,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mufanc.easyhook.util.catch
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import mufanc.easyhook.wrapper.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding

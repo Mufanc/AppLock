@@ -6,14 +6,24 @@ import android.os.Binder
 import android.os.IPowerManager
 import android.os.Process
 import android.os.ServiceManager
-import com.github.mufanc.easyhook.util.Log
+import mufanc.easyhook.wrapper.Logger
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import java.io.File
 
-class AppLockManagerService(
+class AppLockManagerService private constructor(
     private val context: Context
 ) : IAppLockManager.Stub() {
+
+    companion object {
+        private lateinit var instance: AppLockManagerService
+
+        fun getInstance(context: Context): AppLockManagerService {
+            if (::instance.isInitialized) return instance
+            instance = AppLockManagerService(context)
+            return instance
+        }
+    }
 
     val whitelist: MutableSet<String> by lazy {
         var result = mutableSetOf<String>()
@@ -23,16 +33,16 @@ class AppLockManagerService(
                 "scope", null, null
             )?.getStringArray("scope")?.also {
                 result = it.toMutableSet()
-                Log.i("Load scope from provider: ${it.contentToString()}")
+                Logger.i("Load scope from provider: ${it.contentToString()}")
             } ?: let {
-                Log.w("Failed to resolve whitelist!")
+                Logger.w("Failed to resolve whitelist!")
             }
         })
         result
     }
 
     override fun handshake(): IntArray {
-        Log.i("handshake from client!")
+        Logger.i("handshake from client!")
         return intArrayOf(BuildConfig.VERSION_CODE, Process.myPid(), Process.myUid())
     }
 
@@ -49,7 +59,7 @@ class AppLockManagerService(
     override fun writePackageList(packageList: Array<out String>) {
         whitelist.clear()
         whitelist.addAll(packageList)
-        Log.i("scope updated: ${packageList.contentToString()}")
+        Logger.i("scope updated: ${packageList.contentToString()}")
     }
 
     override fun importScopeFromOldVersion(): Array<String> {

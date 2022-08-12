@@ -9,10 +9,14 @@ import android.os.Parcel
 import android.os.ServiceManager
 import android.util.ArrayMap
 import android.util.SparseArray
-import com.github.mufanc.easyhook.util.*
-import de.robv.android.xposed.XC_MethodHook
-import de.robv.android.xposed.XposedBridge
 import miui.process.ProcessConfig
+import mufanc.easyhook.wrapper.EasyHook
+import mufanc.easyhook.wrapper.Logger
+import mufanc.easyhook.wrapper.hook
+import mufanc.easyhook.wrapper.reflect.findField
+import mufanc.easyhook.wrapper.reflect.findMethod
+import mufanc.easyhook.wrapper.reflect.findMethods
+import mufanc.easyhook.wrapper.reflect.getField
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
@@ -21,7 +25,6 @@ import java.lang.reflect.Method
 
 object AppLockHelper {
 
-    val server by lazy { AppLockManagerService(systemContext) }
     val client by lazy {
         MyApplication.processManager?.let {
             val data = Parcel.obtain()
@@ -38,106 +41,94 @@ object AppLockHelper {
         }
     }
 
+    // constants
     private val TRANSACTION_CODE = "Lock"
         .toByteArray()
         .mapIndexed { i, ch -> ch.toInt() shl (i * 8) }
         .sum()
 
-    private val KILLER_SET = setOf("com.miui.home", "com.android.systemui")
+    private val KILLERS = setOf("com.miui.home", "com.android.systemui")
 
-    private val systemContext by lazy {
+    // system context
+    private val context by lazy {
         ActivityThread.currentActivityThread().systemContext as Context
     }
 
-    private val processMaps by lazy {
-        val pidMap = IActivityManager.Stub.asInterface(
+    // AppLock service
+    private val processMaps: SparseArray<*> by lazy {
+        IActivityManager.Stub.asInterface(
             ServiceManager.getService(Context.ACTIVITY_SERVICE)
-        ).getField("mPidsSelfLocked")
-        val arr = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            pidMap?.getField("mPidMap")
-        } else {
-            pidMap
-        }
-        arr as SparseArray<*>?
+        ).getField("mPidsSelfLocked")!!.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                it.getField("mPidMap")
+            } else {
+                it
+            }
+        } as SparseArray<*>
     }
 
-    private object TransactionHook : XC_MethodHook() {
-        override fun beforeHookedMethod(param: MethodHookParam) {
-            catch {
-                if (param.args[0] != TRANSACTION_CODE) return
-                if (systemContext.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return
-                (param.args[2] as Parcel).writeStrongBinder(server)
-                param.result = true
+    private lateinit var packageListField1: Field
+    private lateinit var packageListField2: Field
+    private lateinit var getKeySetMethod: Method
+
+    private fun getPackageList(processRecord: Any): Set<String> {
+        if (!::packageListField1.isInitialized) {
+            packageListField1 = processRecord.javaClass.findField {
+                name == "pkgList" || name == "mPkgList"
+            }!!
+        }
+        val pkgList = packageListField1.get(processRecord)
+        @Suppress("Unchecked_Cast")
+        return if (pkgList is ArrayMap<*, *>) {  // Android 9
+            pkgList.keys as Set<String>
+        } else {  // Android 10+
+            if (!::packageListField2.isInitialized) {
+                packageListField2 = pkgList.javaClass.findField { name == "mPkgList" }!!
+                getKeySetMethod = packageListField2.get(pkgList).javaClass.findMethod{ name == "keySet" }!!
             }
+            getKeySetMethod.invoke(packageListField2.get(pkgList)) as Set<String>
         }
     }
 
-    private object KillProcessHook : XC_MethodHook() {
+    // entry
+    fun main() = EasyHook.handle {
+        // Hook 系统服务
+        onLoadPackage("android") {
 
-        // Compatible with different Android version
-        private lateinit var field1: Field
-        private lateinit var field2: Field
-        private lateinit var getKeySet: Method
-
-        private val processName =
-            findField("com.android.server.am.ProcessRecord") {
-                name == "processName"
-            }
-
-        private fun getPackageList(record: Any): Set<String> {
-            if (!::field1.isInitialized) {
-                field1 = findField(record::class.java) {
-                    name == "pkgList" || name == "mPkgList"
-                }!!
-                field1.isAccessible = true
-            }
-            val obj = field1.get(record)
-            @Suppress("Unchecked_Cast")
-            return if (obj is ArrayMap<*, *>) {  // Android 9
-                obj.keys as Set<String>
-            } else {  // Android 10+
-                if (!::field2.isInitialized) {
-                    field2 = findField(obj::class.java) { name == "mPkgList" }!!
-                    field2.isAccessible = true
-                    getKeySet = findMethod(field2.get(obj)::class.java) { name == "keySet" }!!
+            // Hook `onTransact()` 以便与模块通信
+            findClass("miui.process.ProcessManagerNative") hook {
+                method({ name == "onTransact" }) {
+                    before { param ->
+                        if (param.args[0] != TRANSACTION_CODE) return@before
+                        if (context.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return@before
+                        (param.args[2] as Parcel).writeStrongBinder(AppLockManagerService.getInstance(context))
+                        param.result = true
+                    }
                 }
-                getKeySet.invoke(field2.get(obj)) as Set<String>
             }
-        }
 
-        override fun beforeHookedMethod(param: MethodHookParam) {
-            catch {
-                val killer = processName?.get(processMaps?.get(Binder.getCallingPid()))
-                killer ?: return
-                if (KILLER_SET.contains(killer)) {
-                    val processRecord = param.args[0]
-                    getPackageList(processRecord).forEach {
-                        if (server.whitelist.contains(it)) {
-                            param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
-                            Log.i("@AppLock: ${processRecord.getField("processName")}")
-                            return
+            // Hook `ProcessManagerService` 实现应用免杀  Todo: 检查 MIUI 13
+            findClass("com.android.server.am.ProcessManagerService") hook { clazz ->
+                clazz.findMethods { name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord" }
+                    .maxByOrNull { it.parameterCount }!! hook {
+                    val processNameField = findClass("com.android.server.am.ProcessRecord").findField {
+                        name == "processName"
+                    }!!
+                    before { param ->
+                        val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
+                        if (KILLERS.contains(killer)) {
+                            val processRecord = param.args[0]
+                            getPackageList(processRecord).forEach {
+                                if (AppLockManagerService.getInstance(context).whitelist.contains(it)) {
+                                    param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
+                                    Logger.i("@AppLock: ${processRecord.getField("processName")}")
+                                    return@forEach
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    }
-
-    fun main() {
-        XposedBridge.hookMethod(
-            findMethod("miui.process.ProcessManagerNative") {
-                name == "onTransact"
-            },
-            TransactionHook
-        )
-
-        XposedBridge.hookMethod(
-            findMethods("com.android.server.am.ProcessManagerService") {
-                name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord"
-            }.maxByOrNull {
-                it.parameterCount
-            },
-            KillProcessHook
-        )
     }
 }

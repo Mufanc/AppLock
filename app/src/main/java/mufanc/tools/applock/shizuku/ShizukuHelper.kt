@@ -2,9 +2,9 @@ package mufanc.tools.applock.shizuku
 
 import android.content.pm.PackageManager
 import android.widget.Toast
-import com.github.mufanc.easyhook.util.catch
 import miui.process.ProcessCloudData
 import miui.process.ProcessManagerNative
+import mufanc.easyhook.wrapper.catch
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import rikka.shizuku.Shizuku

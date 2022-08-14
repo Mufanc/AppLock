@@ -59,7 +59,7 @@ class AppsFragment : Fragment() {
                 setOnQueryTextListener(
                     object : SearchView.OnQueryTextListener {
                         override fun onQueryTextChange(query: String): Boolean {
-                            adapter?.apply { filter.filter(query) }
+                            adapter?.apply { filter.filter(query.lowercase()) }
                             return true
                         }
 

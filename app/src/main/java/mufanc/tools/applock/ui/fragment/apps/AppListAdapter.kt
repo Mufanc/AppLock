@@ -70,8 +70,8 @@ class AppListAdapter(
             override fun performFiltering(query: CharSequence): FilterResults {
                 return FilterResults().apply {
                     values = appList.filter { info ->
-                        query.toString().lowercase().let {
-                            info.appName.contains(it) || PinyinUtils.convert(info.appName).contains(it)
+                        query.toString().let {
+                            info.appName.lowercase().contains(it) || info.packageName.contains(it)
                         }
                     }.sortedWith { o1, o2 ->
                         val c1 = lockedApps.contains(o1.packageName)

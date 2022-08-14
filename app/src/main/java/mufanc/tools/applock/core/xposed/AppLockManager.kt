@@ -11,7 +11,6 @@ import mufanc.easyhook.wrapper.hook
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
-import mufanc.tools.applock.MyApplication.Companion.context
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
 
@@ -24,6 +23,10 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         private val instance by lazy { AppLockManager() }
         fun query(packageName: String): Boolean {
             return instance.whitelist.contains(packageName)
+        }
+
+        private val context by lazy {
+            ActivityThread.currentActivityThread().systemContext as Context
         }
 
         fun init() = EasyHook.handle {  // Hook `onTransact()` 以便与模块通信
@@ -56,10 +59,6 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                 return@lazy null
             }
         }
-    }
-
-    private val context by lazy {
-        ActivityThread.currentActivityThread().systemContext as Context
     }
 
     private val whitelist: MutableSet<String> by lazy {

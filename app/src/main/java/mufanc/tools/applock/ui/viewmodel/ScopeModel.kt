@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.apps
+package mufanc.tools.applock.ui.viewmodel
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import mufanc.tools.applock.util.Globals
 import kotlin.concurrent.thread
 
-class AppsViewModel : ViewModel() {
+class ScopeModel : ViewModel() {
     data class AppInfo(
         val appName: String,
         val packageName: String,

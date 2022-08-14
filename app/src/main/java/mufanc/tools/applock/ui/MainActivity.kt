@@ -35,8 +35,8 @@ class MainActivity : AppCompatActivity() {
                 .let { (it as NavHostFragment).navController }
 
             appBarConfiguration = AppBarConfiguration.Builder(
-                R.id.navigation_home,
-                R.id.navigation_apps,
+                R.id.navigation_dashboard,
+                R.id.navigation_scope,
                 R.id.navigation_settings
             ).build()
 

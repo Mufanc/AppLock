@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.home
+package mufanc.tools.applock.ui.viewmodel
 
 import android.os.SystemProperties
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
 import mufanc.tools.applock.core.xposed.AppLockManager
 
-class HomeViewModel : ViewModel() {
+class DashboardViewModel : ViewModel() {
 
     val isModuleActivated = MyApplication.isModuleActivated
     val versionName = BuildConfig.VERSION_NAME

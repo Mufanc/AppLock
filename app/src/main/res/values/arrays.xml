@@ -18,6 +18,7 @@
         <item>获取所有非系统应用</item>
         <item>获取全部应用（慎用）</item>
     </string-array>
+
     <string-array name="resolve_mode_values">
         <item>category_launcher</item>
         <item>non_system_apps</item>
@@ -28,6 +29,7 @@
         <item>Xposed</item>
         <item>Shizuku (Beta)</item>
     </string-array>
+
     <string-array name="work_mode_values">
         <item>xposed</item>
         <item>shizuku</item>

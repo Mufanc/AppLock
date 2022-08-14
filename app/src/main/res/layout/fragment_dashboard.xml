@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="status" type="mufanc.tools.applock.ui.fragment.home.HomeViewModel" />
+        <variable name="status" type="mufanc.tools.applock.ui.viewmodel.DashboardViewModel" />
     </data>
 
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="20dp"
-        tools:context=".ui.fragment.home.HomeFragment" >
+        tools:context=".ui.fragment.DashboardFragment" >
 
         <mufanc.tools.applock.ui.widget.StatusCard
             style="@style/DefaultCard"

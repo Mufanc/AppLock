@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.home
+package mufanc.tools.applock.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,25 +10,26 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.core.xposed.AppLockManager
-import mufanc.tools.applock.databinding.FragmentHomeBinding
+import mufanc.tools.applock.databinding.FragmentDashboardBinding
+import mufanc.tools.applock.ui.viewmodel.DashBoardViewModel
 import mufanc.tools.applock.util.Globals
 
-class HomeFragment : Fragment() {
+class DashboardFragment : Fragment() {
 
-    private var binding: FragmentHomeBinding? = null
+    private var binding: FragmentDashboardBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val model = ViewModelProvider(this)[HomeViewModel::class.java]
+        val model = ViewModelProvider(this)[DashBoardViewModel::class.java]
         binding?.apply {
             status = model
-            lifecycleOwner = this@HomeFragment
+            lifecycleOwner = this@DashboardFragment
             when (Globals.WORK_MODE) {
                 "xposed" -> {
                     shizukuStatus.visibility = View.GONE

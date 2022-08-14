@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.apps
+package mufanc.tools.applock.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewAppsItemBinding
+import mufanc.tools.applock.ui.viewmodel.ScopeModel
 import java.text.Collator
 import java.util.*
 
-class AppListAdapter(
-    private val appList: MutableSet<AppsViewModel.AppInfo>,
+class ScopeAdapter(
+    private val appList: MutableSet<ScopeModel.AppInfo>,
     val lockedApps: MutableSet<String>
-) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(), Filterable {
+) : RecyclerView.Adapter<ScopeAdapter.ViewHolder>(), Filterable {
 
-    private val filteredList = mutableListOf<AppsViewModel.AppInfo>()
+    private val filteredList = mutableListOf<ScopeModel.AppInfo>()
 
     init {
         filter.filter("")
@@ -84,7 +85,7 @@ class AppListAdapter(
 
             @Suppress("Unchecked_Cast")
             override fun publishResults(query: CharSequence?, results: FilterResults) {
-                val newList = results.values as List<AppsViewModel.AppInfo>
+                val newList = results.values as List<ScopeModel.AppInfo>
 
                 DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                     override fun getOldListSize() = filteredList.size
@@ -99,7 +100,7 @@ class AppListAdapter(
                 }).let {
                     filteredList.clear()
                     filteredList.addAll(newList)
-                    it.dispatchUpdatesTo(this@AppListAdapter)
+                    it.dispatchUpdatesTo(this@ScopeAdapter)
                 }
             }
         }

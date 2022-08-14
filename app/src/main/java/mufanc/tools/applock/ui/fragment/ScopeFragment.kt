@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.apps
+package mufanc.tools.applock.ui.fragment
 
 import android.os.Bundle
 import android.view.*
@@ -7,25 +7,27 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import mufanc.tools.applock.R
-import mufanc.tools.applock.databinding.FragmentAppsBinding
+import mufanc.tools.applock.databinding.FragmentScopeBinding
+import mufanc.tools.applock.ui.adapter.ScopeAdapter
+import mufanc.tools.applock.ui.viewmodel.ScopeModel
 import mufanc.tools.applock.util.Globals
 
-class AppsFragment : Fragment() {
+class ScopeFragment : Fragment() {
 
-    private var binding: FragmentAppsBinding? = null
+    private var binding: FragmentScopeBinding? = null
 
-    private var adapter: AppListAdapter? = null
+    private var adapter: ScopeAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         setHasOptionsMenu(true)
-        binding = FragmentAppsBinding.inflate(inflater, container, false)
+        binding = FragmentScopeBinding.inflate(inflater, container, false)
         return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val model = ViewModelProvider(this)[AppsViewModel::class.java]
+        val model = ViewModelProvider(this)[ScopeModel::class.java]
         model.loadAppList(requireActivity()) {
             binding?.apply {
                 progress.visibility = View.GONE
@@ -33,10 +35,10 @@ class AppsFragment : Fragment() {
                     layoutManager = LinearLayoutManager(
                         context, LinearLayoutManager.VERTICAL, false
                     )
-                    adapter = AppListAdapter(
+                    adapter = ScopeAdapter(
                         model.appList,
                         model.lockedAppList
-                    ).also { this@AppsFragment.adapter = it }
+                    ).also { this@ScopeFragment.adapter = it }
                 }
             }
         }

@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_dashboard">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="mufanc.tools.applock.ui.fragment.home.HomeFragment"
+        android:id="@+id/navigation_dashboard"
+        android:name="mufanc.tools.applock.ui.fragment.DashboardFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_apps"
-        android:name="mufanc.tools.applock.ui.fragment.apps.AppsFragment"
+        android:id="@+id/navigation_scope"
+        android:name="mufanc.tools.applock.ui.fragment.ScopeFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_apps" />
+        tools:layout="@layout/fragment_scope" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="mufanc.tools.applock.ui.fragment.settings.SettingsFragment"
+        android:name="mufanc.tools.applock.ui.fragment.SettingsFragment"
         android:label="@string/title_notifications" />
 </navigation>

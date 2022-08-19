@@ -3,18 +3,16 @@ package mufanc.tools.applock.ui.fragment
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentScopeBinding
 import mufanc.tools.applock.ui.adapter.ScopeAdapter
+import mufanc.tools.applock.ui.fragment.base.BaseFragment
 import mufanc.tools.applock.ui.viewmodel.ScopeModel
 import mufanc.tools.applock.util.Globals
 
-class ScopeFragment : Fragment() {
-
-    private var binding: FragmentScopeBinding? = null
+class ScopeFragment : BaseFragment<FragmentScopeBinding>() {
 
     private var adapter: ScopeAdapter? = null
 
@@ -22,33 +20,32 @@ class ScopeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
         setHasOptionsMenu(true)
-        binding = FragmentScopeBinding.inflate(inflater, container, false)
-        return binding!!.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val model = ViewModelProvider(this)[ScopeModel::class.java]
         model.loadAppList(requireActivity()) {
-            binding?.apply {
+            with (binding) {
                 progress.visibility = View.GONE
                 applist.apply {
                     layoutManager = LinearLayoutManager(
                         context, LinearLayoutManager.VERTICAL, false
                     )
                     adapter = ScopeAdapter(
-                        model.appList,
+                        requireContext().packageManager,
                         model.lockedAppList
                     ).also { this@ScopeFragment.adapter = it }
                 }
             }
         }
-        binding?.apply {
+
+        with (binding) {
             refresh.setOnRefreshListener {
                 model.loadAppList(requireActivity(), true) {
                     adapter?.filter?.filter("")
                     refresh.isRefreshing = false
                 }
             }
+
+            return root
         }
     }
 
@@ -77,15 +74,10 @@ class ScopeFragment : Fragment() {
         menu.findItem(R.id.save_app_list)
             .setOnMenuItemClickListener {
                 adapter?.apply {
-                    Globals.LOCKED_APPS = lockedApps
+                    Globals.LOCKED_APPS = scope
                     filter.filter("")
                 }
                 true
             }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }

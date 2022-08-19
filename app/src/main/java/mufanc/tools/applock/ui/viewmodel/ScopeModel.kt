@@ -16,10 +16,11 @@ class ScopeModel : ViewModel() {
         val icon: Drawable
     )
 
-    val appList = mutableSetOf<AppInfo>()
+    private val appList = mutableSetOf<AppInfo>()
 
     val lockedAppList: MutableSet<String> get() = Globals.LOCKED_APPS
 
+    // Todo: 移除此方法
     fun loadAppList(activity: Activity, refresh: Boolean = false, callback: () -> Unit) {
         thread {
             if (refresh || appList.isEmpty()) {

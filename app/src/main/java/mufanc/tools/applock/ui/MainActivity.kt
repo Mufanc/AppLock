@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ActivityMainBinding
+import mufanc.tools.applock.util.Settings
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
 
-        window.decorView
+        // Todo:
+        Settings.HIDE_ICON.value
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 

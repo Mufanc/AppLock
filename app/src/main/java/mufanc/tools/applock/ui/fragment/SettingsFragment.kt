@@ -2,46 +2,47 @@ package mufanc.tools.applock.ui.fragment
 
 import android.content.ComponentName
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import mufanc.easyhook.wrapper.catch
+import mufanc.easyhook.api.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
 import mufanc.tools.applock.ui.adapter.LicenseListAdapter
-import mufanc.tools.applock.ui.widget.MaterialListPreference
 import mufanc.tools.applock.util.Globals
+import mufanc.tools.applock.util.Settings
+import mufanc.tools.applock.util.SettingsAdapter
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : SettingsAdapter.SettingsFragment() {
 
-    private lateinit var backupScope: ActivityResultLauncher<String>
+    private lateinit var backupLauncher: ActivityResultLauncher<String>
+    private lateinit var restoreLauncher: ActivityResultLauncher<Array<String>>
 
-    private lateinit var restoreScope: ActivityResultLauncher<Array<String>>
+    override fun onCreate(bundle: Bundle?) {
+        super.onCreate(bundle)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        backupScope = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        backupLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
-                stream.write(Globals.LOCKED_APPS.joinToString("\n")
+                stream.write(
+                    Globals.LOCKED_APPS.joinToString("\n")
                     .toByteArray(StandardCharsets.UTF_8))
             }
         }
 
-        restoreScope = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        restoreLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
             catch {
                 requireContext().contentResolver.openInputStream(uri).use { stream ->
@@ -57,36 +58,69 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         }
     }
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings, rootKey)
-
-        findPreference<MaterialListPreference>("work_mode")?.let { mode ->
-            val hideIcon = findPreference<SwitchPreferenceCompat>("hide_icon")
-            fun listener(value: Any) {
-                when (value) {
-                    "shizuku" -> hideIcon?.apply {
-                        isChecked = false
-                        isEnabled = false
-                    }
-                    "xposed" -> hideIcon?.apply {
-                        isEnabled = true
-                    }
-                }
-            }
-            listener(mode.value)
-            mode.setOnPreferenceChangeListener { _, value ->
-                listener(value)
+    private abstract class Holder<T : Preference>(val pref: T) {
+        abstract fun onChange(value: Any)
+        init {
+            pref.setOnPreferenceChangeListener { _, value ->
+                onChange(value)
                 true
             }
         }
     }
 
+    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(bundle, rootKey)
+
+        val hHideIcon = object : Holder<TwoStatePreference>(findPreference(Settings.HIDE_ICON.key)!!) {
+            override fun onChange(value: Any) {
+                requireContext().packageManager.setComponentEnabledSetting(
+                    ComponentName(requireContext(), "${BuildConfig.APPLICATION_ID}.Launcher"),
+                    if (value as Boolean) {
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                    } else {
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                    },
+                    PackageManager.DONT_KILL_APP
+                )
+            }
+        }
+
+        val hWorkMode = object : Holder<ListPreference>(findPreference(Settings.WORK_MODE.key)!!) {
+            override fun onChange(value: Any) {
+                hHideIcon.pref.apply {
+                    when (Settings.WorkMode.valueOf(value as String)) {
+                        Settings.WorkMode.SHIZUKU -> {
+                            isChecked = false
+                            isEnabled = false
+                            hHideIcon.onChange(false)
+                        }
+                        Settings.WorkMode.XPOSED -> {
+                            isEnabled = true
+                        }
+                    }
+                }
+            }
+        }
+
+        hWorkMode.onChange(hWorkMode.pref.value)
+    }
+
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
+
         when (preference.key) {
-            "project_url" -> {
+            Settings.BACKUP_SCOPE.key -> {
+                backupLauncher.launch("AppLock ${Date()}.txt")
+            }
+            Settings.RESTORE_SCOPE.key -> {
+                restoreLauncher.launch(arrayOf("text/plain"))
+            }
+            Settings.AUTHOR.key -> {
+                startActivity(Intent.parseUri(resources.getString(R.string.module_author_link), 0))
+            }
+            Settings.PROJECT_URL.key -> {
                 startActivity(Intent.parseUri(resources.getString(R.string.project_url_summary), 0))
             }
-            "license" -> {
+            Settings.LICENSE.key -> {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(resources.getText(R.string.license_title))
                     .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
@@ -103,35 +137,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
                     }
                     .show()
             }
-            "backup_scope" -> backupScope.launch("AppLock ${Date()}.txt")
-            "restore_scope" -> restoreScope.launch(arrayOf("text/plain"))
         }
+
         return super.onPreferenceTreeClick(preference)
-    }
-
-    override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-        when (key) {
-            "hide_icon" -> {
-                requireContext().packageManager.setComponentEnabledSetting(
-                    ComponentName(requireContext(), "${BuildConfig.APPLICATION_ID}.Launcher"),
-                    if (prefs.getBoolean(key, false)) {
-                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED
-                    } else {
-                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                    },
-                    PackageManager.DONT_KILL_APP
-                )
-            }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        preferenceManager.sharedPreferences!!.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        preferenceManager.sharedPreferences!!.unregisterOnSharedPreferenceChangeListener(this)
     }
 }

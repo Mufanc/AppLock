@@ -46,10 +46,11 @@ android {
 
 dependencies {
     compileOnly(project(":hidden-api-stub"))
+//    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
 
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")
-    implementation(project(":easyhook:wrapper"))
+    implementation(project(":easyhook:api"))
     ksp(project(":easyhook:ksp-xposed"))
 
     implementation("dev.rikka.shizuku:api:12.1.0")

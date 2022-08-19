@@ -19,6 +19,6 @@ rootProject.name = "AppLock"
 include(":app")
 include(":hidden-api-stub")
 include(
-    ":easyhook:wrapper",
+    ":easyhook:api",
     ":easyhook:ksp-xposed"
 )

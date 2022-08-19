@@ -5,9 +5,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.*
 import androidx.core.os.bundleOf
-import mufanc.easyhook.wrapper.EasyHook
-import mufanc.easyhook.wrapper.Logger
-import mufanc.easyhook.wrapper.hook
+import mufanc.easyhook.api.EasyHook
+import mufanc.easyhook.api.Logger
+import mufanc.easyhook.api.hook
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
@@ -31,7 +31,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
 
         fun init() = EasyHook.handle {  // Hook `onTransact()` 以便与模块通信
             onLoadPackage("android") {
-                findClass("miui.process.ProcessManagerNative") hook {
+                findClass("miui.process.ProcessManagerNative").hook {
                     method({ name == "onTransact" }) {
                         before { param ->
                             if (param.args[0] != TRANSACTION_CODE) return@before

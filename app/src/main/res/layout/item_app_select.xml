@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/app_icon"
-            app:layout_constraintEnd_toStartOf="@+id/locked"
+            app:layout_constraintEnd_toStartOf="@+id/checkbox"
             app:layout_constraintTop_toTopOf="@id/app_icon"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:maxLines="1"
@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@+id/app_icon"
-            app:layout_constraintEnd_toStartOf="@id/locked"
+            app:layout_constraintEnd_toStartOf="@id/checkbox"
             app:layout_constraintBottom_toBottomOf="@+id/app_icon"
             android:fontFamily="monospace"
             android:ellipsize="end"
@@ -43,7 +43,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <CheckBox
-            android:id="@+id/locked"
+            android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"

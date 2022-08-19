@@ -1,15 +1,11 @@
 package mufanc.tools.applock.ui.widget
 
 import android.content.Context
-import android.util.AttributeSet
 import androidx.preference.ListPreference
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.R
 
-class MaterialListPreference(
-    context: Context,
-    attributeSet: AttributeSet
-) : ListPreference(context, attributeSet) {
+class MaterialListPreference(context: Context) : ListPreference(context) {
 
     override fun onAttached() {
         summary = entry ?: entries[0]

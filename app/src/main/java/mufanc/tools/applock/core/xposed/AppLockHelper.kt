@@ -9,13 +9,13 @@ import android.os.ServiceManager
 import android.util.ArrayMap
 import android.util.SparseArray
 import miui.process.ProcessConfig
-import mufanc.easyhook.wrapper.EasyHook
-import mufanc.easyhook.wrapper.Logger
-import mufanc.easyhook.wrapper.hook
-import mufanc.easyhook.wrapper.reflect.findField
-import mufanc.easyhook.wrapper.reflect.findMethod
-import mufanc.easyhook.wrapper.reflect.findMethods
-import mufanc.easyhook.wrapper.reflect.getField
+import mufanc.easyhook.api.EasyHook
+import mufanc.easyhook.api.Logger
+import mufanc.easyhook.api.hook
+import mufanc.easyhook.api.reflect.findField
+import mufanc.easyhook.api.reflect.findMethod
+import mufanc.easyhook.api.reflect.findMethods
+import mufanc.easyhook.api.reflect.getField
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
@@ -67,9 +67,9 @@ object AppLockHelper {
         EasyHook.handle {
             // Hook `ProcessManagerService` 实现应用免杀  Todo: 检查 MIUI 13
             onLoadPackage("android") {
-                findClass("com.android.server.am.ProcessManagerService") hook { clazz ->
+                findClass("com.android.server.am.ProcessManagerService").hook { clazz ->
                     clazz.findMethods { name == "killOnce" && parameterTypes[0].simpleName == "ProcessRecord" }
-                        .maxByOrNull { it.parameterCount }!! hook {
+                        .maxByOrNull { it.parameterCount }!!.hook {
                         val processNameField = findClass("com.android.server.am.ProcessRecord").findField {
                             name == "processName"
                         }!!

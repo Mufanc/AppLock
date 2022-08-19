@@ -1,8 +1,8 @@
 package mufanc.tools.applock.core.xposed
 
-import mufanc.easyhook.wrapper.HookHelper
-import mufanc.easyhook.wrapper.annotation.XposedEntry
-import mufanc.easyhook.wrapper.reflect.findField
+import mufanc.easyhook.api.HookHelper
+import mufanc.easyhook.api.annotation.XposedEntry
+import mufanc.easyhook.api.reflect.findField
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
 

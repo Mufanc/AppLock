@@ -1,6 +1,5 @@
 package mufanc.tools.applock
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -23,14 +22,13 @@ class MyApplication : Application() {
 
         lateinit var prefs: SharedPreferences
 
-        @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }
 
     override fun onCreate() {
         super.onCreate()
+        context = this
         Sui.init(BuildConfig.APPLICATION_ID)
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        context = applicationContext
     }
 }

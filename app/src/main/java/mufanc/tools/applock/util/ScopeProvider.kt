@@ -12,11 +12,11 @@ import mufanc.tools.applock.MyApplication
 class ScopeProvider : ContentProvider() {
 
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle {
-        MyApplication.context = context!!
+        ScopeManager.init(context!!)
         val reply = Bundle()
         when (method) {
             "scope" -> {
-                reply.putStringArray("scope", ScopeDatabase.readScope().toTypedArray())
+                reply.putStringArray("scope", ScopeManager.scope.toTypedArray())
                 Log.i(MyApplication.TAG, "@AppLock: send scope to server!")
             }
         }

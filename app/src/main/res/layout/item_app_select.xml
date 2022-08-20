@@ -10,12 +10,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="12dp" >
+        android:paddingVertical="10dp" >
 
         <ImageView android:id="@+id/app_icon"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:paddingHorizontal="10dp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginVertical="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,7 @@
             app:layout_constraintStart_toEndOf="@+id/app_icon"
             app:layout_constraintEnd_toStartOf="@+id/checkbox"
             app:layout_constraintTop_toTopOf="@id/app_icon"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
             android:maxLines="1"
             android:ellipsize="end" />
 
@@ -40,15 +40,16 @@
             android:fontFamily="monospace"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/app_icon"
-            app:layout_constraintBottom_toBottomOf="@id/app_icon" />
+            app:layout_constraintBottom_toBottomOf="@id/app_icon"
+            android:layout_marginEnd="10dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

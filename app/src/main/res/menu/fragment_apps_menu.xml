@@ -8,7 +8,7 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/save_app_list"
+    <item android:id="@+id/save_scope"
         android:icon="@drawable/ic_save"
         android:title=""
         app:showAsAction="ifRoom" />

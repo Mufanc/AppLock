@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.TwoStatePreference
@@ -17,7 +18,7 @@ import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
 import mufanc.tools.applock.ui.adapter.LicenseListAdapter
-import mufanc.tools.applock.util.Globals
+import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
 import mufanc.tools.applock.util.SettingsAdapter
 import java.io.BufferedReader
@@ -33,12 +34,12 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
 
-        backupLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument()) { uri ->
+        backupLauncher = registerForActivityResult(CreateDocument("text/plain")) { uri ->
             if (uri == null) return@registerForActivityResult
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                 stream.write(
-                    Globals.LOCKED_APPS.joinToString("\n")
-                    .toByteArray(StandardCharsets.UTF_8))
+                    ScopeManager.scope.joinToString("\n").toByteArray(StandardCharsets.UTF_8)
+                )
             }
         }
 
@@ -49,7 +50,9 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                     val scope = BufferedReader(InputStreamReader(stream)).readLines()
                         .map { it.trim() }.filter { it.isNotEmpty() }
                     if (scope.all { it.matches("^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)+$".toRegex()) }) {
-                        Globals.LOCKED_APPS = scope.toMutableSet()
+                        ScopeManager.scope.clear()
+                        ScopeManager.scope.addAll(scope)
+                        ScopeManager.commit()
                     } else {
                         Toast.makeText(requireContext(), R.string.invalid_backup, Toast.LENGTH_SHORT).show()
                     }

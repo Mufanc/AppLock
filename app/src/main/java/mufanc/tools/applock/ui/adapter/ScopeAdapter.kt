@@ -1,5 +1,7 @@
 package mufanc.tools.applock.ui.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.view.LayoutInflater
@@ -8,13 +10,18 @@ import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import mufanc.tools.applock.databinding.ItemAppSelectBinding
+import mufanc.tools.applock.util.Settings
 import java.text.Collator
 import java.util.*
+import kotlin.concurrent.thread
 
 class ScopeAdapter(
-    private val packageManager: PackageManager,
-    val scope: MutableSet<String>
+    private val activity: Activity,
+    val scope: MutableSet<String>,
+    private val onRefresh: () -> Unit
 ) : RecyclerView.Adapter<ScopeAdapter.ViewHolder>(), Filterable {
+
+    private val packageManager = activity.packageManager
 
     data class AppInfo(
         val appName: String,
@@ -24,22 +31,48 @@ class ScopeAdapter(
         override fun hashCode(): Int = packageName.hashCode()
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
-            if (javaClass != other?.javaClass) return false
-            return packageName == (other as AppInfo).packageName
+            return if (other is AppInfo) {
+                packageName == other.packageName
+            } else {
+                false
+            }
         }
     }
 
-    private val appList: List<AppInfo>
+    private val appList = mutableListOf<AppInfo>()
     private val showList = mutableListOf<AppInfo>()
 
     init {
-        // Todo: 完善 SettingsManager 后从这里获取不同列表
-        appList = packageManager
-            .getInstalledApplications(PackageManager.MATCH_DISABLED_COMPONENTS)
-            .map {
-                AppInfo(it.loadLabel(packageManager).toString(), it.packageName, it)
+        thread {
+            appList.clear()
+            appList.addAll(
+                when (Settings.RESOLVE_MODE.value) {
+                    Settings.ResolveMode.CATEGORY_LAUNCHER -> {
+                        packageManager.queryIntentActivities(
+                            Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
+                            PackageManager.MATCH_ALL or PackageManager.MATCH_DISABLED_COMPONENTS
+                        )
+                            .map { it.activityInfo.applicationInfo }
+                    }
+                    Settings.ResolveMode.NON_SYSTEM_APPS -> {
+                        packageManager.getInstalledApplications(PackageManager.MATCH_DISABLED_COMPONENTS)
+                            .filter { it.flags and ApplicationInfo.FLAG_SYSTEM == 0 }
+                    }
+                    Settings.ResolveMode.ALL_APPS -> {
+                        packageManager.getInstalledApplications(PackageManager.MATCH_DISABLED_COMPONENTS)
+                    }
+                }.map {
+                    AppInfo(
+                        it.loadLabel(packageManager).toString(),
+                        it.packageName,
+                        it
+                    )
+                }.toSet()  // 去重
+            )
+            activity.runOnUiThread {
+                filter.filter("")
             }
-        filter.filter("")
+        }
     }
 
     class ViewHolder(binding: ItemAppSelectBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -114,6 +147,7 @@ class ScopeAdapter(
                     showList.addAll(newList)
                     it.dispatchUpdatesTo(this@ScopeAdapter)
                 }
+                onRefresh()
             }
         }
     }

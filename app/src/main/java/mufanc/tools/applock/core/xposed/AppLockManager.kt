@@ -7,7 +7,7 @@ import android.os.*
 import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
-import mufanc.easyhook.api.hook
+import mufanc.easyhook.api.hook.hook
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
@@ -36,7 +36,8 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         fun init() = EasyHook.handle {  // Hook `onTransact()` 以便与模块通信
             onLoadPackage("android") {
                 findClass("miui.process.ProcessManagerNative").hook {
-                    method({ name == "onTransact" }) {
+                    method({ name == "onTransact" }) { method ->
+                        Logger.i("@Hooker: hook onTransact: $method")
                         before { param ->
                             if (param.args[0] != TRANSACTION_CODE) return@before
                             if (context.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return@before
@@ -73,16 +74,16 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                 "scope", null, null
             )?.getStringArray("scope")?.also {
                 result = it.toMutableSet()
-                Logger.i("@AppLock: load scope from provider: ${it.contentToString()}")
+                Logger.i("@Server: load scope from provider: ${it.contentToString()}")
             } ?: let {
-                Logger.w("@AppLock: failed to resolve whitelist!")
+                Logger.w("@Server: failed to resolve whitelist!")
             }
         })
         result
     }
 
     override fun handshake(): Bundle {
-        Logger.i("@AppLock: handshake from client!")
+        Logger.i("@Server: handshake from client!")
         return bundleOf(
             BundleKeys.PID.name to Process.myPid(),
             BundleKeys.UID.name to Process.myUid(),
@@ -103,6 +104,6 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
     override fun updateWhitelist(packageList: Array<out String>) {
         whitelist.clear()
         whitelist.addAll(packageList)
-        Logger.i("@AppLock: scope updated: ${packageList.contentToString()}")
+        Logger.i("@Server: scope updated: ${packageList.contentToString()}")
     }
 }

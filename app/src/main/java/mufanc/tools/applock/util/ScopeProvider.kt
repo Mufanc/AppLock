@@ -5,8 +5,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import mufanc.tools.applock.MyApplication
+import mufanc.easyhook.api.Logger
 
 
 class ScopeProvider : ContentProvider() {
@@ -17,7 +16,7 @@ class ScopeProvider : ContentProvider() {
         when (method) {
             "scope" -> {
                 reply.putStringArray("scope", ScopeManager.scope.toTypedArray())
-                Log.i(MyApplication.TAG, "@AppLock: send scope to server!")
+                Logger.i("@Provider: send scope to server!")
             }
         }
         return reply

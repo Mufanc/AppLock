@@ -6,14 +6,14 @@ import android.view.LayoutInflater
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.card.MaterialCardView
 import mufanc.tools.applock.R
-import mufanc.tools.applock.databinding.ViewStatusCardBinding
+import mufanc.tools.applock.databinding.ItemStatusCardBinding
 
 class StatusCard(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : MaterialCardView(context, attributeSet) {
 
-    private val binding = ViewStatusCardBinding
+    private val binding = ItemStatusCardBinding
         .inflate(LayoutInflater.from(context), this, true)
 
     var title: CharSequence?

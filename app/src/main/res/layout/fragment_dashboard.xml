@@ -2,7 +2,7 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="status" type="mufanc.tools.applock.ui.viewmodel.DashboardViewModel" />
+        <variable name="globals" type="mufanc.tools.applock.util.Globals" />
     </data>
 
     <LinearLayout
@@ -18,46 +18,45 @@
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:status="@{status.isMiuiRom}"
+            app:status="@{globals.isMiuiRom}"
             app:title="@string/miui_version_title"
-            app:subtitle="@{status.versionSummary}" />
+            app:subtitle="@{globals.miuiVersion}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/module_activated"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:status="@{status.isModuleActivated}"
-            app:title="@{status.isModuleActivated ? @string/module_activated : @string/module_deactivate}"
-            app:subtitle="@{status.versionName}" />
+            app:status="@{globals.isModuleActivated}"
+            app:title="@{globals.isModuleActivated ? @string/module_activated : @string/module_unactivate}"
+            app:subtitle="@{globals.moduleVersion}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:status="@{status.isServiceFound}"
-            app:title="@{status.isServiceFound ? @string/service_found : @string/service_not_found}"
-            app:subtitle="@{status.managerBinder}" />
+            app:status="@{globals.isProcessManagerFound}"
+            app:title="@{globals.isProcessManagerFound ? @string/process_manager_found : @string/process_manager_not_found}"
+            app:subtitle="@{globals.serviceInfo}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/hooker_status"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:status="@{status.isHookerWorking}"
-            app:title="@{status.isHookerWorking ? @string/hooker_working : @string/hooker_no_reply}"
-            app:subtitle="@{status.replyFromHook}" />
+            app:status="@{globals.isHookerWorking}"
+            app:title="@{globals.isHookerWorking ? @string/hooker_working : @string/hooker_no_reply}"
+            app:subtitle="@{globals.hookerInfo}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/shizuku_status"
             style="@style/DefaultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> status.requestPermission()}"
-            app:status="@{status.isShizukuGranted}"
-            app:title="@{status.isShizukuGranted ? @string/shizuku_granted : @string/shizuku_denied}"
-            app:subtitle="@{status.selinuxContext}" />
+            android:onClick="@{() -> globals.requestShizukuPermission()}"
+            app:status="@{globals.isShizukuAvailable}"
+            app:title="@{globals.isShizukuAvailable ? @string/shizuku_granted : @string/shizuku_denied}"
+            app:subtitle="@{globals.shizukuSelinuxContext}" />
 
     </LinearLayout>
-
 </layout>

@@ -9,9 +9,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ActivityMainBinding
 import mufanc.tools.applock.util.Settings
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,5 +52,12 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.nav_host_fragment_activity_main)
             .navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (MyApplication.isModuleActivated.not()) {
+            exitProcess(0)
+        }
     }
 }

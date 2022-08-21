@@ -20,6 +20,10 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
             .mapIndexed { i, ch -> ch.toInt() shl (i * 8) }
             .sum()
 
+        enum class BundleKeys {
+            PID, UID, VERSION
+        }
+
         private val instance by lazy { AppLockManager() }
         fun query(packageName: String): Boolean {
             return instance.whitelist.contains(packageName)
@@ -80,9 +84,9 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
     override fun handshake(): Bundle {
         Logger.i("@AppLock: handshake from client!")
         return bundleOf(
-            "pid" to Process.myPid(),
-            "uid" to Process.myUid(),
-            "version" to BuildConfig.VERSION_CODE
+            BundleKeys.PID.name to Process.myPid(),
+            BundleKeys.UID.name to Process.myUid(),
+            BundleKeys.VERSION.name to BuildConfig.VERSION_CODE
         )
     }
 

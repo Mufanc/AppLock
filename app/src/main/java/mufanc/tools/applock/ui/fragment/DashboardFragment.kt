@@ -4,35 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.core.xposed.AppLockManager
 import mufanc.tools.applock.databinding.FragmentDashboardBinding
-import mufanc.tools.applock.ui.fragment.base.BaseFragment
-import mufanc.tools.applock.ui.viewmodel.DashboardViewModel
 import mufanc.tools.applock.util.Globals
+import mufanc.tools.applock.util.Settings
 
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
-        val model = ViewModelProvider(this)[DashboardViewModel::class.java]
         with (binding) {
-            status = model
+            globals = Globals
             lifecycleOwner = this@DashboardFragment
-            when (Globals.WORK_MODE) {
-                "xposed" -> {
-                    shizukuStatus.visibility = View.GONE
-                }
-                "shizuku" -> {
-                    moduleActivated.visibility = View.GONE
-                    hookerStatus.visibility = View.GONE
-                }
-            }
 
-            if (model.requireReboot && !BuildConfig.DEBUG) {
+            if (Globals.isServiceVersionOutdated && BuildConfig.DEBUG.not()) {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.require_reboot)
                     .setMessage(R.string.core_version_not_match)
@@ -48,6 +36,25 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
             }
 
             return root
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        with (binding) {
+            when (Settings.WORK_MODE.value) {
+                Settings.WorkMode.XPOSED -> {
+                    shizukuStatus.visibility = View.GONE
+                    moduleActivated.visibility = View.VISIBLE
+                    hookerStatus.visibility = View.VISIBLE
+                }
+                Settings.WorkMode.SHIZUKU -> {
+                    shizukuStatus.visibility = View.VISIBLE
+                    moduleActivated.visibility = View.GONE
+                    hookerStatus.visibility = View.GONE
+                }
+            }
         }
     }
 }

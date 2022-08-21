@@ -13,7 +13,7 @@ import kotlin.random.Random
 
 object ShizukuHelper {
 
-    fun getSELinuxContext(): String {
+    fun getSelinuxContext(): String {
         return try {
             Shizuku.getSELinuxContext()!!
         } catch (err: Throwable) {

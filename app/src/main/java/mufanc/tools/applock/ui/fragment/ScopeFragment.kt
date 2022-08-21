@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentScopeBinding
 import mufanc.tools.applock.ui.adapter.ScopeAdapter
-import mufanc.tools.applock.ui.fragment.base.BaseFragment
 import mufanc.tools.applock.util.ScopeManager
 
 class ScopeFragment : BaseFragment<FragmentScopeBinding>() {

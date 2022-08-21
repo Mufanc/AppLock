@@ -9,9 +9,9 @@
     <!-- Home Page  -->
     <string name="miui_version_title">MIUI 版本</string>
     <string name="module_activated">模块已激活</string>
-    <string name="module_deactivate">模块未激活</string>
-    <string name="service_found">找到 ProcessManager 服务</string>
-    <string name="service_not_found">找不到 ProcessManager 服务</string>
+    <string name="module_unactivate">模块未激活</string>
+    <string name="process_manager_found">找到 ProcessManager 服务</string>
+    <string name="process_manager_not_found">找不到 ProcessManager 服务</string>
     <string name="hooker_working">钩子工作正常</string>
     <string name="hooker_no_reply">钩子无响应</string>
     <string name="require_reboot">需要重启</string>

@@ -1,4 +1,4 @@
-package mufanc.tools.applock.ui.fragment.base
+package mufanc.tools.applock.ui.fragment
 
 import android.view.LayoutInflater
 import androidx.fragment.app.Fragment

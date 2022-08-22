@@ -15,7 +15,7 @@
         tools:context=".ui.fragment.DashboardFragment" >
 
         <mufanc.tools.applock.ui.widget.StatusCard
-            style="@style/DefaultCard"
+            style="@style/MaterialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{globals.isMiuiRom}"
@@ -24,7 +24,7 @@
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/module_activated"
-            style="@style/DefaultCard"
+            style="@style/MaterialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{globals.isModuleActivated}"
@@ -32,7 +32,7 @@
             app:subtitle="@{globals.moduleVersion}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard
-            style="@style/DefaultCard"
+            style="@style/MaterialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{globals.isProcessManagerFound}"
@@ -41,7 +41,7 @@
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/hooker_status"
-            style="@style/DefaultCard"
+            style="@style/MaterialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{globals.isHookerWorking}"
@@ -50,7 +50,7 @@
 
         <mufanc.tools.applock.ui.widget.StatusCard
             android:id="@+id/shizuku_status"
-            style="@style/DefaultCard"
+            style="@style/MaterialCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{() -> globals.requestShizukuPermission()}"

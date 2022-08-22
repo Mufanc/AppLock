@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.FragmentScopeBinding
@@ -61,7 +62,7 @@ class ScopeFragment : BaseFragment<FragmentScopeBinding>() {
                     }
                     return true
                 }
-            }
+            }, this, Lifecycle.State.RESUMED
         )
 
         with (binding) {

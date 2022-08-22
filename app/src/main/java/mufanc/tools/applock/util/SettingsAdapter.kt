@@ -3,10 +3,19 @@ package mufanc.tools.applock.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.preference.*
+import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import mufanc.tools.applock.ui.widget.MaterialListPreference
+import mufanc.tools.applock.ui.widget.MaterialPreference
+import mufanc.tools.applock.ui.widget.MaterialSwitchPreference
 import java.util.*
 
 @Suppress("LeakingThis")
@@ -129,6 +138,17 @@ abstract class SettingsAdapter : SharedPreferences.OnSharedPreferenceChangeListe
 
     // SettingsFragment 相关
     abstract class SettingsFragment : PreferenceFragmentCompat() {
+        @CallSuper
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            bundle: Bundle?
+        ): View {
+            return super.onCreateView(inflater, container, bundle).apply {
+                listView.removeItemDecorationAt(0)
+            }
+        }
+
         override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
             // Todo: 现在必须在初始化 SettingsFragment 前实例化设置，这可能导致一些问题
             instance!!.render(this)
@@ -137,10 +157,10 @@ abstract class SettingsAdapter : SharedPreferences.OnSharedPreferenceChangeListe
 
     private fun dispatchWidget(option: BaseOption<*>, context: Context): Preference {
         return when (option) {
-            is Option -> Preference(context).apply {
+            is Option -> MaterialPreference(context).apply {
                 option.summary?.let { setSummary(it) }
             }
-            is SwitchOption -> SwitchPreferenceCompat(context).apply {
+            is SwitchOption -> MaterialSwitchPreference(context).apply {
                 option.summary?.let { setSummary(it) }
             }
             is ListOption<*> -> MaterialListPreference(context).apply {

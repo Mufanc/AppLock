@@ -7,6 +7,10 @@ import mufanc.tools.applock.R
 
 class MaterialListPreference(context: Context) : ListPreference(context) {
 
+    init {
+        layoutResource = R.layout.item_preference
+    }
+
     override fun onAttached() {
         summary = entry ?: entries[0]
     }

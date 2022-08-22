@@ -30,6 +30,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         }
 
         private val context by lazy {
+            @Suppress("Cast_Never_Succeeds")
             ActivityThread.currentActivityThread().systemContext as Context
         }
 
@@ -76,7 +77,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                 result = it.toMutableSet()
                 Logger.i("@Server: load scope from provider: ${it.contentToString()}")
             } ?: let {
-                Logger.w("@Server: failed to resolve whitelist!")
+                Logger.e("@Server: failed to resolve whitelist!")
             }
         })
         result

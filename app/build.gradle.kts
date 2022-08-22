@@ -10,13 +10,20 @@ plugins {
     id("com.google.devtools.ksp") version "1.7.10-1.0.6"
 }
 
+val androidCompileSdkVersion: Int by rootProject.extra
+val androidMinSdkVersion: Int by rootProject.extra
+val androidTargetSdkVersion: Int by rootProject.extra
+val androidSourceCompatibility: JavaVersion by rootProject.extra
+val androidTargetCompatibility: JavaVersion by rootProject.extra
+val kotlinJvmTarget: String by rootProject.extra
+
 android {
-    compileSdk = 32
+    compileSdk = androidCompileSdkVersion
 
     defaultConfig {
         applicationId = "mufanc.tools.applock"
-        minSdk = 28
-        targetSdk = 32
+        minSdk = androidMinSdkVersion
+        targetSdk = androidTargetSdkVersion
         versionCode = getVersionCode()
         versionName = getVersionName()
     }
@@ -30,12 +37,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = androidSourceCompatibility
+        targetCompatibility = androidTargetCompatibility
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = kotlinJvmTarget
     }
 
     buildFeatures {
@@ -45,8 +52,8 @@ android {
 }
 
 dependencies {
-    compileOnly(project(":hidden-api-stub"))
-//    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
+    compileOnly(project(":api-stub"))
+    //    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
 
     compileOnly("de.robv.android.xposed:api:82")
     compileOnly("de.robv.android.xposed:api:82:sources")

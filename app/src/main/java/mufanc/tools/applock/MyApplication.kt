@@ -19,6 +19,7 @@ class MyApplication : Application() {
 
         init {
             HiddenApiBypass.setHiddenApiExemptions("")
+
             Logger.configure(TAG = TAG)
         }
 

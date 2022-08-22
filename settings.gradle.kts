@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "AppLock"
 include(":app")
-include(":hidden-api-stub")
+include(":api-stub")
 include(
     ":easyhook:api",
     ":easyhook:ksp-xposed"

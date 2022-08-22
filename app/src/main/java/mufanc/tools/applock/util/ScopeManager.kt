@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.room.*
+import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
@@ -36,6 +37,8 @@ abstract class ScopeManager : RoomDatabase() {
                     }
                 }
             )
+
+            Logger.i("@Provider: initializing database...")
         }
 
         fun commit() {

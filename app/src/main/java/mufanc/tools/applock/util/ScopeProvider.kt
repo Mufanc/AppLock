@@ -11,7 +11,6 @@ import mufanc.easyhook.api.Logger
 class ScopeProvider : ContentProvider() {
 
     override fun call(method: String, arg: String?, extras: Bundle?): Bundle {
-        ScopeManager.init(context!!)
         val reply = Bundle()
         when (method) {
             "scope" -> {
@@ -22,7 +21,10 @@ class ScopeProvider : ContentProvider() {
         return reply
     }
 
-    override fun onCreate(): Boolean = true
+    override fun onCreate(): Boolean {
+        ScopeManager.init(context!!)
+        return true
+    }
 
     override fun query(p0: Uri, p1: Array<String?>?, p2: String?, p3: Array<String?>?, p4: String?): Cursor? = null
 

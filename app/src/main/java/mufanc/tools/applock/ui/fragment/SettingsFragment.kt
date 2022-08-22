@@ -16,7 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.easyhook.api.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
-import mufanc.tools.applock.databinding.ViewLicenseDialogBinding
+import mufanc.tools.applock.databinding.ItemLicenseDialogBinding
 import mufanc.tools.applock.ui.adapter.LicenseListAdapter
 import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
@@ -129,7 +129,7 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                     .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
                     .create()
                     .apply {
-                        val binding = ViewLicenseDialogBinding.inflate(layoutInflater)
+                        val binding = ItemLicenseDialogBinding.inflate(layoutInflater)
                         setView(binding.root)
                         binding.licenseList.apply {
                             layoutManager = LinearLayoutManager(

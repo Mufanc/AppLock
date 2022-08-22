@@ -2,34 +2,30 @@ package mufanc.tools.applock.ui.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import mufanc.tools.applock.R
-import mufanc.tools.applock.databinding.ViewLicenseItemBinding
+import mufanc.tools.applock.databinding.ItemLicenseBinding
 
 class LicenseListAdapter(
     private val licenseList: Array<String>
 ) : RecyclerView.Adapter<LicenseListAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(binding: ItemLicenseBinding) : RecyclerView.ViewHolder(binding.root) {
         val projectName: TextView
         val licenseType: TextView
 
         init {
-             ViewLicenseItemBinding.bind(view).let {
-                projectName = it.projectName
-                licenseType = it.licenseType
-            }
+            projectName = binding.projectName
+            licenseType = binding.licenseType
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return LayoutInflater
-            .from(parent.context)
-            .inflate(R.layout.view_license_item, parent, false)
-            .let { ViewHolder(it) }
+        return ViewHolder(ItemLicenseBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        ))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

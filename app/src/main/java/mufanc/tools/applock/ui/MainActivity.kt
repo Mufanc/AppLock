@@ -9,10 +9,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ActivityMainBinding
-import mufanc.tools.applock.util.Settings
+import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
+import java.lang.Exception
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -23,10 +25,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        setTheme(ThemeColorAdapter.getColorThemeStyle(this))
         super.onCreate(savedInstanceState)
-
-        // Todo:
-        Settings.HIDE_ICON.value
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 

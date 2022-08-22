@@ -114,7 +114,7 @@ abstract class SettingsAdapter : SharedPreferences.OnSharedPreferenceChangeListe
     }
 
     override fun onSharedPreferenceChanged(prefs: SharedPreferences, key: String) {
-        update(prefs, key, record[key]!!)
+        record[key]?.let { update(prefs, key, it) }
     }
 
     // 子类需在初始化成员后调用此方法完成初始化

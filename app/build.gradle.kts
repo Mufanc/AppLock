@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.devtools.ksp") version "1.7.10-1.0.6"
+    id("dev.rikka.tools.materialthemebuilder")
 }
 
 val androidCompileSdkVersion: Int by rootProject.extra
@@ -48,6 +49,26 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+    }
+}
+
+materialThemeBuilder {
+    themes {
+        for ((name, color) in listOf(
+            "Anemo" to "#75C3A9",
+            "Cryo" to "#A0D7E4",
+            "Dendro" to "#A6C938",
+            "Electro" to "#B08FC2",
+            "Geo" to "#FAB72E",
+            "Hydro" to "#4BC3F1",
+            "Pyro" to "#EF7A35"
+        )) {
+            create("GenshinElement.$name") {
+                primaryColor = color
+                lightThemeFormat = "Theme.AppLock.Light.%s"
+                darkThemeFormat = "Theme.AppLock.Dark.%s"
+            }
+        }
     }
 }
 

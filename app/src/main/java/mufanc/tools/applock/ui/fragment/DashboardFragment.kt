@@ -16,6 +16,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View {
+        updateCardsVisibility()
+
         with (binding) {
             globals = Globals
             lifecycleOwner = this@DashboardFragment
@@ -41,7 +43,10 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
     override fun onResume() {
         super.onResume()
+        updateCardsVisibility()
+    }
 
+    private fun updateCardsVisibility() {
         with (binding) {
             when (Settings.WORK_MODE.value) {
                 Settings.WorkMode.XPOSED -> {

@@ -3,9 +3,11 @@ package mufanc.tools.applock.core.xposed
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.annotation.XposedEntry
 import mufanc.easyhook.api.hook.HookHelper
+import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.findField
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.ui.MainActivity
 
 @XposedEntry
 class HookEntry : HookHelper(MyApplication.TAG) {

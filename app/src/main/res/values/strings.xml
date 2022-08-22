@@ -52,5 +52,7 @@
     <string name="project_url_summary">https://github.com/Mufanc/AppLock</string>
     <string name="license_title">开放源代码协议</string>
     <string name="license_summary">点击查看</string>
+    <string name="theme_color_title">主题色</string>
+    <string name="theme_color_summary">选择一种元素力来加持 AppLock！</string>
 
 </resources>

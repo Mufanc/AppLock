@@ -10,14 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceManager
 import androidx.preference.TwoStatePreference
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.easyhook.api.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ItemLicenseDialogBinding
+import mufanc.tools.applock.databinding.ItemThemeColorDialogBinding
 import mufanc.tools.applock.ui.adapter.LicenseListAdapter
+import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
 import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
 import mufanc.tools.applock.util.SettingsAdapter
@@ -109,7 +113,6 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-
         when (preference.key) {
             Settings.BACKUP_SCOPE.key -> {
                 backupLauncher.launch("AppLock ${Date()}.txt")
@@ -136,6 +139,24 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                                 context, LinearLayoutManager.VERTICAL, false
                             )
                             adapter = LicenseListAdapter(resources.getStringArray(R.array.license))
+                        }
+                    }
+                    .show()
+            }
+            Settings.THEME_COLOR.key -> {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.theme_color_title)
+                    .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
+                    .create()
+                    .apply {
+                        val binding = ItemThemeColorDialogBinding.inflate(layoutInflater)
+                        setView(binding.root)
+                        binding.colors.apply {
+                            layoutManager = GridLayoutManager(
+                                requireContext(), 4,
+                                GridLayoutManager.VERTICAL, false
+                            )
+                            adapter = ThemeColorAdapter(requireActivity())
                         }
                     }
                     .show()

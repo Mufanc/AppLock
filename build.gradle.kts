@@ -4,6 +4,7 @@ plugins {
     id("com.android.library") version "7.1.1" apply false
     id("org.jetbrains.kotlin.android") version "1.7.10" apply false
     id("org.jetbrains.kotlin.jvm") version "1.7.10" apply false
+    id("dev.rikka.tools.materialthemebuilder") version "1.3.3" apply false
 }
 
 val androidCompileSdkVersion by extra(32)

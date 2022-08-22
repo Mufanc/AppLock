@@ -6,6 +6,11 @@ import mufanc.tools.applock.R
 
 object Settings : SettingsAdapter() {
 
+    enum class WorkMode(@StringRes override val summary: Int) : ListOptionItem {
+        XPOSED(R.string.work_mode_xposed),
+        SHIZUKU(R.string.work_mode_shizuku)
+    }
+
     @Category(R.string.category_settings)
     val WORK_MODE = ListOption(WorkMode::class.java) {
         icon = R.drawable.ic_work_mode
@@ -19,10 +24,23 @@ object Settings : SettingsAdapter() {
         summary = R.string.hide_icon_summary
     }
 
+    enum class ResolveMode(@StringRes override val summary: Int) : ListOptionItem {
+        CATEGORY_LAUNCHER(R.string.resolve_mode_category_launcher),
+        NON_SYSTEM_APPS(R.string.resolve_mode_non_system_apps),
+        ALL_APPS(R.string.resolve_mode_all_apps)
+    }
+
     @Category(R.string.category_settings)
     val RESOLVE_MODE = ListOption(ResolveMode::class.java) {
         icon = R.drawable.ic_resolve_mode
         title = R.string.resolve_mode_title
+    }
+
+    @Category(R.string.category_settings)
+    val THEME_COLOR = Option {
+        icon = R.drawable.ic_palette
+        title = R.string.theme_color_title
+        summary = R.string.theme_color_summary
     }
 
     @Category(R.string.category_backup_restore)
@@ -62,16 +80,5 @@ object Settings : SettingsAdapter() {
 
     init {
         initialize(MyApplication.context)
-    }
-
-    enum class WorkMode(@StringRes override val summary: Int) : ListOptionItem {
-        XPOSED(R.string.work_mode_xposed),
-        SHIZUKU(R.string.work_mode_shizuku)
-    }
-
-    enum class ResolveMode(@StringRes override val summary: Int) : ListOptionItem {
-        CATEGORY_LAUNCHER(R.string.resolve_mode_category_launcher),
-        NON_SYSTEM_APPS(R.string.resolve_mode_non_system_apps),
-        ALL_APPS(R.string.resolve_mode_all_apps)
     }
 }

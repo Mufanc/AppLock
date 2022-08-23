@@ -57,6 +57,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (MyApplication.isModuleActivated.not()) {
+            Thread.currentThread().stackTrace.forEach {
+                if (it.methodName == "handleRelaunchActivity") return
+            }
             exitProcess(0)
         }
     }

@@ -20,5 +20,11 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class mufanc.tools.applock.core.xposed.HookEntry
--keep class mufanc.tools.applock.MyApplication{*;}
+-keepclassmembers class ** implements androidx.viewbinding.ViewBinding {
+    public static ** bind(***);
+    public static ** inflate(***);
+}
+
+-keepclassmembers class androidx.preference.SwitchPreferenceCompat {
+    private <methods>;
+}

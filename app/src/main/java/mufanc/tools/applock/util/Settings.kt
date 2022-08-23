@@ -1,9 +1,11 @@
 package mufanc.tools.applock.util
 
+import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.R
 
+@Keep
 object Settings : SettingsAdapter() {
 
     enum class WorkMode(@StringRes override val summary: Int) : ListOptionItem {

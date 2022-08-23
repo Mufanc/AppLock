@@ -3,10 +3,12 @@ package mufanc.tools.applock
 import android.app.Application
 import android.os.IBinder
 import android.os.ServiceManager
+import androidx.annotation.Keep
 import mufanc.easyhook.api.Logger
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.sui.Sui
 
+@Keep
 class MyApplication : Application() {
     companion object {
         const val TAG = "AppLock"

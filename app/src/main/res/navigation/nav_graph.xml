@@ -8,17 +8,17 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="mufanc.tools.applock.ui.fragment.DashboardFragment"
-        android:label="@string/title_home"
+        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_scope"
         android:name="mufanc.tools.applock.ui.fragment.ScopeFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_scope"
         tools:layout="@layout/fragment_scope" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="mufanc.tools.applock.ui.fragment.SettingsFragment"
-        android:label="@string/title_notifications" />
+        android:label="@string/title_settings" />
 </navigation>

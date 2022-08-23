@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:status="@{globals.isModuleActivated}"
-            app:title="@{globals.isModuleActivated ? @string/module_activated : @string/module_unactivate}"
+            app:title="@{globals.isModuleActivated ? @string/module_activated : @string/module_not_activated}"
             app:subtitle="@{globals.moduleVersion}" />
 
         <mufanc.tools.applock.ui.widget.StatusCard

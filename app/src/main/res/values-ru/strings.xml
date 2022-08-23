@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dashboard Fragment  -->
+    <string name="miui_version_title">Версия MIUI</string>
+    <string name="module_activated">Модуль активирован</string>
+    <string name="module_not_activated">Модуль не активирован</string>
+    <string name="process_manager_found">Найдена служба ProcessManager</string>
+    <string name="process_manager_not_found">Невозможно найти службу ProcessManager</string>
+    <string name="hooker_working">Перехват (хук) работает нормально</string>
+    <string name="hooker_no_reply">Перехват (хук) не отвечает</string>
+    <string name="require_reboot">Необходимо перезагрузка</string>
+    <string name="core_version_not_match">Обнаружено, что модуль не соответствует базовой версии, и функция может быть настроена неправильно. Пожалуйста, сначала перезагрузите телефон!</string>
+    <string name="reboot_now">Перезагрузить сейчас</string>
+    <string name="reboot_later">Позже</string>
+    <string name="shizuku_granted">Shizuku права предоставлены</string>
+    <string name="shizuku_denied">Shizuku права недоступены</string>
+
+    <!-- Scope Fragment  -->
+    <string name="scope_saved">Сохранено успешно</string>
+
+    <!-- Settings Fragment  -->
+    <string name="category_settings">Настройки</string>
+    <string name="hide_icon_title">Скрытие иконки на рабочем столе</string>
+    <string name="hide_icon_summary">Не отображать иконку приложения</string>
+    <string name="resolve_mode_title">Как получить список приложений</string>
+    <string name="resolve_mode_category_launcher">Получить приложения с рабочего стола</string>
+    <string name="resolve_mode_non_system_apps">Получить все несистемные приложения</string>
+    <string name="resolve_mode_all_apps">Все приложения</string>
+    <string name="work_mode_title">Рабочий режим</string>
+    <string name="work_mode_xposed">Xposed</string>
+    <string name="work_mode_shizuku">Shizuku (Beta)</string>
+    <string name="category_backup_restore">Резервное копирование и восстановление</string>
+    <string name="backup_scope_title">Резервная копия</string>
+    <string name="backup_scope_summary">Резервное копирование настроек приложения AppLock</string>
+    <string name="restore_scope_title">Восстановление</string>
+    <string name="restore_scope_summary">Восстановление настроек приложения AppLock</string>
+    <string name="invalid_backup">Файл поврежден!</string>
+    <string name="imported_scope">Резервная копия была успешно импортирована!</string>
+    <string name="dismiss">Закрыть</string>
+    <string name="cancel">Отмена</string>
+    <string name="category_about">О приложении</string>
+    <string name="module_author_title">Автор модуля</string>
+    <string name="project_url_title">Адрес проекта</string>
+    <string name="license_title">Открытый исходный код</string>
+    <string name="license_summary">Нажмите, чтобы просмотреть</string>
+    <string name="theme_color_title">Тематические цвета</string>
+    <string name="theme_color_summary">Выберите элемент, который вам нравится!</string>
+
+    <!-- Others -->
+    <string name="module_desc">Предотвращение закрытия приложений при боковом скольжении или очистке его одним щелчком из меню недавних.\nПеревел tg @majestics_translation</string>
+    <string name="title_dashboard">Выбор приложений</string>
+    <string name="title_scope">Список приложений</string>
+    <string name="title_settings">Настройки</string>
+</resources>

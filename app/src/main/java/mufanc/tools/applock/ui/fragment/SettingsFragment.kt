@@ -151,12 +151,12 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                     .apply {
                         val binding = ItemThemeColorDialogBinding.inflate(layoutInflater)
                         setView(binding.root)
-                        binding.colors.apply {
-                            layoutManager = GridLayoutManager(
+                        binding.colors.let {
+                            it.layoutManager = GridLayoutManager(
                                 requireContext(), 4,
                                 GridLayoutManager.VERTICAL, false
                             )
-                            adapter = ThemeColorAdapter(requireActivity())
+                            it.adapter = ThemeColorAdapter(requireActivity(), this)
                         }
                     }
                     .show()

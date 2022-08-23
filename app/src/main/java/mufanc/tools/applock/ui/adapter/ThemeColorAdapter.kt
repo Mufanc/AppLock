@@ -2,6 +2,7 @@ package mufanc.tools.applock.ui.adapter
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -15,7 +16,8 @@ import mufanc.tools.applock.databinding.ItemThemeColorBinding
 import kotlin.system.exitProcess
 
 class ThemeColorAdapter(
-    private val activity: Activity
+    private val activity: Activity,
+    private val dialog: Dialog
 ) : RecyclerView.Adapter<ThemeColorAdapter.ViewHolder>() {
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -52,6 +54,7 @@ class ThemeColorAdapter(
             prefs.edit().apply {
                 putString(ThemeColor::class.java.simpleName, color.name)
             }.commit()
+            dialog.dismiss()
             activity.recreate()
         }
     }

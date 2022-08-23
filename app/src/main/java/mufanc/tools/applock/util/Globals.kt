@@ -30,7 +30,7 @@ object Globals {
     val serviceInfo = MutableLiveData(
         MyApplication.processManager?.let {
             "${"$it".removePrefix("android.os.")} (${it.getRemotePid()})"
-        }
+        } ?: "Not Found."
     )
 
     // AppLock service
@@ -40,7 +40,7 @@ object Globals {
         AppLockManager.client?.handshake()?.run {
             isServiceVersionOutdated = getInt(BundleKeys.VERSION.name) < BuildConfig.VERSION_CODE
             "Pid:${getInt(BundleKeys.PID.name)}, Uid:${getInt(BundleKeys.UID.name)}"
-        } ?: "failed."
+        } ?: "Failed."
     )
 
     // Shizuku

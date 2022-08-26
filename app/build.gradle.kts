@@ -29,11 +29,24 @@ android {
         versionName = getVersionName()
     }
 
+    signingConfigs {
+        create("release") {
+            val props = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+            keyAlias = props["keyAlias"] as String
+            keyPassword = props["keyPassword"] as String
+            storeFile = file(props["storeFile"] as String)
+            storePassword = props["storePassword"] as String
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig = signingConfigs["release"]
         }
     }
 

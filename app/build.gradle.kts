@@ -115,6 +115,9 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.4.3")
     kapt("androidx.room:room-compiler:2.4.3")
 
+    kapt("com.github.bumptech.glide:compiler:4.13.2")
+    implementation("com.github.bumptech.glide:glide:4.13.2")
+
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")

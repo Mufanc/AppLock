@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import mufanc.tools.applock.databinding.ItemAppSelectBinding
 import mufanc.tools.applock.util.Settings
 import java.text.Collator
@@ -98,7 +99,7 @@ class ScopeAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val info = showList[position]
         with (holder) {
-            appIcon.setImageDrawable(info.applicationInfo.loadIcon(packageManager))
+            Glide.with(holder.itemView.context).load(info.applicationInfo).into(appIcon)
             appName.text = info.appName
             packageName.text = info.packageName
             checkbox.isChecked = scope.contains(info.packageName)

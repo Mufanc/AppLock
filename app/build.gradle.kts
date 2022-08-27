@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.logging.errorln
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,10 +35,10 @@ android {
             val props = Properties().apply {
                 load(rootProject.file("local.properties").inputStream())
             }
-            keyAlias = props["keyAlias"] as String
-            keyPassword = props["keyPassword"] as String
-            storeFile = file(props["storeFile"] as String)
-            storePassword = props["storePassword"] as String
+            storeFile = file(props["KEYSTORE_FILE"] as String)
+            storePassword = props["KEYSTORE_PASSWORD"] as String
+            keyAlias = props["KEYSTORE_ALIAS"] as String
+            keyPassword = props["KEYSTORE_ALIAS_PASSWORD"] as String
         }
     }
 
@@ -62,6 +63,19 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+    }
+}
+
+afterEvaluate {
+    android.applicationVariants.forEach { variant ->
+        variant.assembleProvider.get().doLast {
+            variant.outputs.forEach { output ->
+                val filename = "AppLock-v${variant.versionName}-${variant.name}.apk"
+                val dir = output.outputFile.parent
+                val outputFile = File(dir, filename)
+                output.outputFile.renameTo(outputFile)
+            }
+        }
     }
 }
 

@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.logging.errorln
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,7 +72,9 @@ afterEvaluate {
                 val filename = "AppLock-v${variant.versionName}-${variant.name}.apk"
                 val dir = output.outputFile.parent
                 val outputFile = File(dir, filename)
-                output.outputFile.renameTo(outputFile)
+                if (outputFile.relativeTo(projectDir).startsWith("build/intermediates").not()) {
+                    output.outputFile.renameTo(outputFile)
+                }
             }
         }
     }

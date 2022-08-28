@@ -17,3 +17,13 @@ val kotlinJvmTarget by extra("11")
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
+
+// 确保 ksp-xposed 在打包 assets 前运行
+for (buildType in listOf("Debug", "Release")) {
+    val filter = fun (task: Task): Boolean {
+        return task.project == project(":app")
+    }
+    val kspXposed = getTasksByName("ksp${buildType}Kotlin", true).find(filter)!!
+    val mergeAssets = getTasksByName("merge${buildType}Assets", true).find(filter)!!
+    mergeAssets.dependsOn.add(kspXposed)
+}

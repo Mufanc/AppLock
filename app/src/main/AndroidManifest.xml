@@ -40,15 +40,15 @@
 
         <provider
             android:name="rikka.shizuku.ShizukuProvider"
-            android:authorities="mufanc.tools.applock.core.shizuku"
+            android:authorities="${applicationId}.shizuku"
             android:multiprocess="false"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 
-        <provider
-            android:authorities="mufanc.tools.applock.provider"
-            android:name=".util.ScopeProvider"
+        <provider android:name=".util.ScopeProvider"
+            android:authorities="${applicationId}.provider"
+            android:enabled="true"
             android:exported="true"
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
 

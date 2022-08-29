@@ -1,22 +1,18 @@
 package mufanc.tools.applock.core.xposed
 
 import android.app.ActivityThread
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.*
-import android.util.Log
 import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
+import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
-import java.util.*
-import kotlin.concurrent.schedule
-import kotlin.concurrent.thread
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
 
@@ -53,12 +49,17 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                         }
                     }
                 }
-                thread {
-                    catch {
-                        Timer().schedule(0, 3000) {
-                            context.getSystemService(Context.USER_SERVICE)?.let { manager ->
-                                if ((manager as UserManager).isUserUnlocked) {
-                                    cancel()
+
+                catch {
+                    findClass("com.android.server.SystemServiceManager").hook {
+                        method({ name == "startBootPhase" }) { method ->
+                            Logger.i("@Hooker: hook startBootPhase: $method")
+
+                            val code = findClass("com.android.server.SystemService")
+                                .getStaticFieldAs<Int>("PHASE_BOOT_COMPLETED")
+
+                            after { param ->
+                                if (param.args[1] == code) {
                                     context.contentResolver.acquireUnstableContentProviderClient(
                                         Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
                                     )?.call(

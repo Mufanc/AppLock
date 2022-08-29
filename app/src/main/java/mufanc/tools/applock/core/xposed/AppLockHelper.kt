@@ -85,13 +85,17 @@ object AppLockHelper {
                         val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
                         if (KILLERS.contains(killer)) {
                             val processRecord = param.args[0]
+                            val processName = processRecord.getField("processName")
+
                             getPackageList(processRecord).forEach {
                                 if (AppLockManager.query(it)) {
                                     param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
-                                    Logger.i("@AppLock: ${processRecord.getField("processName")}")
-                                    return@forEach
+                                    Logger.i("@AppLock: $processName")
+                                    return@before
                                 }
                             }
+
+                            Logger.i("@AppLock: killing $processName, by $killer")
                         }
                     }
                 }

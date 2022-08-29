@@ -20,8 +20,9 @@ abstract class ScopeManager : RoomDatabase() {
         private lateinit var database: ScopeManager
 
         fun init(context: Context) {
-            database = Room.databaseBuilder(context, ScopeManager::class.java, "scope")
-                .allowMainThreadQueries().build()
+            database = Room.databaseBuilder(
+                context.createDeviceProtectedStorageContext(), ScopeManager::class.java, "scope"
+            ).allowMainThreadQueries().build()
 
             scope.clear()
             scope.addAll(

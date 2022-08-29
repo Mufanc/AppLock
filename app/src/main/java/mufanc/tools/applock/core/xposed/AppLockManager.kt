@@ -1,16 +1,22 @@
 package mufanc.tools.applock.core.xposed
 
 import android.app.ActivityThread
+import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.os.*
+import android.util.Log
 import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
+import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
+import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.concurrent.thread
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
 
@@ -47,6 +53,27 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                         }
                     }
                 }
+                thread {
+                    catch {
+                        Timer().schedule(0, 3000) {
+                            context.getSystemService(Context.USER_SERVICE)?.let { manager ->
+                                if ((manager as UserManager).isUserUnlocked) {
+                                    cancel()
+                                    context.contentResolver.acquireUnstableContentProviderClient(
+                                        Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
+                                    )?.call(
+                                        "scope", null, Bundle()
+                                    )?.getStringArray("scope")?.also {
+                                        instance.whitelist.addAll(it)
+                                        Logger.i("@Server: load scope from provider: ${it.contentToString()}")
+                                    } ?: let {
+                                        Logger.e("@Server: failed to resolve whitelist!")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -67,21 +94,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         }
     }
 
-    private val whitelist: MutableSet<String> by lazy {
-        var result = mutableSetOf<String>()
-        Binder.restoreCallingIdentity(Binder.clearCallingIdentity().also {
-            context.contentResolver.call(
-                Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider"),
-                "scope", null, null
-            )?.getStringArray("scope")?.also {
-                result = it.toMutableSet()
-                Logger.i("@Server: load scope from provider: ${it.contentToString()}")
-            } ?: let {
-                Logger.e("@Server: failed to resolve whitelist!")
-            }
-        })
-        result
-    }
+    private val whitelist = mutableSetOf<String>()
 
     override fun handshake(): Bundle {
         Logger.i("@Server: handshake from client!")

@@ -26,16 +26,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
             </intent-filter>
+
         </activity>
 
         <activity-alias android:name=".Launcher"
             android:exported="true"
-            android:targetActivity=".ui.MainActivity" >
+            android:targetActivity=".ui.MainActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity-alias>
 
         <provider
@@ -50,7 +52,8 @@
             android:authorities="${applicationId}.provider"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL" />
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"
+            android:directBootAware="true" />
 
     </application>
 </manifest>

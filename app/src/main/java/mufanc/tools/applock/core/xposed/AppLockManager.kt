@@ -7,7 +7,6 @@ import android.os.*
 import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
-import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.BuildConfig
@@ -51,26 +50,25 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                     }
                 }
 
-                catch {
-                    findClass("com.android.server.SystemServiceManager").hook {
-                        method({ name == "startBootPhase" }) { method ->
-                            Logger.i("@Hooker: hook startBootPhase: $method")
+                findClass("com.android.server.SystemServiceManager").hook {
+                    method({ name == "startBootPhase" }) { method ->
+                        Logger.i("@Hooker: hook startBootPhase: $method")
 
-                            val code = findClass("com.android.server.SystemService")
-                                .getStaticFieldAs<Int>("PHASE_BOOT_COMPLETED")
+                        val index = method.parameterTypes.indexOf(Int::class.java)
+                        val code = findClass("com.android.server.SystemService")
+                            .getStaticFieldAs<Int>("PHASE_BOOT_COMPLETED")
 
-                            after { param ->
-                                if (param.args[1] == code) {
-                                    context.contentResolver.acquireUnstableContentProviderClient(
-                                        Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
-                                    )?.call(
-                                        "scope", null, Bundle()
-                                    )?.getStringArray("scope")?.also {
-                                        instance.whitelist.addAll(it)
-                                        Logger.i("@Server: load scope from provider: ${it.contentToString()}")
-                                    } ?: let {
-                                        Logger.e("@Server: failed to resolve whitelist!")
-                                    }
+                        after { param ->
+                            if (param.args[index] == code) {
+                                context.contentResolver.acquireUnstableContentProviderClient(
+                                    Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
+                                )?.call(
+                                    "scope", null, Bundle()
+                                )?.getStringArray("scope")?.also {
+                                    instance.whitelist.addAll(it)
+                                    Logger.i("@Server: load scope from provider: ${it.contentToString()}")
+                                } ?: let {
+                                    Logger.e("@Server: failed to resolve whitelist!")
                                 }
                             }
                         }

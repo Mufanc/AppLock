@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.ServiceManager
 import android.util.ArrayMap
 import android.util.SparseArray
-import miui.process.ProcessConfig
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.hook.hook
@@ -22,6 +21,10 @@ import java.lang.reflect.Method
 object AppLockHelper {
 
     private val KILLERS = setOf("com.miui.home", "com.android.systemui")
+
+    private const val KILL_LEVEL_NONE = 100
+
+    private const val KILL_LEVEL_TRIM_MEMORY = 101
 
     private val processMaps: SparseArray<*> by lazy {
         IActivityManager.Stub.asInterface(
@@ -89,7 +92,7 @@ object AppLockHelper {
                             val processName = processRecord.getField("processName")
                             getPackageList(processRecord).forEach {
                                 if (AppLockManager.query(it)) {
-                                    param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
+                                    param.args[2] = KILL_LEVEL_TRIM_MEMORY
                                     Logger.i("@AppLock: $processName")
                                     return@before
                                 }

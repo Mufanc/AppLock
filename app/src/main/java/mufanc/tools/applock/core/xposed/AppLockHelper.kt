@@ -95,7 +95,7 @@ object AppLockHelper {
                                 }
                             }
 
-                            Logger.i("@AppLock: killing $processName, by $killer")
+                            Logger.v("@AppLock: [$killer] killing $processName")
                         }
                     }
                 }

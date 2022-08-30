@@ -63,6 +63,15 @@ android {
         dataBinding = true
         viewBinding = true
     }
+
+    packagingOptions {
+        jniLibs {
+            excludes.addAll(arrayOf("/kotlin/**"))
+        }
+        resources {
+            excludes.addAll(arrayOf("/META-INF/*.version", "/META-INF/*.kotlin_module", "/kotlin/**"))
+        }
+    }
 }
 
 afterEvaluate {

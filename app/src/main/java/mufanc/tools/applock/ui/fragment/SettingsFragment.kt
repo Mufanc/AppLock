@@ -10,7 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceManager
 import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +24,7 @@ import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
 import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
 import mufanc.tools.applock.util.SettingsAdapter
+import mufanc.tools.applock.util.update
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
@@ -54,8 +54,7 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                     val scope = BufferedReader(InputStreamReader(stream)).readLines()
                         .map { it.trim() }.filter { it.isNotEmpty() }
                     if (scope.all { it.matches("^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)+$".toRegex()) }) {
-                        ScopeManager.scope.clear()
-                        ScopeManager.scope.addAll(scope)
+                        ScopeManager.scope.update(scope)
                         ScopeManager.commit()
                     } else {
                         Toast.makeText(requireContext(), R.string.invalid_backup, Toast.LENGTH_SHORT).show()

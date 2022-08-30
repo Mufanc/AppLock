@@ -13,6 +13,7 @@ import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.util.update
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
 
@@ -117,8 +118,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
     }
 
     override fun updateWhitelist(packageList: Array<out String>) {
-        whitelist.clear()
-        whitelist.addAll(packageList)
+        whitelist.update(packageList.toList())
         Logger.i("@Server: scope updated: ${packageList.contentToString()}")
     }
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import mufanc.tools.applock.databinding.ItemAppSelectBinding
 import mufanc.tools.applock.util.Settings
+import mufanc.tools.applock.util.update
 import java.text.Collator
 import java.util.*
 import kotlin.concurrent.thread
@@ -25,10 +26,17 @@ class ScopeAdapter(
     private val packageManager = activity.packageManager
 
     data class AppInfo(
-        val appName: String,
         val packageName: String,
-        val applicationInfo: ApplicationInfo
+        val applicationInfo: ApplicationInfo,
     ) {
+        private lateinit var appName: String
+        fun getAppName(packageManager: PackageManager? = null): String {
+            if (::appName.isInitialized.not()) {
+                appName = applicationInfo.loadLabel(packageManager!!).toString()
+            }
+            return appName
+        }
+
         override fun hashCode(): Int = packageName.hashCode()
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -45,8 +53,7 @@ class ScopeAdapter(
 
     init {
         thread {
-            appList.clear()
-            appList.addAll(
+            appList.update(
                 when (Settings.RESOLVE_MODE.value) {
                     Settings.ResolveMode.CATEGORY_LAUNCHER -> {
                         packageManager.queryIntentActivities(
@@ -63,11 +70,7 @@ class ScopeAdapter(
                         packageManager.getInstalledApplications(PackageManager.MATCH_DISABLED_COMPONENTS)
                     }
                 }.map {
-                    AppInfo(
-                        it.loadLabel(packageManager).toString(),
-                        it.packageName,
-                        it
-                    )
+                    AppInfo(it.packageName, it)
                 }.toSet()  // 去重
             )
             activity.runOnUiThread {
@@ -100,16 +103,20 @@ class ScopeAdapter(
         val info = showList[position]
         with (holder) {
             Glide.with(holder.itemView.context).load(info.applicationInfo).into(appIcon)
-            appName.text = info.appName
+            appName.text = info.getAppName(packageManager)
             packageName.text = info.packageName
-            checkbox.isChecked = scope.contains(info.packageName)
-            checkbox.setOnCheckedChangeListener { view, checked ->
-                if (view.isPressed) {
-                    if (checked) {
-                        scope.add(info.packageName)
-                    } else {
-                        scope.remove(info.packageName)
-                    }
+
+            var checked = scope.contains(info.packageName)
+            checkbox.isChecked = checked
+
+            holder.itemView.setOnClickListener {
+                checked = checked.not()
+                checkbox.isChecked = checked
+
+                if (checked) {
+                    scope.add(info.packageName)
+                } else {
+                    scope.remove(info.packageName)
                 }
             }
         }
@@ -123,13 +130,14 @@ class ScopeAdapter(
                 return FilterResults().apply {
                     values = appList.filter { info ->
                         query.toString().let {
-                            info.appName.lowercase().contains(it) || info.packageName.contains(it)
+                            info.getAppName(packageManager).lowercase()
+                                .contains(it) || info.packageName.contains(it)
                         }
                     }.sortedWith { o1, o2 ->
                         val c1 = scope.contains(o1.packageName)
                         val c2 = scope.contains(o2.packageName)
                         if (c1 != c2) return@sortedWith if (c1) -1 else 1
-                        Collator.getInstance(Locale.getDefault()).compare(o1.appName, o2.appName)
+                        Collator.getInstance(Locale.getDefault()).compare(o1.getAppName(), o2.getAppName())
                     }
                 }
             }
@@ -144,8 +152,7 @@ class ScopeAdapter(
                     override fun areItemsTheSame(op: Int, np: Int) =
                         showList[op].packageName == newList[np].packageName
                 }).let {
-                    showList.clear()
-                    showList.addAll(newList)
+                    showList.update(newList)
                     it.dispatchUpdatesTo(this@ScopeAdapter)
                 }
                 onRefresh()

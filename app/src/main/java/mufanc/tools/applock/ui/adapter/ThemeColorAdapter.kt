@@ -14,7 +14,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ItemThemeColorBinding
-import kotlin.system.exitProcess
 
 class ThemeColorAdapter(
     private val activity: Activity,

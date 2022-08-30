@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ItemLicenseBinding
 
 class LicenseListAdapter(

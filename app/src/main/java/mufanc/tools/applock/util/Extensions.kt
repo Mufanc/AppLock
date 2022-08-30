@@ -20,3 +20,10 @@ fun IBinder.getRemotePid(): Int {
         reply.recycle()
     }
 }
+
+fun <T>MutableCollection<T>.update(elements: Collection<T>) {
+    synchronized (this) {
+        this.clear()
+        this.addAll(elements)
+    }
+}

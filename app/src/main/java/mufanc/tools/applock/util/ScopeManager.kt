@@ -2,11 +2,8 @@ package mufanc.tools.applock.util
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.room.*
 import mufanc.easyhook.api.Logger
-import mufanc.tools.applock.MyApplication
-import mufanc.tools.applock.R
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
 import mufanc.tools.applock.core.xposed.AppLockManager
 
@@ -24,8 +21,7 @@ abstract class ScopeManager : RoomDatabase() {
                 context.createDeviceProtectedStorageContext(), ScopeManager::class.java, "scope"
             ).allowMainThreadQueries().build()
 
-            scope.clear()
-            scope.addAll(
+            scope.update(
                 database.dao().query().mapNotNull {  // 过滤已卸载应用
                     try {
                         context.packageManager.getApplicationInfo(
@@ -48,10 +44,7 @@ abstract class ScopeManager : RoomDatabase() {
 
             when (Settings.WORK_MODE.value) {
                 Settings.WorkMode.XPOSED -> {
-                    AppLockManager.client?.apply {
-                        updateWhitelist(scope.toTypedArray())
-                        Toast.makeText(MyApplication.context, R.string.scope_saved, Toast.LENGTH_SHORT).show()
-                    }
+                    AppLockManager.client?.updateWhitelist(scope.toTypedArray())
                 }
                 Settings.WorkMode.SHIZUKU -> {
                     ShizukuHelper.writePackageList(scope.toList())

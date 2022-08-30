@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import androidx.annotation.Keep
 import androidx.annotation.StyleRes
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +21,6 @@ class ThemeColorAdapter(
 
     private val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
 
-    @Keep
     private enum class ThemeColor(@DrawableRes val iconId: Int) {
         PYRO(R.drawable.ic_element_pyro),        // 火
         HYDRO(R.drawable.ic_element_hydro),      // 水

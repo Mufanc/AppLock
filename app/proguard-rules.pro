@@ -28,3 +28,7 @@
 -keepclassmembers class androidx.preference.SwitchPreferenceCompat {
     private <methods>;
 }
+
+-keep enum * {
+    public <fields>;
+}

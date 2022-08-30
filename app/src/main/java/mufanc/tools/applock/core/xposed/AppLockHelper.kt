@@ -61,6 +61,18 @@ object AppLockHelper {
         }
     }
 
+    // decompiled from miui-services.jar
+    private fun killLevelToString(level: Int): String {
+        return when (level) {
+            100 -> "none"
+            101 -> "trim-memory"
+            102 -> "kill-background"
+            103 -> "kill"
+            104 -> "force-stop"
+            else -> "unknown"
+        }
+    }
+
     fun init() {
         AppLockManager.init()
         EasyHook.handle {
@@ -89,15 +101,17 @@ object AppLockHelper {
                         val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
                         if (KILLERS.contains(killer)) {
                             val processRecord = param.args[0]
+                            val killLevel = param.args[2] as Int
                             val processName = processRecord.getField("processName")
                             getPackageList(processRecord).forEach {
                                 if (AppLockManager.query(it)) {
-                                    param.args[2] = KILL_LEVEL_TRIM_MEMORY
-                                    Logger.i("@AppLock: $processName")
+                                    param.args[2] = KILL_LEVEL_TRIM_MEMORY  // Todo: 可配置的 killLevel
+                                    Logger.i("@AppLock: protected $processName (${killLevelToString(killLevel)} " +
+                                        "-> ${killLevelToString(KILL_LEVEL_TRIM_MEMORY)})")
                                     return@before
                                 }
                             }
-                            Logger.v("@AppLock: [$killer] killing $processName")
+                            Logger.v("@AppLock: [$killer] killing $processName (${killLevelToString(killLevel)})")
                         }
                     }
                 }

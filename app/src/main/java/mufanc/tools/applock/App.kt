@@ -9,7 +9,7 @@ import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.sui.Sui
 
 @Keep
-class MyApplication : Application() {
+class App : Application() {
     companion object {
         const val TAG = "AppLock"
 

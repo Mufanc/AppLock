@@ -2,8 +2,8 @@ package mufanc.tools.applock.util
 
 import android.os.SystemProperties
 import androidx.lifecycle.MutableLiveData
+import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
-import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
 import mufanc.tools.applock.core.xposed.AppLockManager
 import mufanc.tools.applock.core.xposed.AppLockManager.Companion.BundleKeys
@@ -20,15 +20,15 @@ object Globals {
     )
 
     // Xposed
-    val isModuleActivated = MutableLiveData(MyApplication.isModuleActivated)
+    val isModuleActivated = MutableLiveData(App.isModuleActivated)
     val moduleVersion = MutableLiveData(BuildConfig.VERSION_NAME)
 
     // ProcessManager
     val isProcessManagerFound = MutableLiveData(
-        MyApplication.processManager?.pingBinder() == true
+        App.processManager?.pingBinder() == true
     )
     val serviceInfo = MutableLiveData(
-        MyApplication.processManager?.let {
+        App.processManager?.let {
             "${"$it".removePrefix("android.os.")} (${it.getRemotePid()})"
         } ?: "Not Found."
     )

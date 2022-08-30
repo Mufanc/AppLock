@@ -9,9 +9,9 @@ import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
+import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
-import mufanc.tools.applock.MyApplication
 import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
 
@@ -79,7 +79,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         }
 
         val client by lazy {
-            MyApplication.processManager?.let {
+            App.processManager?.let {
                 val data = Parcel.obtain()
                 val reply = Parcel.obtain()
                 try {

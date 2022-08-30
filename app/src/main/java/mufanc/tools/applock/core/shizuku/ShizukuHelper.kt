@@ -5,7 +5,7 @@ import android.widget.Toast
 import miui.process.ProcessCloudData
 import miui.process.ProcessManagerNative
 import mufanc.easyhook.api.catch
-import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.App
 import mufanc.tools.applock.R
 import rikka.shizuku.Shizuku
 import rikka.shizuku.ShizukuBinderWrapper
@@ -51,11 +51,11 @@ object ShizukuHelper {
     fun writePackageList(packageList: List<String>) {
         fun internal(result: Int) {
             if (result == PackageManager.PERMISSION_GRANTED) {
-                MyApplication.processManager?.let { binder ->
+                App.processManager?.let { binder ->
                     ProcessManagerNative.asInterface(ShizukuBinderWrapper(binder)).apply {
                         updateCloudData(ProcessCloudData().also { it.setCloudWhiteList(packageList) })
                     }
-                    Toast.makeText(MyApplication.context, R.string.scope_saved, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(App.context, R.string.scope_saved, Toast.LENGTH_SHORT).show()
                 }
             }
         }

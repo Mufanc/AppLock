@@ -9,7 +9,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.App
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ActivityMainBinding
 import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (MyApplication.isModuleActivated.not()) {
+        if (App.isModuleActivated.not()) {
             Thread.currentThread().stackTrace.forEach {
                 if (it.methodName == "handleRelaunchActivity") return
             }

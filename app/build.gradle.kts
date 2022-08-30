@@ -103,31 +103,29 @@ materialThemeBuilder {
 dependencies {
     compileOnly(project(":api-stub"))
 
-    compileOnly("de.robv.android.xposed:api:82")
-    implementation(project(":easyhook:api"))
     ksp(project(":easyhook:ksp-xposed"))
+    implementation(project(":easyhook:api"))
+    compileOnly("de.robv.android.xposed:api:82")
 
     implementation("dev.rikka.shizuku:api:12.1.0")
     implementation("dev.rikka.shizuku:provider:12.1.0")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
 
-    implementation("androidx.room:room-runtime:2.4.3")
-    annotationProcessor("androidx.room:room-compiler:2.4.3")
     kapt("androidx.room:room-compiler:2.4.3")
+    implementation("androidx.room:room-runtime:2.4.3")
 
     kapt("com.github.bumptech.glide:compiler:4.13.2")
     implementation("com.github.bumptech.glide:glide:4.13.2")
 
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.google.android.material:material:1.6.1")
+    implementation("androidx.appcompat:appcompat:1.5.0")
+    implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
     implementation("androidx.preference:preference:1.2.0")
-    implementation("androidx.core:core-ktx:1.8.0")
-    implementation("androidx.appcompat:appcompat:1.5.0")
-    implementation("com.google.android.material:material:1.6.1")
 }
 
 fun getVersionCode(): Int {

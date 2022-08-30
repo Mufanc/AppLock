@@ -19,7 +19,7 @@ class HookEntry : HookHelper(MyApplication.TAG) {
                 findClass(MyApplication::class.java.name)
                     .findField { name == "isModuleActivated" }!!
                     .set(null, true)
-                Logger.i("@Client: update module activation status")
+                Logger.i("@Module: update module activation status")
             }
         }
         AppLockHelper.init()

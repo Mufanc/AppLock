@@ -15,6 +15,7 @@ import mufanc.easyhook.api.reflect.findField
 import mufanc.easyhook.api.reflect.findMethod
 import mufanc.easyhook.api.reflect.findMethods
 import mufanc.easyhook.api.reflect.getField
+import mufanc.tools.applock.util.signature
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
@@ -77,7 +78,7 @@ object AppLockHelper {
                     }
 
                 killOnce.hook { method ->
-                    Logger.i("@Hooker: hook killOnce: $method")
+                    Logger.i("@Hooker: hook killOnce: ${method.signature()}")
                     val processNameField = findClass("com.android.server.am.ProcessRecord").findField {
                         name == "processName"
                     }!!
@@ -86,7 +87,6 @@ object AppLockHelper {
                         if (KILLERS.contains(killer)) {
                             val processRecord = param.args[0]
                             val processName = processRecord.getField("processName")
-
                             getPackageList(processRecord).forEach {
                                 if (AppLockManager.query(it)) {
                                     param.args[2] = ProcessConfig.KILL_LEVEL_TRIM_MEMORY
@@ -94,7 +94,6 @@ object AppLockHelper {
                                     return@before
                                 }
                             }
-
                             Logger.v("@AppLock: [$killer] killing $processName")
                         }
                     }

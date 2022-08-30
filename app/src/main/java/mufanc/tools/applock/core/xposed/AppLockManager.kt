@@ -12,6 +12,7 @@ import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
 import mufanc.tools.applock.MyApplication
+import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
@@ -40,7 +41,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
             onLoadPackage("android") {
                 findClass("miui.process.ProcessManagerNative").hook {
                     method({ name == "onTransact" }) { method ->
-                        Logger.i("@Hooker: hook onTransact: $method")
+                        Logger.i("@Hooker: hook onTransact: ${method.signature()}")
                         before { param ->
                             if (param.args[0] != TRANSACTION_CODE) return@before
                             if (context.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return@before
@@ -52,7 +53,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
 
                 findClass("com.android.server.SystemServiceManager").hook {
                     method({ name == "startBootPhase" }) { method ->
-                        Logger.i("@Hooker: hook startBootPhase: $method")
+                        Logger.i("@Hooker: hook startBootPhase: ${method.signature()}")
 
                         val index = method.parameterTypes.indexOf(Int::class.java)
                         val code = findClass("com.android.server.SystemService")

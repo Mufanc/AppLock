@@ -35,7 +35,7 @@ abstract class ScopeManager : RoomDatabase() {
                 }
             )
 
-            Logger.i("@Provider: initializing database...")
+            Logger.i("@Module: initializing database...")
         }
 
         fun commit() {

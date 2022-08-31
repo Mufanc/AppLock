@@ -3,23 +3,20 @@ package mufanc.tools.applock.ui.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import mufanc.tools.applock.R
 import mufanc.tools.applock.databinding.ItemThemeColorBinding
+import mufanc.tools.applock.util.Settings
 
 class ThemeColorAdapter(
     private val activity: Activity,
     private val dialog: Dialog
 ) : RecyclerView.Adapter<ThemeColorAdapter.ViewHolder>() {
-
-    private val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
 
     private enum class ThemeColor(@DrawableRes val iconId: Int) {
         PYRO(R.drawable.ic_element_pyro),        // 火
@@ -50,7 +47,7 @@ class ThemeColorAdapter(
         val color = ThemeColor.values()[position]
         holder.icon.setImageResource(color.iconId)
         holder.itemView.setOnClickListener {
-            prefs.edit().apply {
+            Settings.sharedPrefs.edit().apply {
                 putString(ThemeColor::class.java.simpleName, color.name)
             }.commit()
             dialog.dismiss()
@@ -62,8 +59,8 @@ class ThemeColorAdapter(
 
     companion object {
         @StyleRes
-        fun getColorThemeStyle(context: Context): Int {
-            val value = PreferenceManager.getDefaultSharedPreferences(context)
+        fun getColorThemeStyle(): Int {
+            val value = Settings.sharedPrefs
                 .getString(ThemeColor::class.java.simpleName, "")!!
                 .ifEmpty { ThemeColor.PYRO.name }
             return when (ThemeColor.valueOf(value)) {

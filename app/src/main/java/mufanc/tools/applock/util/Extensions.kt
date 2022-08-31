@@ -22,7 +22,7 @@ fun IBinder.getRemotePid(): Int {
     }
 }
 
-fun <T>MutableCollection<T>.update(elements: Collection<T>) {
+fun <T> MutableCollection<T>.update(elements: Collection<T>) {
     synchronized (this) {
         this.clear()
         this.addAll(elements)

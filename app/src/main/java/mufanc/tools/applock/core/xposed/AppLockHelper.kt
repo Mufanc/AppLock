@@ -8,6 +8,7 @@ import android.os.ServiceManager
 import android.util.ArrayMap
 import android.util.SparseArray
 import mufanc.easyhook.api.EasyHook
+import mufanc.easyhook.api.LoaderContext
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.findField
@@ -21,10 +22,6 @@ import java.lang.reflect.Method
 object AppLockHelper {
 
     private val KILLERS = setOf("com.miui.home", "com.android.systemui")
-
-    private const val KILL_LEVEL_NONE = 100
-
-    private const val KILL_LEVEL_TRIM_MEMORY = 101
 
     private val processMaps: SparseArray<*> by lazy {
         IActivityManager.Stub.asInterface(
@@ -73,6 +70,34 @@ object AppLockHelper {
         }
     }
 
+    var killLevelTarget = 101  // TRIM_MEMORY
+
+    private fun hookKillOnce(loader: LoaderContext, method: Method) = loader.apply {
+        method.hook {
+            Logger.i("@Hooker: hook killOnce: ${method.signature()}")
+            val processNameField = findClass("com.android.server.am.ProcessRecord").findField {
+                name == "processName"
+            }!!
+            before { param ->
+                val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
+                if (KILLERS.contains(killer)) {
+                    val processRecord = param.args[0]
+                    val killLevel = param.args[2] as Int
+                    val processName = processRecord.getField("processName")
+                    getPackageList(processRecord).forEach {
+                        if (AppLockManager.query(it)) {
+                            param.args[2] = killLevelTarget
+                            Logger.i("@AppLock: protected $processName " +
+                                    "(${killLevelToString(killLevel)} -> ${killLevelToString(killLevelTarget)})")
+                            return@before
+                        }
+                    }
+                    Logger.v("@AppLock: [$killer] killing $processName (${killLevelToString(killLevel)})")
+                }
+            }
+        }
+    }
+
     fun init() {
         AppLockManager.init()
         EasyHook.handle {
@@ -82,39 +107,18 @@ object AppLockHelper {
                     return method.name == "killOnce" && method.parameterTypes[0].simpleName == "ProcessRecord"
                 }
 
-                val killOnce = findClass("com.android.server.am.ProcessManagerService")
-                    .findMethods(filter)
-                    .maxByOrNull {
-                        it.parameterCount
-                    } ?: run {
+                hookKillOnce(
+                    this,
+                    findClass("com.android.server.am.ProcessManagerService")
+                        .findMethods(filter)
+                        .maxByOrNull {
+                            it.parameterCount
+                        } ?: run {
                         findClass("com.android.server.am.ProcessCleanerBase")
                             .findMethods(filter)
                             .minByOrNull { it.parameterCount }!!
                     }
-
-                killOnce.hook { method ->
-                    Logger.i("@Hooker: hook killOnce: ${method.signature()}")
-                    val processNameField = findClass("com.android.server.am.ProcessRecord").findField {
-                        name == "processName"
-                    }!!
-                    before { param ->
-                        val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
-                        if (KILLERS.contains(killer)) {
-                            val processRecord = param.args[0]
-                            val killLevel = param.args[2] as Int
-                            val processName = processRecord.getField("processName")
-                            getPackageList(processRecord).forEach {
-                                if (AppLockManager.query(it)) {
-                                    param.args[2] = KILL_LEVEL_TRIM_MEMORY  // Todo: 可配置的 killLevel
-                                    Logger.i("@AppLock: protected $processName (${killLevelToString(killLevel)} " +
-                                        "-> ${killLevelToString(KILL_LEVEL_TRIM_MEMORY)})")
-                                    return@before
-                                }
-                            }
-                            Logger.v("@AppLock: [$killer] killing $processName (${killLevelToString(killLevel)})")
-                        }
-                    }
-                }
+                )
             }
         }
     }

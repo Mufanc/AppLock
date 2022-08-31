@@ -7,10 +7,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.TwoStatePreference
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -23,22 +19,21 @@ import mufanc.tools.applock.ui.adapter.LicenseListAdapter
 import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
 import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
-import mufanc.tools.applock.util.SettingsAdapter
+import mufanc.tools.applock.util.settings.SettingsBuilder
 import mufanc.tools.applock.util.update
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-class SettingsFragment : SettingsAdapter.SettingsFragment() {
+class SettingsFragment : SettingsBuilder.Fragment(Settings) {
 
     private lateinit var backupLauncher: ActivityResultLauncher<String>
     private lateinit var restoreLauncher: ActivityResultLauncher<Array<String>>
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
-
-        backupLauncher = registerForActivityResult(CreateDocument("text/plain")) { uri ->
+        backupLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
             if (uri == null) return@registerForActivityResult
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                 stream.write(
@@ -64,24 +59,37 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
         }
     }
 
-    private abstract class Holder<T : Preference>(val pref: T) {
-        abstract fun onChange(value: Any)
-        init {
-            pref.setOnPreferenceChangeListener { _, value ->
-                onChange(value)
-                true
+    override fun buildScreen() = buildFromDsl {
+        Category(R.string.category_settings) {
+            val workMode = ListOption(
+                mirror = Settings.WORK_MODE,
+                icon = R.drawable.ic_work_mode,
+                title = R.string.work_mode_title
+            )
+
+            val hideIcon = SwitchOption(
+                mirror = Settings.HIDE_ICON,
+                icon = R.drawable.ic_hide_icon,
+                title = R.string.hide_icon_title,
+                summary = R.string.hide_icon_summary
+            )
+
+            workMode.registerOnChangeListener { mode ->
+                when (mode) {
+                    Settings.WorkMode.XPOSED -> {
+                        hideIcon.preference.isEnabled = true
+                    }
+                    Settings.WorkMode.SHIZUKU -> {
+                        hideIcon.preference.isEnabled = false
+                        hideIcon.preference.isChecked = false
+                    }
+                }
             }
-        }
-    }
 
-    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
-        super.onCreatePreferences(bundle, rootKey)
-
-        val hHideIcon = object : Holder<TwoStatePreference>(findPreference(Settings.HIDE_ICON.key)!!) {
-            override fun onChange(value: Any) {
+            hideIcon.registerOnChangeListener { checked ->
                 requireContext().packageManager.setComponentEnabledSetting(
                     ComponentName(requireContext(), "${BuildConfig.APPLICATION_ID}.Launcher"),
-                    if (value as Boolean) {
+                    if (checked) {
                         PackageManager.COMPONENT_ENABLED_STATE_DISABLED
                     } else {
                         PackageManager.COMPONENT_ENABLED_STATE_ENABLED
@@ -89,60 +97,24 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
                     PackageManager.DONT_KILL_APP
                 )
             }
-        }
 
-        val hWorkMode = object : Holder<ListPreference>(findPreference(Settings.WORK_MODE.key)!!) {
-            override fun onChange(value: Any) {
-                hHideIcon.pref.apply {
-                    when (Settings.WorkMode.valueOf(value as String)) {
-                        Settings.WorkMode.SHIZUKU -> {
-                            isChecked = false
-                            isEnabled = false
-                            hHideIcon.onChange(false)
-                        }
-                        Settings.WorkMode.XPOSED -> {
-                            isEnabled = true
-                        }
-                    }
-                }
-            }
-        }
+            ListOption(
+                mirror = Settings.RESOLVE_MODE,
+                icon = R.drawable.ic_resolve_mode,
+                title = R.string.resolve_mode_title
+            )
 
-        hWorkMode.onChange(hWorkMode.pref.value)
-    }
+            ListOption(
+                mirror = Settings.KILL_LEVEL,
+                icon = R.drawable.ic_kill_level,
+                title = R.string.kill_level_title
+            )
 
-    override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        when (preference.key) {
-            Settings.BACKUP_SCOPE.key -> {
-                backupLauncher.launch("AppLock ${Date()}.txt")
-            }
-            Settings.RESTORE_SCOPE.key -> {
-                restoreLauncher.launch(arrayOf("text/plain"))
-            }
-            Settings.AUTHOR.key -> {
-                startActivity(Intent.parseUri(resources.getString(R.string.module_author_link), 0))
-            }
-            Settings.PROJECT_URL.key -> {
-                startActivity(Intent.parseUri(resources.getString(R.string.project_url_summary), 0))
-            }
-            Settings.LICENSE.key -> {
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(resources.getText(R.string.license_title))
-                    .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
-                    .create()
-                    .apply {
-                        val binding = ItemLicenseDialogBinding.inflate(layoutInflater)
-                        setView(binding.root)
-                        binding.licenseList.apply {
-                            layoutManager = LinearLayoutManager(
-                                context, LinearLayoutManager.VERTICAL, false
-                            )
-                            adapter = LicenseListAdapter(resources.getStringArray(R.array.license))
-                        }
-                    }
-                    .show()
-            }
-            Settings.THEME_COLOR.key -> {
+            Option(
+                icon = R.drawable.ic_palette,
+                title = R.string.theme_color_title,
+                summary = R.string.theme_color_summary
+            ).registerOnClickListener {
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.theme_color_title)
                     .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
@@ -162,6 +134,62 @@ class SettingsFragment : SettingsAdapter.SettingsFragment() {
             }
         }
 
-        return super.onPreferenceTreeClick(preference)
+        Category(R.string.category_backup_restore) {
+            Option(
+                icon = R.drawable.ic_backup_scope,
+                title = R.string.backup_scope_title,
+                summary = R.string.backup_scope_summary
+            ).registerOnClickListener {
+                backupLauncher.launch("AppLock ${Date()}.txt")
+            }
+
+            Option(
+                icon = R.drawable.ic_restore_scope,
+                title = R.string.restore_scope_title,
+                summary = R.string.restore_scope_summary
+            ).registerOnClickListener {
+                restoreLauncher.launch(arrayOf("text/plain"))
+            }
+        }
+
+        Category(R.string.category_about) {
+            Option(
+                icon = R.drawable.ic_module_author,
+                title = R.string.module_author_title,
+                summary = R.string.module_author_summary
+            ).registerOnClickListener {
+                startActivity(Intent.parseUri(resources.getString(R.string.module_author_link), 0))
+            }
+
+            Option(
+                icon = R.drawable.ic_project_url,
+                title = R.string.project_url_title,
+                summary = R.string.project_url_summary
+            ).registerOnClickListener {
+                startActivity(Intent.parseUri(resources.getString(R.string.project_url_summary), 0))
+            }
+
+            Option(
+                icon = R.drawable.ic_license,
+                title = R.string.license_title,
+                summary = R.string.license_summary
+            ).registerOnClickListener {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(resources.getText(R.string.license_title))
+                    .setPositiveButton(resources.getText(R.string.dismiss)) { _, _ -> }
+                    .create()
+                    .apply {
+                        val binding = ItemLicenseDialogBinding.inflate(layoutInflater)
+                        setView(binding.root)
+                        binding.licenseList.apply {
+                            layoutManager = LinearLayoutManager(
+                                context, LinearLayoutManager.VERTICAL, false
+                            )
+                            adapter = LicenseListAdapter(resources.getStringArray(R.array.license))
+                        }
+                    }
+                    .show()
+            }
+        }
     }
 }

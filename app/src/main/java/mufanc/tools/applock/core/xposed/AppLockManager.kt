@@ -2,18 +2,20 @@ package mufanc.tools.applock.core.xposed
 
 import android.app.ActivityThread
 import android.content.Context
-import android.net.Uri
 import android.os.*
 import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
+import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockManager
+import mufanc.tools.applock.util.ConfigProvider
 import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
+import kotlin.concurrent.thread
 
 class AppLockManager private constructor() : IAppLockManager.Stub() {
 
@@ -29,7 +31,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
 
         private val instance by lazy { AppLockManager() }
         fun query(packageName: String): Boolean {
-            return instance.whitelist.contains(packageName)
+            return instance.scope.contains(packageName)
         }
 
         private val context by lazy {
@@ -60,16 +62,13 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                             .getStaticFieldAs<Int>("PHASE_BOOT_COMPLETED")
 
                         after { param ->
-                            if (param.args[index] == code) {
-                                context.contentResolver.acquireUnstableContentProviderClient(
-                                    Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
-                                )?.call(
-                                    "scope", null, Bundle()
-                                )?.getStringArray("scope")?.also {
-                                    instance.whitelist.addAll(it)
-                                    Logger.i("@Server: load scope from provider: ${it.contentToString()}")
-                                } ?: let {
-                                    Logger.e("@Server: failed to resolve whitelist!")
+                            if (param.args[index] == code) {  // 系统启动完成
+                                thread {
+                                    catch {
+                                        val configs = ConfigProvider.fetch(context)
+                                        instance.scope.addAll(configs.scope)
+                                        AppLockHelper.killLevelTarget = configs.killLevel
+                                    }
                                 }
                             }
                         }
@@ -95,7 +94,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         }
     }
 
-    private val whitelist = mutableSetOf<String>()
+    private val scope = mutableSetOf<String>()
 
     override fun handshake(): Bundle {
         Logger.i("@Server: handshake from client!")
@@ -117,7 +116,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
     }
 
     override fun updateWhitelist(packageList: Array<out String>) {
-        whitelist.update(packageList.toList())
+        scope.update(packageList.toList())
         Logger.i("@Server: scope updated: ${packageList.contentToString()}")
     }
 }

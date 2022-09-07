@@ -59,7 +59,7 @@ object AppLockHelper {
     }
 
     // decompiled from miui-services.jar
-    private fun killLevelToString(level: Int): String {
+    fun killLevelToString(level: Int): String {
         return when (level) {
             100 -> "none"
             101 -> "trim-memory"
@@ -114,10 +114,10 @@ object AppLockHelper {
                         .maxByOrNull {
                             it.parameterCount
                         } ?: run {
-                        findClass("com.android.server.am.ProcessCleanerBase")
-                            .findMethods(filter)
-                            .minByOrNull { it.parameterCount }!!
-                    }
+                            findClass("com.android.server.am.ProcessCleanerBase")
+                                .findMethods(filter)
+                                .minByOrNull { it.parameterCount }!!
+                        }
                 )
             }
         }

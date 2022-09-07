@@ -5,7 +5,6 @@ import android.os.IBinder
 import android.os.ServiceManager
 import androidx.annotation.Keep
 import mufanc.easyhook.api.Logger
-import mufanc.tools.applock.util.Settings
 import org.lsposed.hiddenapibypass.HiddenApiBypass
 import rikka.sui.Sui
 
@@ -31,6 +30,5 @@ class App : Application() {
         super.onCreate()
         context = this
         Sui.init(BuildConfig.APPLICATION_ID)
-        Settings.init(createDeviceProtectedStorageContext())
     }
 }

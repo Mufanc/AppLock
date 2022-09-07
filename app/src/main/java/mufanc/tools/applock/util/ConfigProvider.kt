@@ -5,42 +5,33 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
-import android.os.*
-import androidx.preference.PreferenceManager
+import android.os.Binder
+import android.os.Bundle
+import android.os.Process
 import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.BuildConfig
+import mufanc.tools.applock.core.xposed.AppLockHelper
+import kotlin.reflect.KProperty
 
 
 class ConfigProvider : ContentProvider() {
 
-    class Configs(
-        val scope: Array<String>,
-        val killLevel: Int
-    ) : Parcelable {
-        constructor(parcel: Parcel) : this(
-            parcel.createStringArray()!!,
-            parcel.readInt()
-        )
+    class Configs(private val bundle: Bundle) {
+        val scope: Array<String> by bundle
+        val killLevel: Int by bundle
 
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-            parcel.writeStringArray(scope)
-            parcel.writeInt(killLevel)
+        constructor(scope: Array<String>, killLevel: Int) : this(Bundle()) {
+            bundle.putStringArray(::scope.name, scope)
+            bundle.putInt(::killLevel.name, killLevel)
         }
 
-        override fun describeContents(): Int = 0
+        fun getBundle() = bundle
 
-        companion object CREATOR : Parcelable.Creator<Configs> {
-            override fun createFromParcel(parcel: Parcel): Configs {
-                return Configs(parcel)
-            }
-
-            override fun newArray(size: Int): Array<Configs?> {
-                return arrayOfNulls(size)
-            }
+        private operator fun <T> Bundle.getValue(configs: Configs, property: KProperty<*>): T {
+            @Suppress("Unchecked_Cast")
+            return get(property.name) as T
         }
     }
-
-    private var killLevel: Int = 101
 
     companion object {
         private const val BUNDLE_KEY = "DATA"
@@ -51,15 +42,13 @@ class ConfigProvider : ContentProvider() {
                 Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
             )?.call(
                 METHOD_GET_CONFIGS, null, Bundle()
-            )?.also {
-                Logger.i(it.keySet().toList())
-            }?.getParcelable<Configs>(BUNDLE_KEY)?.let { configs ->
-                Logger.i("@Server: load scope from provider: ${configs.scope}")
-                Logger.i("@Server: load kill level from provider: ${configs.killLevel}")
+            )?.getBundle(BUNDLE_KEY)?.let {
+                val configs = Configs(it)
+                Logger.i("@Server: load scope from provider: ${configs.scope.contentToString()}")
+                Logger.i("@Server: load kill level from provider: ${configs.killLevel} " +
+                        "(${AppLockHelper.killLevelToString(configs.killLevel)})")
                 return configs
-            } ?: let {
-                throw Exception("@Server: failed to load configs!")
-            }
+            } ?: error("@Server: failed to load configs!")
         }
     }
 
@@ -71,33 +60,27 @@ class ConfigProvider : ContentProvider() {
             return Bundle()
         }
 
-        Logger.i(method)
         if (method == METHOD_GET_CONFIGS) {
-//            reply.putParcelable(
-//                BUNDLE_KEY,
-//                Configs(ScopeManager.scope.toTypedArray(), killLevel)  // Todo: 动态加载配置
-//            )
-            reply.putStringArray("scope", ScopeManager.scope.toTypedArray())
-            reply.putInt("killLevel", killLevel)
-            Logger.i("Fuck you!")
+            reply.putBundle(
+                BUNDLE_KEY, Configs(
+                    ScopeManager.scope.toTypedArray(),
+                    when (Settings.KILL_LEVEL.value) {
+                        Settings.KillLevel.TRIM_MEMORY -> 101
+                        Settings.KillLevel.NONE -> 100
+                    }
+                ).getBundle()
+            )
         }
 
         return reply
     }
 
     override fun onCreate(): Boolean {
-        ScopeManager.init(context!!)
-        killLevel = when (
-            PreferenceManager.getDefaultSharedPreferences(
-                context!!.createDeviceProtectedStorageContext()
-            ).getString("KILL_LEVEL", "TRIM_MEMORY").also {
-                Logger.e(it)
-            }
-        ) {
-            "NONE" -> 100
-            "TRIM_MEMORY" -> 101
-            else -> throw RuntimeException()
-        }
+        val context = context!!
+
+        ScopeManager.init(context)
+        Settings.init(context.createDeviceProtectedStorageContext())
+
         return true
     }
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.preference.*
-import mufanc.easyhook.api.Logger
 import kotlin.reflect.KProperty
 
 abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListener {
@@ -65,7 +64,6 @@ abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListe
     @Deprecated("Don't call this method in the subclass")
     final override fun onSharedPreferenceChanged(ignored: SharedPreferences, key: String) {
         keyToHolder[key]?.let { holder ->
-            Logger.e(holder, key)
             updateHolder(holder, key)
         }
     }

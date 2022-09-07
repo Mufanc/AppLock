@@ -29,17 +29,17 @@ fun <T> MutableCollection<T>.update(elements: Collection<T>) {
     }
 }
 
-fun Method.signature(): String {
-    fun typeToString(type: Class<*>): String {
-        return java.lang.reflect.Array.newInstance(type, 0)
-            .javaClass.name.replace('.', '/').substring(1)
-    }
+fun Class<*>.signature(): String {
+    return java.lang.reflect.Array.newInstance(this, 0)
+        .javaClass.name.replace('.', '/').substring(1)
+}
 
+fun Method.signature(): String {
     val builder = StringBuilder("(")
     this.parameterTypes.forEach {
-        builder.append(typeToString(it))
+        builder.append(it.signature())
     }
     builder.append(")")
-    builder.append(if (returnType == Void.TYPE) "V" else typeToString(returnType))
+    builder.append(if (returnType == Void.TYPE) "V" else returnType.signature())
     return builder.toString()
 }

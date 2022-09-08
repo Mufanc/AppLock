@@ -70,8 +70,6 @@ object AppLockHelper {
         }
     }
 
-    var killLevelTarget = 101  // TRIM_MEMORY
-
     private fun hookKillOnce(loader: LoaderContext, method: Method) = loader.apply {
         method.hook {
             Logger.i("@Hooker: hook killOnce: ${method.signature()}")
@@ -85,7 +83,8 @@ object AppLockHelper {
                     val killLevel = param.args[2] as Int
                     val processName = processRecord.getField("processName")
                     getPackageList(processRecord).forEach {
-                        if (AppLockManager.query(it)) {
+                        val (isProtected, killLevelTarget) = AppLockService.query(it)
+                        if (isProtected) {
                             param.args[2] = killLevelTarget
                             Logger.i("@AppLock: protected $processName " +
                                     "(${killLevelToString(killLevel)} -> ${killLevelToString(killLevelTarget)})")
@@ -99,7 +98,7 @@ object AppLockHelper {
     }
 
     fun init() {
-        AppLockManager.init()
+        AppLockService.init()
         EasyHook.handle {
             // Hook `ProcessManagerService` 实现应用免杀
             onLoadPackage("android") {

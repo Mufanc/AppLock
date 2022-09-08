@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
-import mufanc.tools.applock.core.xposed.AppLockManager
-import mufanc.tools.applock.core.xposed.AppLockManager.Companion.BundleKeys
+import mufanc.tools.applock.core.xposed.AppLockService
+import mufanc.tools.applock.core.xposed.AppLockService.Companion.BundleKeys
 
 object Globals {
     // MIUI
@@ -34,10 +34,10 @@ object Globals {
     )
 
     // AppLock service
-    val isHookerWorking = MutableLiveData(AppLockManager.client != null)
+    val isHookerWorking = MutableLiveData(AppLockService.client != null)
     var isServiceVersionOutdated = false
     val hookerInfo = MutableLiveData(
-        AppLockManager.client?.handshake()?.run {
+        AppLockService.client?.handshake()?.run {
             isServiceVersionOutdated = getInt(BundleKeys.VERSION.name) < BuildConfig.VERSION_CODE
             "Pid:${getInt(BundleKeys.PID.name)}, Uid:${getInt(BundleKeys.UID.name)}"
         } ?: "Failed."

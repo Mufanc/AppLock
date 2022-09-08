@@ -11,13 +11,14 @@ import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
-import mufanc.tools.applock.IAppLockManager
-import mufanc.tools.applock.util.ConfigProvider
+import mufanc.tools.applock.IAppLockService
+import mufanc.tools.applock.util.channel.ConfigProvider
+import mufanc.tools.applock.util.channel.Configs
 import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
 import kotlin.concurrent.thread
 
-class AppLockManager private constructor() : IAppLockManager.Stub() {
+class AppLockService private constructor() : IAppLockService.Stub() {
 
     companion object {
         private val TRANSACTION_CODE = "Lock"
@@ -29,9 +30,12 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
             PID, UID, VERSION
         }
 
-        private val instance by lazy { AppLockManager() }
-        fun query(packageName: String): Boolean {
-            return instance.scope.contains(packageName)
+        private val instance by lazy { AppLockService() }
+        fun query(packageName: String): Pair<Boolean, Int> {
+            return Pair(
+                instance.scope.contains(packageName),
+                instance.killLevel
+            )
         }
 
         private val context by lazy {
@@ -67,7 +71,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
                                     catch {
                                         val configs = ConfigProvider.fetch(context)
                                         instance.scope.addAll(configs.scope)
-                                        AppLockHelper.killLevelTarget = configs.killLevel
+                                        instance.killLevel = configs.killLevel
                                     }
                                 }
                             }
@@ -95,6 +99,7 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
     }
 
     private val scope = mutableSetOf<String>()
+    private var killLevel: Int = 101  // TRIM_MEMORY
 
     override fun handshake(): Bundle {
         Logger.i("@Server: handshake from client!")
@@ -115,8 +120,18 @@ class AppLockManager private constructor() : IAppLockManager.Stub() {
         )
     }
 
-    override fun updateWhitelist(packageList: Array<out String>) {
-        scope.update(packageList.toList())
-        Logger.i("@Server: scope updated: ${packageList.contentToString()}")
+    override fun updateConfigs(bundle: Bundle) {
+        val configs = Configs(bundle)
+
+        val newScope = configs.scope.toSet()
+        if (scope != newScope) {
+            scope.update(newScope)
+            Logger.i("@Server: scope updated: $scope")
+        }
+
+        if (killLevel != configs.killLevel) {
+            killLevel = configs.killLevel
+            Logger.i("@Server: kill-level updated: $killLevel (${AppLockHelper.killLevelToString(killLevel)})")
+        }
     }
 }

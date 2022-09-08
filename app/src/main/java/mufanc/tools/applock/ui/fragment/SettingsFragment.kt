@@ -13,12 +13,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.easyhook.api.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
+import mufanc.tools.applock.core.xposed.AppLockService
 import mufanc.tools.applock.databinding.ItemLicenseDialogBinding
 import mufanc.tools.applock.databinding.ItemThemeColorDialogBinding
 import mufanc.tools.applock.ui.adapter.LicenseListAdapter
 import mufanc.tools.applock.ui.adapter.ThemeColorAdapter
 import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
+import mufanc.tools.applock.util.channel.Configs
 import mufanc.tools.applock.util.settings.SettingsBuilder
 import mufanc.tools.applock.util.update
 import java.io.BufferedReader
@@ -74,18 +76,6 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
                 summary = R.string.hide_icon_summary
             )
 
-            workMode.registerOnChangeListener { mode ->
-                when (mode) {
-                    Settings.WorkMode.XPOSED -> {
-                        hideIcon.preference.isEnabled = true
-                    }
-                    Settings.WorkMode.SHIZUKU -> {
-                        hideIcon.preference.isEnabled = false
-                        hideIcon.preference.isChecked = false
-                    }
-                }
-            }
-
             hideIcon.registerOnChangeListener { checked ->
                 requireContext().packageManager.setComponentEnabledSetting(
                     ComponentName(requireContext(), "${BuildConfig.APPLICATION_ID}.Launcher"),
@@ -98,16 +88,36 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
                 )
             }
 
+            val killLevel = ListOption(
+                mirror = Settings.KILL_LEVEL,
+                icon = R.drawable.ic_kill_level,
+                title = R.string.kill_level_title
+            )
+
+            killLevel.registerOnChangeListener {
+                view?.post {
+                    AppLockService.client?.updateConfigs(Configs.collect().getBundle())
+                }
+            }
+
+            workMode.registerOnChangeListener { mode ->
+                when (mode) {
+                    Settings.WorkMode.XPOSED -> {
+                        hideIcon.preference.isEnabled = true
+                        killLevel.preference.isEnabled = true
+                    }
+                    Settings.WorkMode.SHIZUKU -> {
+                        hideIcon.preference.isEnabled = false
+                        hideIcon.preference.isChecked = false
+                        killLevel.preference.isEnabled = false
+                    }
+                }
+            }
+
             ListOption(
                 mirror = Settings.RESOLVE_MODE,
                 icon = R.drawable.ic_resolve_mode,
                 title = R.string.resolve_mode_title
-            )
-
-            ListOption(
-                mirror = Settings.KILL_LEVEL,
-                icon = R.drawable.ic_kill_level,
-                title = R.string.kill_level_title
             )
 
             Option(

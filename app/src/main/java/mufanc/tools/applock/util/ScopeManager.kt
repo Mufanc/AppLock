@@ -5,7 +5,8 @@ import android.content.pm.PackageManager
 import androidx.room.*
 import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.core.shizuku.ShizukuHelper
-import mufanc.tools.applock.core.xposed.AppLockManager
+import mufanc.tools.applock.core.xposed.AppLockService
+import mufanc.tools.applock.util.channel.Configs
 
 @Database(entities = [ScopeManager.AppEntity::class], version = 1, exportSchema = false)
 abstract class ScopeManager : RoomDatabase() {
@@ -44,7 +45,7 @@ abstract class ScopeManager : RoomDatabase() {
 
             when (Settings.WORK_MODE.value) {
                 Settings.WorkMode.XPOSED -> {
-                    AppLockManager.client?.updateWhitelist(scope.toTypedArray())
+                    AppLockService.client?.updateConfigs(Configs.collect().getBundle())
                 }
                 Settings.WorkMode.SHIZUKU -> {
                     ShizukuHelper.writePackageList(scope.toList())

@@ -1,7 +1,7 @@
 package mufanc.tools.applock;
 
-interface IAppLockManager {
+interface IAppLockService {
     Bundle handshake() = 16777114;
     oneway void reboot() = 0;
-    oneway void updateWhitelist(in String[] packageList) = 1;
+    oneway void updateConfigs(in Bundle bundle) = 1;
 }

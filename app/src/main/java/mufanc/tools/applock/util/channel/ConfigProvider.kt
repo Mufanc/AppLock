@@ -1,4 +1,4 @@
-package mufanc.tools.applock.util
+package mufanc.tools.applock.util.channel
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -11,30 +11,13 @@ import android.os.Process
 import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.core.xposed.AppLockHelper
-import kotlin.reflect.KProperty
+import mufanc.tools.applock.util.ScopeManager
+import mufanc.tools.applock.util.Settings
 
 
 class ConfigProvider : ContentProvider() {
 
-    class Configs(private val bundle: Bundle) {
-        val scope: Array<String> by bundle
-        val killLevel: Int by bundle
-
-        constructor(scope: Array<String>, killLevel: Int) : this(Bundle()) {
-            bundle.putStringArray(::scope.name, scope)
-            bundle.putInt(::killLevel.name, killLevel)
-        }
-
-        fun getBundle() = bundle
-
-        private operator fun <T> Bundle.getValue(configs: Configs, property: KProperty<*>): T {
-            @Suppress("Unchecked_Cast")
-            return get(property.name) as T
-        }
-    }
-
     companion object {
-        private const val BUNDLE_KEY = "DATA"
         private const val METHOD_GET_CONFIGS = "FETCH"
 
         fun fetch(context: Context): Configs {
@@ -42,10 +25,10 @@ class ConfigProvider : ContentProvider() {
                 Uri.parse("content://${BuildConfig.APPLICATION_ID}.provider")
             )?.call(
                 METHOD_GET_CONFIGS, null, Bundle()
-            )?.getBundle(BUNDLE_KEY)?.let {
+            )?.let {
                 val configs = Configs(it)
                 Logger.i("@Server: load scope from provider: ${configs.scope.contentToString()}")
-                Logger.i("@Server: load kill level from provider: ${configs.killLevel} " +
+                Logger.i("@Server: load kill-level from provider: ${configs.killLevel} " +
                         "(${AppLockHelper.killLevelToString(configs.killLevel)})")
                 return configs
             } ?: error("@Server: failed to load configs!")
@@ -61,15 +44,7 @@ class ConfigProvider : ContentProvider() {
         }
 
         if (method == METHOD_GET_CONFIGS) {
-            reply.putBundle(
-                BUNDLE_KEY, Configs(
-                    ScopeManager.scope.toTypedArray(),
-                    when (Settings.KILL_LEVEL.value) {
-                        Settings.KillLevel.TRIM_MEMORY -> 101
-                        Settings.KillLevel.NONE -> 100
-                    }
-                ).getBundle()
-            )
+            reply.putAll(Configs.collect().getBundle())
         }
 
         return reply

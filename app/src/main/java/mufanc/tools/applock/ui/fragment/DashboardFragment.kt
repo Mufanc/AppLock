@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
-import mufanc.tools.applock.core.xposed.AppLockManager
+import mufanc.tools.applock.core.xposed.AppLockService
 import mufanc.tools.applock.databinding.FragmentDashboardBinding
 import mufanc.tools.applock.util.Globals
 import mufanc.tools.applock.util.Settings
@@ -27,7 +27,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
                     .setTitle(R.string.require_reboot)
                     .setMessage(R.string.core_version_not_match)
                     .setPositiveButton(R.string.reboot_now) { _, _ ->
-                        AppLockManager.client?.reboot() ?: requireActivity().finish()
+                        AppLockService.client?.reboot() ?: requireActivity().finish()
                     }
                     .setNegativeButton(R.string.reboot_later) { dialog, _ ->
                         dialog.dismiss()

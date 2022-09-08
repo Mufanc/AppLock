@@ -32,7 +32,9 @@ object Settings : SettingsBuilder() {
 
     val KILL_LEVEL by Holder.Enum(KillLevel.TRIM_MEMORY)
 
+    val SCOPE by Holder.StringSet(setOf())
+
     init {
-        register(WORK_MODE, HIDE_ICON, RESOLVE_MODE, KILL_LEVEL)
+        register(WORK_MODE, HIDE_ICON, RESOLVE_MODE, KILL_LEVEL, SCOPE)
     }
 }

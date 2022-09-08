@@ -32,6 +32,7 @@ abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListe
                 }!!
             }
         }
+        class StringSet(default: Set<String>) : Holder<Set<String>>(default)
 
         var value: T? = null
 
@@ -57,6 +58,9 @@ abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListe
             is Holder.Enum<*> -> {
                 @Suppress("Unchecked_Cast")
                 (holder as Holder<Enum<*>>).value = holder.valueOf(sharedPrefs.getString(key, "")!!)
+            }
+            is Holder.StringSet -> {
+                holder.value = sharedPrefs.getStringSet(key, null)
             }
         }
     }

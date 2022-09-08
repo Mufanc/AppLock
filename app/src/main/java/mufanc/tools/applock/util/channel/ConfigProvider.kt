@@ -11,7 +11,6 @@ import android.os.Process
 import mufanc.easyhook.api.Logger
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.core.xposed.AppLockHelper
-import mufanc.tools.applock.util.ScopeManager
 import mufanc.tools.applock.util.Settings
 
 
@@ -51,11 +50,7 @@ class ConfigProvider : ContentProvider() {
     }
 
     override fun onCreate(): Boolean {
-        val context = context!!
-
-        ScopeManager.init(context)
-        Settings.init(context.createDeviceProtectedStorageContext())
-
+        Settings.init(context!!.createDeviceProtectedStorageContext())
         return true
     }
 

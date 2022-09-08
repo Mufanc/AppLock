@@ -120,9 +120,6 @@ dependencies {
     implementation("dev.rikka.shizuku:provider:12.1.0")
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:4.3")
 
-    kapt("androidx.room:room-compiler:2.4.3")
-    implementation("androidx.room:room-runtime:2.4.3")
-
     kapt("com.github.bumptech.glide:compiler:4.13.2")
     implementation("com.github.bumptech.glide:glide:4.13.2")
 

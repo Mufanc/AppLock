@@ -45,7 +45,7 @@ abstract class ScopeManager : RoomDatabase() {
 
             when (Settings.WORK_MODE.value) {
                 Settings.WorkMode.XPOSED -> {
-                    AppLockService.client?.updateConfigs(Configs.collect().getBundle())
+                    AppLockService.client?.updateConfigs(Configs.collect().asBundle())
                 }
                 Settings.WorkMode.SHIZUKU -> {
                     ShizukuHelper.writePackageList(scope.toList())

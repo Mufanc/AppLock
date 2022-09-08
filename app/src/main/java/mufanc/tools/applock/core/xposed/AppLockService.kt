@@ -3,7 +3,6 @@ package mufanc.tools.applock.core.xposed
 import android.app.ActivityThread
 import android.content.Context
 import android.os.*
-import androidx.core.os.bundleOf
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.catch
@@ -14,6 +13,7 @@ import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockService
 import mufanc.tools.applock.util.channel.ConfigProvider
 import mufanc.tools.applock.util.channel.Configs
+import mufanc.tools.applock.util.channel.Handshake
 import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
 import kotlin.concurrent.thread
@@ -25,10 +25,6 @@ class AppLockService private constructor() : IAppLockService.Stub() {
             .toByteArray()
             .mapIndexed { i, ch -> ch.toInt() shl (i * 8) }
             .sum()
-
-        enum class BundleKeys {
-            PID, UID, VERSION
-        }
 
         private val instance by lazy { AppLockService() }
         fun query(packageName: String): Pair<Boolean, Int> {
@@ -103,11 +99,7 @@ class AppLockService private constructor() : IAppLockService.Stub() {
 
     override fun handshake(): Bundle {
         Logger.i("@Server: handshake from client!")
-        return bundleOf(
-            BundleKeys.PID.name to Process.myPid(),
-            BundleKeys.UID.name to Process.myUid(),
-            BundleKeys.VERSION.name to BuildConfig.VERSION_CODE
-        )
+        return Handshake(Process.myPid(), Process.myUid(), BuildConfig.VERSION_CODE).asBundle()
     }
 
     override fun reboot() {

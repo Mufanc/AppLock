@@ -44,7 +44,7 @@ class ConfigProvider : ContentProvider() {
         }
 
         if (method == METHOD_GET_CONFIGS) {
-            reply.putAll(Configs.collect().getBundle())
+            reply.putAll(Configs.collect().asBundle())
         }
 
         return reply

@@ -96,7 +96,7 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
 
             killLevel.registerOnChangeListener {
                 view?.post {
-                    AppLockService.client?.updateConfigs(Configs.collect().getBundle())
+                    AppLockService.client?.updateConfigs(Configs.collect().asBundle())
                 }
             }
 

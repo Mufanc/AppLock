@@ -74,10 +74,6 @@ abstract class OptionGroup(
             initialize(this)
             preference = MaterialSwitchPreference(context).apply{
                 isChecked = mirror.value
-//            setOnPreferenceChangeListener { _, value ->
-//                onChange(this@Fragment, value as Boolean)
-//                true
-//            }
             }
         }
 

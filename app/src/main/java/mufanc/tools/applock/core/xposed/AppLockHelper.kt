@@ -15,6 +15,7 @@ import mufanc.easyhook.api.reflect.findField
 import mufanc.easyhook.api.reflect.findMethod
 import mufanc.easyhook.api.reflect.findMethods
 import mufanc.easyhook.api.reflect.getField
+import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.util.signature
 import java.lang.reflect.Field
 import java.lang.reflect.Method
@@ -77,11 +78,14 @@ object AppLockHelper {
                 name == "processName"
             }!!
             before { param ->
-                val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: return@before
+                val processRecord = param.args[0]
+                val killLevel = param.args[2] as Int
+                val processName = processNameField.get(processRecord)
+                val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: run {
+                    Logger.w("No killer found for process: $processName, skipped!")
+                    return@before
+                }
                 if (KILLERS.contains(killer)) {
-                    val processRecord = param.args[0]
-                    val killLevel = param.args[2] as Int
-                    val processName = processRecord.getField("processName")
                     getPackageList(processRecord).forEach {
                         val (isProtected, killLevelTarget) = AppLockService.query(it)
                         if (isProtected) {
@@ -91,6 +95,8 @@ object AppLockHelper {
                             return@before
                         }
                     }
+                }
+                if (BuildConfig.DEBUG) {
                     Logger.v("@AppLock: [$killer] killing $processName (${killLevelToString(killLevel)})")
                 }
             }

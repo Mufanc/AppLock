@@ -22,7 +22,7 @@ import java.lang.reflect.Method
 
 object AppLockHelper {
 
-    private val KILLERS = setOf("com.miui.home", "com.android.systemui")
+    private val KILLERS = setOf("com.miui.home", "com.android.systemui", "system")
 
     private val processMaps: SparseArray<*> by lazy {
         IActivityManager.Stub.asInterface(

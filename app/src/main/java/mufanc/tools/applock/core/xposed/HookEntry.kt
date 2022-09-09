@@ -11,7 +11,7 @@ import mufanc.tools.applock.BuildConfig
 class HookEntry : HookHelper(App.TAG) {
     override fun onHook() {
         if (BuildConfig.DEBUG) {
-            Logger.configure(toXposedBridge = true)
+            Logger.configure(target = +Logger.Target.XPOSED_BRIDGE, level = Logger.Level.TRACE)
         }
         handle {
             // 改变模块激活状态  Todo: 整合到 EasyHook

@@ -18,7 +18,7 @@ class ThemeColorAdapter(
     private val dialog: Dialog
 ) : RecyclerView.Adapter<ThemeColorAdapter.ViewHolder>() {
 
-    private enum class ThemeColor(@DrawableRes val iconId: Int) {
+    enum class ThemeColor(@DrawableRes val iconId: Int) {
         PYRO(R.drawable.ic_element_pyro),        // 火
         HYDRO(R.drawable.ic_element_hydro),      // 水
         ANEMO(R.drawable.ic_element_anemo),      // 风
@@ -47,7 +47,7 @@ class ThemeColorAdapter(
         val color = ThemeColor.values()[position]
         holder.icon.setImageResource(color.iconId)
         holder.itemView.setOnClickListener {
-            Settings.sharedPrefs.edit().apply {
+            Settings.prefs.edit().apply {
                 putString(ThemeColor::class.java.simpleName, color.name)
             }.commit()
             dialog.dismiss()
@@ -60,7 +60,7 @@ class ThemeColorAdapter(
     companion object {
         @StyleRes
         fun getColorThemeStyle(): Int {
-            val value = Settings.sharedPrefs
+            val value = Settings.prefs
                 .getString(ThemeColor::class.java.simpleName, "")!!
                 .ifEmpty { ThemeColor.PYRO.name }
             return when (ThemeColor.valueOf(value)) {

@@ -12,7 +12,8 @@
         <item>Mufanc - EasyHook | MIT License | https://github.com/Mufanc/EasyHook</item>
         <item>RikkaApps - Shizuku-API | MIT License | https://github.com/RikkaApps/Shizuku-API</item>
         <item>RikkaApps - MaterialThemeBuilder | MIT License | https://github.com/RikkaApps/MaterialThemeBuilder</item>
-        <item>Bumptech - Glide | BSD Licenses | https://github.com/bumptech/glide</item>
+        <item>Bumptech - Glide | BSD License | https://github.com/bumptech/glide</item>
+        <item>Google - Gson | Apache License 2.0 | https://github.com/google/gson</item>
     </string-array>
 
 </resources>

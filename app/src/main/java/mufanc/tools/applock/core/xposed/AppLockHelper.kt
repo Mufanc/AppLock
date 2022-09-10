@@ -82,7 +82,7 @@ object AppLockHelper {
                 val killLevel = param.args[2] as Int
                 val processName = processNameField.get(processRecord)
                 val killer = processNameField.get(processMaps.get(Binder.getCallingPid())) ?: run {
-                    Logger.w("No killer found for process: $processName, skipped!")
+                    Logger.w("@AppLock: No killer found for process: $processName, skipped!")
                     return@before
                 }
                 if (KILLERS.contains(killer)) {

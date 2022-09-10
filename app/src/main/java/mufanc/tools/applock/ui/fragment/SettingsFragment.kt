@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.catch
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.R
@@ -25,7 +26,7 @@ import mufanc.tools.applock.util.settings.SettingsBuilder
 import mufanc.tools.applock.util.update
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
 import java.util.*
 
 class SettingsFragment : SettingsBuilder.Fragment(Settings) {
@@ -38,27 +39,35 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
         backupLauncher = registerForActivityResult(ActivityResultContracts.CreateDocument("text/plain")) { uri ->
             if (uri == null) return@registerForActivityResult
             requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
-                stream.write(
-                    ScopeManager.scope.joinToString("\n").toByteArray(StandardCharsets.UTF_8)
-                )
+                stream.write(Settings.backupToJson().toByteArray())
             }
+            Logger.i("@Module: backup settings!")
         }
 
         restoreLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
             if (uri == null) return@registerForActivityResult
             catch {
                 requireContext().contentResolver.openInputStream(uri).use { stream ->
-                    val scope = BufferedReader(InputStreamReader(stream)).readLines()
-                        .map { it.trim() }.filter { it.isNotEmpty() }
-                    if (scope.all { it.matches("^[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)+$".toRegex()) }) {
+                    try {
+                        val scope = Settings.restoreFromJson(BufferedReader(InputStreamReader(stream)).readText())
                         ScopeManager.scope.update(scope)
                         ScopeManager.commit()
-                    } else {
+                    } catch (err: Throwable) {
+                        Logger.e("@Module: failed to restore settings!", err = err)
                         Toast.makeText(requireContext(), R.string.invalid_backup, Toast.LENGTH_SHORT).show()
                     }
+                    requireActivity().recreate()
+                    Logger.i("@Module: restore settings")
                 }
             }
         }
+    }
+
+    lateinit var onWorkModeChangedListener: (Settings.WorkMode) -> Unit
+
+    override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
+        super.onCreatePreferences(bundle, rootKey)
+        onWorkModeChangedListener.invoke(Settings.WORK_MODE.value)
     }
 
     override fun buildScreen() = buildFromDsl {
@@ -100,7 +109,7 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
                 }
             }
 
-            workMode.registerOnChangeListener { mode ->
+            onWorkModeChangedListener = fun (mode) {
                 when (mode) {
                     Settings.WorkMode.XPOSED -> {
                         hideIcon.preference.isEnabled = true
@@ -112,6 +121,10 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
                         killLevel.preference.isEnabled = false
                     }
                 }
+            }
+
+            workMode.registerOnChangeListener {
+                onWorkModeChangedListener(it)
             }
 
             ListOption(
@@ -146,17 +159,18 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
 
         Category(R.string.category_backup_restore) {
             Option(
-                icon = R.drawable.ic_backup_scope,
-                title = R.string.backup_scope_title,
-                summary = R.string.backup_scope_summary
+                icon = R.drawable.ic_backup_settings,
+                title = R.string.backup_settings_title,
+                summary = R.string.backup_settings_summary
             ).registerOnClickListener {
-                backupLauncher.launch("AppLock ${Date()}.txt")
+                val now = SimpleDateFormat("yyyy-MM-dd'T'HH:MM:SS", Locale.getDefault()).format(Date())
+                backupLauncher.launch("AppLock_${now}.txt")
             }
 
             Option(
                 icon = R.drawable.ic_restore_scope,
-                title = R.string.restore_scope_title,
-                summary = R.string.restore_scope_summary
+                title = R.string.restore_settings_title,
+                summary = R.string.restore_settings_summary
             ).registerOnClickListener {
                 restoreLauncher.launch(arrayOf("text/plain"))
             }

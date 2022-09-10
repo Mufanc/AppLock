@@ -132,6 +132,8 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.1")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.1")
     implementation("androidx.preference:preference:1.2.0")
+
+    implementation("com.google.code.gson:gson:2.9.1")
 }
 
 fun getVersionCode(): Int {

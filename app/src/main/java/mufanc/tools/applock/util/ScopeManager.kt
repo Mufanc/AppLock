@@ -10,7 +10,7 @@ object ScopeManager {
 
     @SuppressLint("ApplySharedPref")
     fun commit() {
-        Settings.sharedPrefs.edit().apply {
+        Settings.prefs.edit().apply {
             putStringSet(Settings.SCOPE.key, scope)
         }.commit()
 

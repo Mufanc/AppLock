@@ -30,10 +30,10 @@
     <string name="work_mode_xposed">Xposed</string>
     <string name="work_mode_shizuku">Shizuku (Beta)</string>
     <string name="category_backup_restore">Резервное копирование и восстановление</string>
-    <string name="backup_scope_title">Резервная копия</string>
-    <string name="backup_scope_summary">Резервное копирование настроек приложения AppLock</string>
-    <string name="restore_scope_title">Восстановление</string>
-    <string name="restore_scope_summary">Восстановление настроек приложения AppLock</string>
+<!--    <string name="backup_settings_title">Резервная копия</string>-->
+<!--    <string name="backup_settings_summary">Резервное копирование настроек приложения AppLock</string>-->
+<!--    <string name="restore_settings_title">Восстановление</string>-->
+<!--    <string name="restore_settings_summary">Восстановление настроек приложения AppLock</string>-->
     <string name="invalid_backup">Файл поврежден!</string>
     <string name="imported_scope">Резервная копия была успешно импортирована!</string>
     <string name="dismiss">Закрыть</string>

@@ -38,10 +38,10 @@
     <string name="kill_level_trim_memory">TRIM_MEMORY</string>
     <string name="kill_level_none">NONE</string>
     <string name="category_backup_restore">Backup &amp; Restore</string>
-    <string name="backup_scope_title">Backup</string>
-    <string name="backup_scope_summary">Backup scope of AppLock</string>
-    <string name="restore_scope_title">Restore</string>
-    <string name="restore_scope_summary">Restore scope of AppLock</string>
+    <string name="backup_settings_title">Backup</string>
+    <string name="backup_settings_summary">Backup settings of AppLock</string>
+    <string name="restore_settings_title">Restore</string>
+    <string name="restore_settings_summary">Restore settings of AppLock</string>
     <string name="invalid_backup">The file is damaged!</string>
     <string name="imported_scope">The legacy scope has been successfully imported.</string>
     <string name="dismiss">Close</string>

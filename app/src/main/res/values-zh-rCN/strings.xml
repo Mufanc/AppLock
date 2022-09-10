@@ -30,10 +30,10 @@
     <string name="work_mode_xposed">Xposed</string>
     <string name="work_mode_shizuku">Shizuku (Beta)</string>
     <string name="category_backup_restore">备份和恢复</string>
-    <string name="backup_scope_title">备份</string>
-    <string name="backup_scope_summary">备份 AppLock 作用域</string>
-    <string name="restore_scope_title">恢复</string>
-    <string name="restore_scope_summary">恢复 AppLock 作用域</string>
+    <string name="backup_settings_title">备份</string>
+    <string name="backup_settings_summary">备份 AppLock 设置</string>
+    <string name="restore_settings_title">恢复</string>
+    <string name="restore_settings_summary">恢复 AppLock 设置</string>
     <string name="invalid_backup">文件损坏！</string>
     <string name="imported_scope">已成功导入旧版作用域</string>
     <string name="dismiss">关闭</string>

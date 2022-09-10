@@ -50,17 +50,17 @@ abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListe
         }
     }
 
-    lateinit var sharedPrefs: SharedPreferences
+    lateinit var prefs: SharedPreferences
 
     private fun updateHolder(holder: Holder<*>, key: String) {
         when (holder) {
-            is Holder.Boolean -> holder.value = sharedPrefs.getBoolean(key, false)
+            is Holder.Boolean -> holder.value = prefs.getBoolean(key, false)
             is Holder.Enum<*> -> {
                 @Suppress("Unchecked_Cast")
-                (holder as Holder<Enum<*>>).value = holder.valueOf(sharedPrefs.getString(key, "")!!)
+                (holder as Holder<Enum<*>>).value = holder.valueOf(prefs.getString(key, "")!!)
             }
             is Holder.StringSet -> {
-                holder.value = sharedPrefs.getStringSet(key, null)
+                holder.value = prefs.getStringSet(key, null)
             }
         }
     }
@@ -76,17 +76,17 @@ abstract class SettingsBuilder : SharedPreferences.OnSharedPreferenceChangeListe
 
     @Synchronized
     fun init(context: Context) {
-        if (::sharedPrefs.isInitialized) return
+        if (::prefs.isInitialized) return
         isDeviceProtectedStorage = context.isDeviceProtectedStorage
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPrefs.registerOnSharedPreferenceChangeListener(this)
+        prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        prefs.registerOnSharedPreferenceChangeListener(this)
         register.invoke()
     }
 
     protected fun register(vararg args: Holder<*>.Proxy) {
         register = {
             args.forEach { proxy ->
-                if (sharedPrefs.contains(proxy.key)) {
+                if (prefs.contains(proxy.key)) {
                     updateHolder(keyToHolder[proxy.key]!!, proxy.key)
                 }
             }

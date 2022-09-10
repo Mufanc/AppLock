@@ -52,12 +52,12 @@ class SettingsFragment : SettingsBuilder.Fragment(Settings) {
                         val scope = Settings.restoreFromJson(BufferedReader(InputStreamReader(stream)).readText())
                         ScopeManager.scope.update(scope)
                         ScopeManager.commit()
+                        Logger.i("@Module: restore settings!")
                     } catch (err: Throwable) {
                         Logger.e("@Module: failed to restore settings!", err = err)
                         Toast.makeText(requireContext(), R.string.invalid_backup, Toast.LENGTH_SHORT).show()
                     }
                     requireActivity().recreate()
-                    Logger.i("@Module: restore settings")
                 }
             }
         }

@@ -17,7 +17,7 @@ class HookEntry : HookHelper(App.TAG) {
             // 改变模块激活状态  Todo: 整合到 EasyHook
             onLoadPackage(BuildConfig.APPLICATION_ID) {
                 findClass(App::class.java.name)
-                    .findField { name == "isModuleActivated" }!!
+                    .findField { name == App::isModuleActivated.name }!!
                     .set(null, true)
                 Logger.i("@Module: update module activation status")
             }

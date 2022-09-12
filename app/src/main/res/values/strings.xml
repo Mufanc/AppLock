@@ -53,6 +53,7 @@
     <string name="license_summary">Click to show</string>
     <string name="theme_color_title">Theme</string>
     <string name="theme_color_summary">Choose an element you like!</string>
+    <string name="require_api_31">Require Android 12+</string>
 
     <!-- Others -->
     <string name="module_desc">Prevent the app from being killed by side sliding or cleaned up with one click in recents menu.\nTranslated by tg @majestics_translation</string>

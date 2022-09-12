@@ -106,6 +106,11 @@ materialThemeBuilder {
                 darkThemeFormat = "Theme.AppLock.Dark.%s"
             }
         }
+        create("GenshinElement.Dynamic") {
+            isDynamicColors = true  // require API 31+
+            lightThemeFormat = "Theme.AppLock.Light.%s"
+            darkThemeFormat = "Theme.AppLock.Dark.%s"
+        }
     }
 }
 

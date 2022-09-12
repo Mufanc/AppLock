@@ -6,6 +6,7 @@
     <style name="Theme.AppLock.GenshinElement.Geo" parent="Theme.AppLock.Light.GenshinElement.Geo"/>
     <style name="Theme.AppLock.GenshinElement.Hydro" parent="Theme.AppLock.Light.GenshinElement.Hydro"/>
     <style name="Theme.AppLock.GenshinElement.Pyro" parent="Theme.AppLock.Light.GenshinElement.Pyro"/>
+    <style name="Theme.AppLock.GenshinElement.Dynamic" parent="Theme.AppLock.Light.GenshinElement.Dynamic"/>
 
     <!-- Base application theme. -->
     <style name="Theme.AppLock" parent="Theme.Material3.Light.NoActionBar">

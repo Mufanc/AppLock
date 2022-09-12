@@ -6,4 +6,5 @@
     <style name="Theme.AppLock.GenshinElement.Geo" parent="Theme.AppLock.Dark.GenshinElement.Geo"/>
     <style name="Theme.AppLock.GenshinElement.Hydro" parent="Theme.AppLock.Dark.GenshinElement.Hydro"/>
     <style name="Theme.AppLock.GenshinElement.Pyro" parent="Theme.AppLock.Dark.GenshinElement.Pyro"/>
+    <style name="Theme.AppLock.GenshinElement.Dynamic" parent="Theme.AppLock.Dark.GenshinElement.Dynamic"/>
 </resources>

@@ -3,9 +3,11 @@ package mufanc.tools.applock.ui.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +27,8 @@ class ThemeColorAdapter(
         ELECTRO(R.drawable.ic_element_electro),  // 雷
         DENDRO(R.drawable.ic_element_dendro),    // 草
         CRYO(R.drawable.ic_element_cryo),        // 冰
-        GEO(R.drawable.ic_element_geo)           // 岩
+        GEO(R.drawable.ic_element_geo),          // 岩
+        DYNAMIC(R.drawable.ic_element_dynamic)
     }
 
     class ViewHolder(binding: ItemThemeColorBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -43,6 +46,10 @@ class ThemeColorAdapter(
         val color = ThemeColor.values()[position]
         holder.icon.setImageResource(color.iconId)
         holder.itemView.setOnClickListener {
+            if (color == ThemeColor.DYNAMIC && Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                Toast.makeText(holder.itemView.context, R.string.require_api_31, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             Settings.prefs.edit().apply {
                 putString(ThemeColor::class.java.simpleName, color.name)
             }.commit()
@@ -67,6 +74,7 @@ class ThemeColorAdapter(
                 ThemeColor.DENDRO -> R.style.Theme_AppLock_GenshinElement_Dendro
                 ThemeColor.CRYO -> R.style.Theme_AppLock_GenshinElement_Cyro
                 ThemeColor.GEO -> R.style.Theme_AppLock_GenshinElement_Geo
+                ThemeColor.DYNAMIC -> R.style.Theme_AppLock_GenshinElement_Dynamic
             }
         }
     }

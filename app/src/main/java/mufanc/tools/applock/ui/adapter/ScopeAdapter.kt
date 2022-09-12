@@ -80,17 +80,10 @@ class ScopeAdapter(
     }
 
     class ViewHolder(binding: ItemAppSelectBinding) : RecyclerView.ViewHolder(binding.root) {
-        val appIcon: ImageView
-        val appName: TextView
-        val packageName: TextView
-        val checkbox: CheckBox
-
-        init {
-            appIcon = binding.appIcon
-            appName = binding.appName
-            packageName = binding.packageName
-            checkbox = binding.checkbox
-        }
+        val appIcon: ImageView = binding.appIcon
+        val appName: TextView = binding.appName
+        val packageName: TextView = binding.packageName
+        val checkbox: CheckBox = binding.checkbox
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

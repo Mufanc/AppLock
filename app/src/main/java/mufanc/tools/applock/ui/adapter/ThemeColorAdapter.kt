@@ -29,11 +29,7 @@ class ThemeColorAdapter(
     }
 
     class ViewHolder(binding: ItemThemeColorBinding) : RecyclerView.ViewHolder(binding.root) {
-        val icon: ImageView
-
-        init {
-            icon = binding.elementIcon
-        }
+        val icon: ImageView = binding.elementIcon
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

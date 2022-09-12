@@ -12,13 +12,8 @@ class LicenseListAdapter(
 ) : RecyclerView.Adapter<LicenseListAdapter.ViewHolder>() {
 
     class ViewHolder(binding: ItemLicenseBinding) : RecyclerView.ViewHolder(binding.root) {
-        val projectName: TextView
-        val licenseType: TextView
-
-        init {
-            projectName = binding.projectName
-            licenseType = binding.licenseType
-        }
+        val projectName: TextView = binding.projectName
+        val licenseType: TextView = binding.licenseType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

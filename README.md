@@ -13,6 +13,10 @@
 
 ![](images/screenshots.png)
 
-项目地址：[Mufanc/AppLock](https://github.com/Mufanc/AppLock)
+* 项目地址：[Mufanc/AppLock](https://github.com/Mufanc/AppLock)
 
-发行版下载：[模块仓库](https://github.com/Xposed-Modules-Repo/mufanc.tools.applock/releases/latest)
+* 下载链接：
+
+| 稳定版 | 每夜版 |
+| :---: | :---: |
+| [模块仓库](https://github.com/Xposed-Modules-Repo/mufanc.tools.applock/releases/latest) | [Github Actions](https://github.com/Mufanc/AppLock/actions/workflows/build.yml) |

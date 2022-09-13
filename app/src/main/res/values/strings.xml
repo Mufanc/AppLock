@@ -34,9 +34,9 @@
     <string name="work_mode_title">Working Mode</string>
     <string name="work_mode_xposed">Xposed</string>
     <string name="work_mode_shizuku">Shizuku (Beta)</string>
-    <string name="kill_level_title">KILL_LEVEL</string>
-    <string name="kill_level_trim_memory">TRIM_MEMORY</string>
-    <string name="kill_level_none">NONE</string>
+    <string name="kill_level_title">Anti-kill level</string>
+    <string name="kill_level_trim_memory">(General) Trim memory</string>
+    <string name="kill_level_none">(Strong) Do nothing</string>
     <string name="category_backup_restore">Backup &amp; Restore</string>
     <string name="backup_settings_title">Backup</string>
     <string name="backup_settings_summary">Backup settings of AppLock</string>

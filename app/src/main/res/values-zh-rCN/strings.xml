@@ -29,6 +29,9 @@
     <string name="work_mode_title">工作模式</string>
     <string name="work_mode_xposed">Xposed</string>
     <string name="work_mode_shizuku">Shizuku (Beta)</string>
+    <string name="kill_level_title">应用防杀等级</string>
+    <string name="kill_level_trim_memory">【一般】仅清理内存</string>
+    <string name="kill_level_none">【强力】什么都不做</string>
     <string name="category_backup_restore">备份和恢复</string>
     <string name="backup_settings_title">备份</string>
     <string name="backup_settings_summary">备份 AppLock 设置</string>

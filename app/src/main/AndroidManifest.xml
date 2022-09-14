@@ -20,7 +20,7 @@
         <meta-data android:name="xposedscope" android:resource="@array/xposed_scope" />
 
         <activity android:name=".ui.MainActivity"
-            android:exported="true" >
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

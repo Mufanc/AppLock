@@ -11,7 +11,7 @@
 
 * 可能也支持更低版本的 Android 和 MIUI 11，如需使用请自行测试
 
-![](images/screenshots.png)
+![](images/screenshots.gif)
 
 * 项目地址：[Mufanc/AppLock](https://github.com/Mufanc/AppLock)
 

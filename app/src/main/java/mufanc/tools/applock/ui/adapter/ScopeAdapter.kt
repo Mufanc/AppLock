@@ -59,8 +59,7 @@ class ScopeAdapter(
                         packageManager.queryIntentActivities(
                             Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER),
                             PackageManager.MATCH_ALL or PackageManager.MATCH_DISABLED_COMPONENTS
-                        )
-                            .map { it.activityInfo.applicationInfo }
+                        ).map { it.activityInfo.applicationInfo }
                     }
                     Settings.ResolveMode.NON_SYSTEM_APPS -> {
                         packageManager.getInstalledApplications(PackageManager.MATCH_DISABLED_COMPONENTS)

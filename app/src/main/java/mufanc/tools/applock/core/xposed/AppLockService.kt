@@ -8,13 +8,13 @@ import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
+import mufanc.easyhook.api.signature
 import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockService
 import mufanc.tools.applock.util.channel.ConfigProvider
 import mufanc.tools.applock.util.channel.Configs
 import mufanc.tools.applock.util.channel.Handshake
-import mufanc.tools.applock.util.signature
 import mufanc.tools.applock.util.update
 import kotlin.concurrent.thread
 

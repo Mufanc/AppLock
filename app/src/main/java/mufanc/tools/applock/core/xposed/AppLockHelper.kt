@@ -15,8 +15,8 @@ import mufanc.easyhook.api.reflect.findField
 import mufanc.easyhook.api.reflect.findMethod
 import mufanc.easyhook.api.reflect.findMethods
 import mufanc.easyhook.api.reflect.getField
+import mufanc.easyhook.api.signature
 import mufanc.tools.applock.BuildConfig
-import mufanc.tools.applock.util.signature
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 

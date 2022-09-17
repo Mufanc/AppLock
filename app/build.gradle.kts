@@ -19,6 +19,8 @@ val androidTargetCompatibility: JavaVersion by rootProject.extra
 val kotlinJvmTarget: String by rootProject.extra
 
 android {
+    namespace = "mufanc.tools.applock"
+    
     compileSdk = androidCompileSdkVersion
 
     defaultConfig {

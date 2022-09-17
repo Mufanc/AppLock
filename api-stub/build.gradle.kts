@@ -7,6 +7,8 @@ val androidMinSdkVersion: Int by rootProject.extra
 val androidTargetSdkVersion: Int by rootProject.extra
 
 android {
+    namespace = "hidden.api.stub"
+
     compileSdk = androidCompileSdkVersion
     defaultConfig {
         minSdk = androidMinSdkVersion

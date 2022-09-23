@@ -3,13 +3,13 @@ package mufanc.tools.applock.core.xposed
 import android.app.ActivityThread
 import android.content.Context
 import android.os.*
+import android.util.ArrayMap
 import mufanc.easyhook.api.EasyHook
 import mufanc.easyhook.api.Logger
 import mufanc.easyhook.api.catch
 import mufanc.easyhook.api.hook.hook
 import mufanc.easyhook.api.reflect.getStaticFieldAs
 import mufanc.easyhook.api.signature
-import mufanc.tools.applock.App
 import mufanc.tools.applock.BuildConfig
 import mufanc.tools.applock.IAppLockService
 import mufanc.tools.applock.util.channel.ConfigProvider
@@ -21,16 +21,11 @@ import kotlin.concurrent.thread
 class AppLockService private constructor() : IAppLockService.Stub() {
 
     companion object {
-        private val TRANSACTION_CODE = "Lock"
-            .toByteArray()
-            .mapIndexed { i, ch -> ch.toInt() shl (i * 8) }
-            .sum()
-
-        private val instance by lazy { AppLockService() }
+        private val INSTANCE by lazy { AppLockService() }
         fun query(packageName: String): Pair<Boolean, Int> {
             return Pair(
-                instance.scope.contains(packageName),
-                instance.killLevel
+                INSTANCE.scope.contains(packageName),
+                INSTANCE.killLevel
             )
         }
 
@@ -41,14 +36,15 @@ class AppLockService private constructor() : IAppLockService.Stub() {
 
         fun init() = EasyHook.handle {  // Hook `onTransact()` 以便与模块通信
             onLoadPackage("android") {
-                findClass("miui.process.ProcessManagerNative").hook {
-                    method({ name == "onTransact" }) { method ->
-                        Logger.i("@Hooker: hook onTransact: ${method.signature()}")
+                findClass("android.app.IApplicationThread\$Stub\$Proxy").hook {
+                    method({ name == "bindApplication" }) { method ->
+                        Logger.i("@Hooker: hook bindApplication: ${method.signature()}")
+                        val index = method.parameterTypes.indexOf(Map::class.java)
                         before { param ->
-                            if (param.args[0] != TRANSACTION_CODE) return@before
-                            if (context.packageManager.getNameForUid(Binder.getCallingUid()) != BuildConfig.APPLICATION_ID) return@before
-                            (param.args[2] as Parcel).writeStrongBinder(instance)
-                            param.result = true
+                            if (param.args[0] != BuildConfig.APPLICATION_ID) return@before
+                            @Suppress("Unchecked_Cast")
+                            (param.args[index] as ArrayMap<String, IBinder>)[BuildConfig.APPLICATION_ID] = INSTANCE
+                            Logger.i("@Server: put service cache!")
                         }
                     }
                 }
@@ -66,8 +62,8 @@ class AppLockService private constructor() : IAppLockService.Stub() {
                                 thread {
                                     catch {
                                         val configs = ConfigProvider.fetch(context)
-                                        instance.scope.addAll(configs.scope)
-                                        instance.killLevel = configs.killLevel
+                                        INSTANCE.scope.addAll(configs.scope)
+                                        INSTANCE.killLevel = configs.killLevel
                                     }
                                 }
                             }
@@ -78,18 +74,8 @@ class AppLockService private constructor() : IAppLockService.Stub() {
         }
 
         val client by lazy {
-            App.processManager?.let {
-                val data = Parcel.obtain()
-                val reply = Parcel.obtain()
-                try {
-                    if (it.transact(TRANSACTION_CODE, data, reply, 0)) {
-                        return@lazy asInterface(reply.readStrongBinder())
-                    }
-                } finally {
-                    data.recycle()
-                    reply.recycle()
-                }
-                return@lazy null
+            ServiceManager.getService(BuildConfig.APPLICATION_ID)?.let {
+                asInterface(it)
             }
         }
     }

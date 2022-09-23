@@ -53,6 +53,4 @@ object Globals {
             shizukuSelinuxContext.value = ShizukuHelper.getSelinuxContext()
         }
     }
-
-    // Todo: 添加测试版本提示卡片
 }

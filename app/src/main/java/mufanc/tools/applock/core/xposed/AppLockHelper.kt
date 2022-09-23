@@ -90,7 +90,7 @@ object AppLockHelper {
                         val (isProtected, killLevelTarget) = AppLockService.query(it)
                         if (isProtected) {
                             param.args[2] = killLevelTarget
-                            Logger.i("@AppLock: protected $processName " +
+                            Logger.d("@AppLock: protected $processName " +
                                     "(${killLevelToString(killLevel)} -> ${killLevelToString(killLevelTarget)})")
                             return@before
                         }

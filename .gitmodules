@@ -1,4 +1,0 @@
-[submodule "easyhook"]
-	path = easyhook
-	url = https://github.com/Mufanc/EasyHook
-	branch = master

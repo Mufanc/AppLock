@@ -31,7 +31,7 @@ class HookAndroidT : BaseHooker() {
                 uid = obj["uid"].obtain(),
                 gids = (obj["mGids"].obtain<IntArray>()).toList(),
                 isolated = obj["isolated"].obtain(),
-                processName = obj["processName"].obtain(),
+                name = obj["processName"].obtain(),
                 packageList = (obj["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
                 processType = obj["mState"]["mCurProcState"].obtain()
             )

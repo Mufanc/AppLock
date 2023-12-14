@@ -12,7 +12,7 @@ data class ProcessInfo(
     val uid: Int,
     val gids: List<Int>,
     val isolated: Boolean,
-    val processName: String,
+    val name: String,
     val packageList: List<String>,
     val processType: Int,  // ActivityManager.PROCESS_STATE_*
 ) : Parcelable {
@@ -40,7 +40,7 @@ data class ProcessInfo(
             .append(indent).append("uid=").append(uid).append("\n")
             .append(indent).append("gids=").append(gids).append("\n")
             .append(indent).append("isolated=").append(isolated).append("\n")
-            .append(indent).append("processName=").append(processName).append("\n")
+            .append(indent).append("processName=").append(name).append("\n")
             .append(indent).append("processType=").append(processTypeNames[processType]).append("\n")
             .append(")")
             .toString()

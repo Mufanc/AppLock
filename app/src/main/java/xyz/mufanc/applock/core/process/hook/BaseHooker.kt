@@ -14,6 +14,8 @@ abstract class BaseHooker : XposedInterface.Hooker {
 
         private const val TAG = "BaseHooker"
 
+        // Todo: hook com.android.server.am.ActivityManagerService.forceStopPackage
+
         @BeforeInvocation
         @JvmStatic
         fun before(callback: XposedInterface.BeforeHookCallback): BaseHooker {
@@ -29,18 +31,11 @@ abstract class BaseHooker : XposedInterface.Hooker {
             val info = hook.dump(callback)
 
             Log.i(TAG, "$info")
-
-            if (hook.isProtectedProcess(info)) {
-                callback.returnAndSkip(null)
-            }
+            Log.e(TAG, "backtrace:", Throwable())
 
             return hook
         }
     }
 
     abstract fun dump(callback: XposedInterface.BeforeHookCallback): KillInfo
-
-    open fun isProtectedProcess(info: KillInfo): Boolean {
-        return false
-    }
 }

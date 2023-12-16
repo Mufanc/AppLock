@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class KillInfo(
     val reason: String,
+    val description: String,
     val reasonCode: Int,
     val subReason: Int,
     val processInfo: ProcessInfo

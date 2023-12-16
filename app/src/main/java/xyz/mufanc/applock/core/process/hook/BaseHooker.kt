@@ -20,6 +20,7 @@ abstract class BaseHooker : XposedInterface.Hooker {
         @JvmStatic
         fun before(callback: XposedInterface.BeforeHookCallback): BaseHooker {
             val hook = when (Build.VERSION.SDK_INT) {
+                Build.VERSION_CODES.P -> HookAndroidP()
                 Build.VERSION_CODES.Q -> HookAndroidQ()
                 Build.VERSION_CODES.R -> HookAndroidR()
                 Build.VERSION_CODES.S, Build.VERSION_CODES.S_V2 -> HookAndroidS()

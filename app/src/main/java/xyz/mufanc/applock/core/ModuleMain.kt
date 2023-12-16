@@ -4,6 +4,7 @@ import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
+import xyz.mufanc.applock.BuildConfig
 import xyz.mufanc.applock.core.process.KillProcessHook
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
@@ -24,6 +25,10 @@ class ModuleMain(
     }
 
     override fun onSystemServerLoaded(param: XposedModuleInterface.SystemServerLoadedParam) {
+        if (BuildConfig.DEBUG) {
+            Log.init(ixp)
+        }
+
         Log.i(TAG, "module loaded in ${mlp.processName}.")
         Log.d(TAG, "${param.classLoader}")
 

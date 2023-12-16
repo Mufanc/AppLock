@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.hook
+package xyz.mufanc.applock.core.process.dump
 
 import android.os.Build
 import io.github.libxposed.api.XposedInterface
@@ -8,7 +8,7 @@ import xyz.mufanc.applock.core.process.bean.KillInfo
 import xyz.mufanc.applock.core.util.Log
 
 @XposedHooker
-abstract class BaseHooker : XposedInterface.Hooker {
+abstract class BaseDumper : XposedInterface.Hooker {
 
     companion object {
 
@@ -18,14 +18,14 @@ abstract class BaseHooker : XposedInterface.Hooker {
 
         @BeforeInvocation
         @JvmStatic
-        fun before(callback: XposedInterface.BeforeHookCallback): BaseHooker {
+        fun before(callback: XposedInterface.BeforeHookCallback): BaseDumper {
             val hook = when (Build.VERSION.SDK_INT) {
-                Build.VERSION_CODES.P -> HookAndroidP()
-                Build.VERSION_CODES.Q -> HookAndroidQ()
-                Build.VERSION_CODES.R -> HookAndroidR()
-                Build.VERSION_CODES.S, Build.VERSION_CODES.S_V2 -> HookAndroidS()
-                Build.VERSION_CODES.TIRAMISU -> HookAndroidT()
-                Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> HookAndroidU()
+                Build.VERSION_CODES.P -> DumpAndroidP()
+                Build.VERSION_CODES.Q -> DumpAndroidQ()
+                Build.VERSION_CODES.R -> DumpAndroidR()
+                Build.VERSION_CODES.S, Build.VERSION_CODES.S_V2 -> DumpAndroidS()
+                Build.VERSION_CODES.TIRAMISU -> DumpAndroidT()
+                Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> DumpAndroidU()
                 else -> throw Exception("wtf??")
             }
 

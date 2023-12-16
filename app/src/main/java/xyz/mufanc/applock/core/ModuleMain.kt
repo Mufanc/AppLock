@@ -5,7 +5,7 @@ import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import xyz.mufanc.applock.BuildConfig
-import xyz.mufanc.applock.core.process.KillProcessHook
+import xyz.mufanc.applock.core.process.KillProcessDump
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.autox.annotation.XposedEntry
@@ -33,6 +33,6 @@ class ModuleMain(
         Log.d(TAG, "${param.classLoader}")
 
         GraftClassLoader.init(param.classLoader)
-        KillProcessHook.dispatch(ixp)
+        KillProcessDump.dispatch(ixp)
     }
 }

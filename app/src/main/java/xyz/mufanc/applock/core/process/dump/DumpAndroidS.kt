@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.hook
+package xyz.mufanc.applock.core.process.dump
 
 import android.util.ArrayMap
 import com.android.server.am.ProcessRecord
@@ -8,7 +8,7 @@ import xyz.mufanc.applock.core.process.bean.ProcessInfo
 import xyz.mufanc.applock.core.util.Ref
 import java.lang.reflect.Method
 
-class HookAndroidS : BaseHooker() {
+class DumpAndroidS : BaseDumper() {
 
     companion object {
         val hookTarget: Method

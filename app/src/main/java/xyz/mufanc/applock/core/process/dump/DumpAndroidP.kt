@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.hook
+package xyz.mufanc.applock.core.process.dump
 
 import android.util.ArrayMap
 import com.android.server.am.ProcessRecord
@@ -8,13 +8,13 @@ import xyz.mufanc.applock.core.process.bean.ProcessInfo
 import xyz.mufanc.applock.core.util.Ref
 import java.lang.reflect.Method
 
-class HookAndroidT : BaseHooker() {
+class DumpAndroidP : BaseDumper() {
 
     companion object {
         val hookTarget: Method
             get() = ProcessRecord::class.java.getDeclaredMethod(
-                "killLocked",
-                String::class.java, String::class.java, Int::class.java, Int::class.java, Boolean::class.java
+                "kill",
+                String::class.java, Boolean::class.java
             )
     }
 
@@ -23,18 +23,18 @@ class HookAndroidT : BaseHooker() {
 
         return KillInfo(
             reason = callback.args[0] as String,
-            description = callback.args[1] as String,
-            reasonCode = callback.args[2] as Int,
-            subReason = callback.args[3] as Int,
+            description = "",
+            reasonCode = -1,
+            subReason = -1,
             processInfo = ProcessInfo(
-                killedByAm = obj["mKilledByAm"].obtain(),
-                pid = obj["mPid"].obtain(),
+                killedByAm = obj["killedByAm"].obtain(),
+                pid = obj["pid"].obtain(),
                 uid = obj["uid"].obtain(),
-                gids = (obj["mGids"].obtain<IntArray>()).toList(),
+                gids = (obj["gids"].obtain<IntArray>()).toList(),
                 isolated = obj["isolated"].obtain(),
                 name = obj["processName"].obtain(),
-                packageList = (obj["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
-                processType = obj["mState"]["mCurProcState"].obtain()
+                packageList = (obj["pkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
+                processType = obj["curProcState"].obtain()
             )
         )
     }

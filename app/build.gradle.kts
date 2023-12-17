@@ -5,14 +5,22 @@ plugins {
     id("kotlin-parcelize")
 }
 
+val androidMinSdkVersion: Int by rootProject.extra
+val androidTargetSdkVersion: Int by rootProject.extra
+val androidCompileSdkVersion: Int by rootProject.extra
+
+val androidSourceCompatibility: JavaVersion by rootProject.extra
+val androidTargetCompatibility: JavaVersion by rootProject.extra
+val androidKotlinJvmTarget: String by rootProject.extra
+
 android {
     namespace = "xyz.mufanc.applock"
-    compileSdk = 34
+    compileSdk = androidCompileSdkVersion
 
     defaultConfig {
         applicationId = "xyz.mufanc.applock"
-        minSdk = 26
-        targetSdk = 34
+        minSdk = androidMinSdkVersion
+        targetSdk = androidTargetSdkVersion
         versionCode = 1
         versionName = "1.0"
     }
@@ -25,12 +33,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = androidSourceCompatibility
+        targetCompatibility = androidTargetCompatibility
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = androidKotlinJvmTarget
     }
 
     buildFeatures {

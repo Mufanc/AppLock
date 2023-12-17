@@ -2,12 +2,18 @@ plugins {
     alias(libs.plugins.agp.library)
 }
 
+val androidMinSdkVersion: Int by rootProject.extra
+val androidCompileSdkVersion: Int by rootProject.extra
+
+val androidSourceCompatibility: JavaVersion by rootProject.extra
+val androidTargetCompatibility: JavaVersion by rootProject.extra
+
 android {
     namespace = "hidden.api.stub"
-    compileSdk = 34
+    compileSdk = androidCompileSdkVersion
 
     defaultConfig {
-        minSdk = 26
+        minSdk = androidMinSdkVersion
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -19,8 +25,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = androidSourceCompatibility
+        targetCompatibility = androidTargetCompatibility
     }
 }
 

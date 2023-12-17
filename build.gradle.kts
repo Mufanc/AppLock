@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.agp.library) apply false
 }
 
-val androidMinSdkVersion by extra(27)
+val androidMinSdkVersion by extra(28)
 val androidTargetSdkVersion by extra(34)
 val androidCompileSdkVersion by extra(34)
 

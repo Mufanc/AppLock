@@ -7,11 +7,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 @Keep
 data class KillInfo(
-    val reason: String,
-    val description: String,
+    val reason: String?,
+    val description: String?,
     val reasonCode: Int,
     val subReason: Int,
-    val processInfo: ProcessInfo,
+    val processInfo: ProcessInfo?,
     private val isValid: Boolean = true
 ) : Parcelable {
 

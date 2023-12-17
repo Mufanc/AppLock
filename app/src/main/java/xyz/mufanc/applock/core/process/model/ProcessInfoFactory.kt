@@ -17,14 +17,14 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
     override fun doAndroidP(from: Any): ProcessInfo {
         val ref = Ref(from)
         return ProcessInfo(
-            killedByAm = ref["killedByAm"].obtain(),
-            pid = ref["pid"].obtain(),
-            uid = ref["uid"].obtain(),
-            gids = (ref["gids"].obtain<IntArray>()).toList(),
-            isolated = ref["isolated"].obtain(),
+            killedByAm = ref["killedByAm"].obtain()!!,
+            pid = ref["pid"].obtain()!!,
+            uid = ref["uid"].obtain()!!,
+            gids = (ref["gids"].obtain<IntArray>())?.toList(),
+            isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
-            packageList = (ref["pkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
-            processType = ref["curProcState"].obtain()
+            packageList = (ref["pkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
+            processType = ref["curProcState"].obtain()!!
         )
     }
 
@@ -39,28 +39,28 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
     override fun doAndroidS(from: Any): ProcessInfo {
         val ref = Ref(from)
         return ProcessInfo(
-            killedByAm = ref["mKilledByAm"].obtain(),
-            pid = ref["mPid"].obtain(),
-            uid = ref["uid"].obtain(),
-            gids = (ref["mGids"].obtain<IntArray>()).toList(),
-            isolated = ref["isolated"].obtain(),
+            killedByAm = ref["mKilledByAm"].obtain()!!,
+            pid = ref["mPid"].obtain()!!,
+            uid = ref["uid"].obtain()!!,
+            gids = (ref["mGids"].obtain<IntArray>())?.toList(),
+            isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
-            packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
-            processType = ref["mState"]["mCurProcState"].obtain()
+            packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
+            processType = ref["mState"]["mCurProcState"].obtain()!!
         )
     }
 
     override fun doAndroidT(from: Any): ProcessInfo {
         val ref = Ref(from)
         return ProcessInfo(
-            killedByAm = ref["mKilledByAm"].obtain(),
-            pid = ref["mPid"].obtain(),
-            uid = ref["uid"].obtain(),
-            gids = (ref["mGids"].obtain<IntArray>()).toList(),
-            isolated = ref["isolated"].obtain(),
+            killedByAm = ref["mKilledByAm"].obtain()!!,
+            pid = ref["mPid"].obtain()!!,
+            uid = ref["uid"].obtain()!!,
+            gids = (ref["mGids"].obtain<IntArray>())?.toList(),
+            isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
-            packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>()).keys.toList(),
-            processType = ref["mState"]["mCurProcState"].obtain()
+            packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
+            processType = ref["mState"]["mCurProcState"].obtain()!!
         )
     }
 

@@ -15,8 +15,8 @@ object KillInfoFactory : ApiAdapter<XposedInterface.BeforeHookCallback, KillInfo
 
     override fun doAndroidP(from: XposedInterface.BeforeHookCallback): KillInfo {
         return KillInfo(
-            reason = from.args[0] as String,
-            description = "",
+            reason = from.args[0] as String?,
+            description = null,
             reasonCode = -1,
             subReason = -1,
             processInfo = ProcessInfoFactory.create(from.thisObject!!)
@@ -33,8 +33,8 @@ object KillInfoFactory : ApiAdapter<XposedInterface.BeforeHookCallback, KillInfo
 
     override fun doAndroidS(from: XposedInterface.BeforeHookCallback): KillInfo {
         return KillInfo(
-            reason = from.args[0] as String,
-            description = "",
+            reason = from.args[0] as String?,
+            description = null,
             reasonCode = from.args[1] as Int,
             subReason = from.args[2] as Int,
             processInfo = ProcessInfoFactory.create(from.thisObject!!)
@@ -43,8 +43,8 @@ object KillInfoFactory : ApiAdapter<XposedInterface.BeforeHookCallback, KillInfo
 
     override fun doAndroidT(from: XposedInterface.BeforeHookCallback): KillInfo {
         return KillInfo(
-            reason = from.args[0] as String,
-            description = from.args[1] as String,
+            reason = from.args[0] as String?,
+            description = from.args[1] as String?,
             reasonCode = from.args[2] as Int,
             subReason = from.args[3] as Int,
             processInfo = ProcessInfoFactory.create(from.thisObject!!)

@@ -12,10 +12,10 @@ data class ProcessInfo(
     val killedByAm: Boolean,
     val pid: Int,
     val uid: Int,
-    val gids: List<Int>,
+    val gids: List<Int>?,
     val isolated: Boolean,
-    val name: String,
-    val packageList: List<String>,
+    val name: String?,
+    val packageList: List<String>?,
     val processType: Int,  // ActivityManager.PROCESS_STATE_*
     private val isValid: Boolean = true
 ) : Parcelable {

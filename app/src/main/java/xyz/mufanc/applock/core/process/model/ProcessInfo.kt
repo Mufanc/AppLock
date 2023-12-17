@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.bean
+package xyz.mufanc.applock.core.process.model
 
 import android.app.ActivityManager
 import android.os.Parcelable

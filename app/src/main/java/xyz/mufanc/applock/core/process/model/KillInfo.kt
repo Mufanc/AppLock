@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.bean
+package xyz.mufanc.applock.core.process.model
 
 import android.os.Parcelable
 import androidx.annotation.Keep

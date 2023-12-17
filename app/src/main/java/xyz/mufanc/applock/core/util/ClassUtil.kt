@@ -4,7 +4,7 @@ import org.joor.Reflect
 import sun.misc.Unsafe
 import java.lang.reflect.Modifier
 
-object ClassUtils {
+object ClassUtil {
 
     private val theUnsafe: Unsafe = Reflect.onClass(Unsafe::class.java).call("getUnsafe").get()
 

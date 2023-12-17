@@ -6,8 +6,8 @@ import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import xyz.mufanc.applock.BuildConfig
 import xyz.mufanc.applock.core.persist.ScopeManager
-import xyz.mufanc.applock.core.process.KillProcessDumper
-import xyz.mufanc.applock.core.process.ProcessRecordHelpers
+import xyz.mufanc.applock.core.process.KillProcessMonitor
+import xyz.mufanc.applock.core.process.ProcessRecordUtil
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.autox.annotation.XposedEntry
@@ -36,10 +36,11 @@ class ModuleMain(
 
         GraftClassLoader.init(param.classLoader)
 
-        ProcessRecordHelpers.init()
+        ProcessRecordUtil.init()
+        ScopeManager.init()
 
         if (BuildConfig.DEBUG) {
-            KillProcessDumper.dispatch(ixp)
+            KillProcessMonitor.init(ixp)
         }
     }
 }

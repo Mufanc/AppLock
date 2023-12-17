@@ -8,13 +8,11 @@ import xyz.mufanc.applock.core.process.dump.DumpAndroidS
 import xyz.mufanc.applock.core.process.dump.DumpAndroidT
 import xyz.mufanc.applock.core.util.Log
 
-object KillProcessDump {
+object KillProcessDumper {
 
     private const val TAG = "KillProcessHook"
 
     fun dispatch(ixp: XposedInterface) {
-        ProcessRecordHelpers.init()
-
         val method = when (Build.VERSION.SDK_INT) {
             Build.VERSION_CODES.P -> DumpAndroidP.hookTarget
             Build.VERSION_CODES.Q -> null

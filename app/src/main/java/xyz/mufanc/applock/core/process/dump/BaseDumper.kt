@@ -14,7 +14,17 @@ abstract class BaseDumper : XposedInterface.Hooker {
 
         private const val TAG = "BaseHooker"
 
-        // Todo: hook com.android.server.am.ActivityManagerService.forceStopPackage
+        private fun formatLog(info: KillInfo, backtrace: Sequence<StackTraceElement>): String {
+            val header = "-".repeat(20) + " KillProcess " + "-".repeat(20)
+
+            return StringBuilder()
+                .appendLine(header)
+                .appendLine(info)
+                .appendLine("Backtrace:")
+                .appendLine(backtrace.joinToString("\n") { "  -> ${it.className}.${it.methodName}()" })
+                .appendLine("-".repeat(header.length))
+                .toString()
+        }
 
         @BeforeInvocation
         @JvmStatic
@@ -30,9 +40,9 @@ abstract class BaseDumper : XposedInterface.Hooker {
             }
 
             val info = hook.dump(callback)
+            val backtrace = Thread.currentThread().stackTrace.asSequence().drop(2)
 
-            Log.i(TAG, "$info")
-            Log.e(TAG, "backtrace:", Throwable())
+            Log.d(TAG, formatLog(info, backtrace))
 
             return hook
         }

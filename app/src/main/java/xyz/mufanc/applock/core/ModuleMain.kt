@@ -5,7 +5,9 @@ import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import xyz.mufanc.applock.BuildConfig
-import xyz.mufanc.applock.core.process.KillProcessDump
+import xyz.mufanc.applock.core.persist.ScopeManager
+import xyz.mufanc.applock.core.process.KillProcessDumper
+import xyz.mufanc.applock.core.process.ProcessRecordHelpers
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.autox.annotation.XposedEntry
@@ -26,13 +28,18 @@ class ModuleMain(
 
     override fun onSystemServerLoaded(param: XposedModuleInterface.SystemServerLoadedParam) {
         if (BuildConfig.DEBUG) {
-            Log.init(ixp)
+            Log.initXposed(ixp)
         }
 
         Log.i(TAG, "module loaded in ${mlp.processName}.")
         Log.d(TAG, "${param.classLoader}")
 
         GraftClassLoader.init(param.classLoader)
-        KillProcessDump.dispatch(ixp)
+
+        ProcessRecordHelpers.init()
+
+        if (BuildConfig.DEBUG) {
+            KillProcessDumper.dispatch(ixp)
+        }
     }
 }

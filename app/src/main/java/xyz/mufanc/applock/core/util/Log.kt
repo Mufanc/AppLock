@@ -9,7 +9,7 @@ object Log {
 
     private var bridge: XposedInterface? = null
 
-    fun init(ixp: XposedInterface) {
+    fun initXposed(ixp: XposedInterface) {
         bridge = ixp
     }
 

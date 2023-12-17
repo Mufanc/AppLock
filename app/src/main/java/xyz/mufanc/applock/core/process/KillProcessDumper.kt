@@ -10,7 +10,7 @@ import xyz.mufanc.applock.core.util.Log
 
 object KillProcessDumper {
 
-    private const val TAG = "KillProcessHook"
+    private const val TAG = "KillProcessDumper"
 
     fun dispatch(ixp: XposedInterface) {
         val method = when (Build.VERSION.SDK_INT) {

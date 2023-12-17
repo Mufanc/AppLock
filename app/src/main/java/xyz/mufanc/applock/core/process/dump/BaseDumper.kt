@@ -12,7 +12,7 @@ abstract class BaseDumper : XposedInterface.Hooker {
 
     companion object {
 
-        private const val TAG = "BaseHooker"
+        private const val TAG = "BaseDumper"
 
         private fun formatLog(info: KillInfo, backtrace: Sequence<StackTraceElement>): String {
             val header = "-".repeat(20) + " KillProcess " + "-".repeat(20)

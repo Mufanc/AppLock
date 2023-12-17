@@ -2,10 +2,12 @@ package xyz.mufanc.applock.core.process.model
 
 import android.app.ActivityManager
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 import java.lang.reflect.Modifier
 
 @Parcelize
+@Keep
 data class ProcessInfo(
     val killedByAm: Boolean,
     val pid: Int,
@@ -15,6 +17,7 @@ data class ProcessInfo(
     val name: String,
     val packageList: List<String>,
     val processType: Int,  // ActivityManager.PROCESS_STATE_*
+    private val isValid: Boolean = true
 ) : Parcelable {
 
     companion object {
@@ -28,21 +31,31 @@ data class ProcessInfo(
                 }
                 .toMap()
         }
+
+        val INVALID = ProcessInfo(false, 0, 0, emptyList(), false, "", emptyList(), 0, false)
     }
 
     override fun toString(): String {
         val indent = " ".repeat(4)
+        val builder = StringBuilder()
 
-        return StringBuilder()
-            .append(javaClass.simpleName).append("(\n")
-            .append(indent).append("killedByAm=").append(killedByAm).append("\n")
-            .append(indent).append("pid=").append(pid).append("\n")
-            .append(indent).append("uid=").append(uid).append("\n")
-            .append(indent).append("gids=").append(gids).append("\n")
-            .append(indent).append("isolated=").append(isolated).append("\n")
-            .append(indent).append("processName=").append(name).append("\n")
-            .append(indent).append("processType=").append(processTypeNames[processType]).append("\n")
-            .append(")")
-            .toString()
+        builder.append(javaClass.simpleName).append("(\n")
+
+        if (isValid) {
+            builder
+                .append(indent).append("killedByAm=").append(killedByAm).append("\n")
+                .append(indent).append("pid=").append(pid).append("\n")
+                .append(indent).append("uid=").append(uid).append("\n")
+                .append(indent).append("gids=").append(gids).append("\n")
+                .append(indent).append("isolated=").append(isolated).append("\n")
+                .append(indent).append("processName=").append(name).append("\n")
+                .append(indent).append("processType=").append(processTypeNames[processType]).append("\n")
+        } else {
+            builder.append(indent).append("[ failed to dump process info ]\n")
+        }
+
+        builder.append(")")
+
+        return builder.toString()
     }
 }

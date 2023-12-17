@@ -7,7 +7,11 @@ import xyz.mufanc.applock.core.util.Ref
 object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
     
     fun create(record: Any): ProcessInfo {
-        return adapt(record)
+        return try {
+            adapt(record)
+        } catch (err: Throwable) {
+            ProcessInfo.INVALID
+        }
     }
 
     override fun doAndroidP(from: Any): ProcessInfo {

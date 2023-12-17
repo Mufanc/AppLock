@@ -25,6 +25,7 @@ class KillProcessMonitor : XposedInterface.Hooker {
             val header = "-".repeat(20) + " KillProcess " + "-".repeat(20)
 
             return StringBuilder()
+                .appendLine()
                 .appendLine(header)
                 .appendLine(info)
                 .appendLine("Backtrace:")

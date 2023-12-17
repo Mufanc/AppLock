@@ -6,7 +6,11 @@ import xyz.mufanc.applock.core.util.ApiAdapter
 object KillInfoFactory : ApiAdapter<XposedInterface.BeforeHookCallback, KillInfo>() {
 
     fun create(callback: XposedInterface.BeforeHookCallback): KillInfo {
-        return adapt(callback)
+        return try {
+            adapt(callback)
+        } catch (err: Throwable) {
+            KillInfo.INVALID
+        }
     }
 
     override fun doAndroidP(from: XposedInterface.BeforeHookCallback): KillInfo {

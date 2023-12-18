@@ -4,10 +4,11 @@ import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
-import xyz.mufanc.applock.BuildConfig
+import xyz.mufanc.applock.App
 import xyz.mufanc.applock.core.persist.ScopeManager
 import xyz.mufanc.applock.core.process.KillProcessMonitor
 import xyz.mufanc.applock.core.process.ProcessRecordUtil
+import xyz.mufanc.applock.core.process.impl.ProcessGuard
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.autox.annotation.XposedEntry
@@ -27,7 +28,7 @@ class ModuleMain(
     }
 
     override fun onSystemServerLoaded(param: XposedModuleInterface.SystemServerLoadedParam) {
-        if (BuildConfig.DEBUG) {
+        if (App.isDebug) {
             Log.initXposed(ixp)
         }
 
@@ -38,8 +39,9 @@ class ModuleMain(
 
         ProcessRecordUtil.init()
         ScopeManager.init()
+        ProcessGuard.install(ixp)
 
-        if (BuildConfig.DEBUG) {
+        if (App.isDebug) {
             KillProcessMonitor.init(ixp)
         }
     }

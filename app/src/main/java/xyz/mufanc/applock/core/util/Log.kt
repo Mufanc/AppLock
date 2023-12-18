@@ -2,6 +2,8 @@ package xyz.mufanc.applock.core.util
 
 import android.util.Log
 import io.github.libxposed.api.XposedInterface
+import xyz.mufanc.applock.App
+import xyz.mufanc.applock.BuildConfig
 
 object Log {
 
@@ -14,6 +16,8 @@ object Log {
     }
 
     fun d(tag: String, msg: String) {
+        if (!App.isDebug) return
+
         val message = "[$tag] $msg"
 
         Log.d(TAG, message)

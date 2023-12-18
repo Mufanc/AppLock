@@ -4,11 +4,11 @@ import java.lang.reflect.Field;
 
 public class Unsafe {
     public static Unsafe getUnsafe() {
-        throw new RuntimeException("STUB!");
+        throw new RuntimeException("STUB");
     }
 
     public long objectFieldOffset(Field field) {
-        throw new RuntimeException("STUB!");
+        throw new RuntimeException("STUB");
     }
 
     public native int getInt(Object obj, long offset);

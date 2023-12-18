@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.autox.annotation)
 
     // Reflector
+    implementation(kotlin("reflect"))
     implementation(libs.reflector)
 
     // App

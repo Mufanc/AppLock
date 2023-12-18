@@ -12,7 +12,7 @@ data class KillInfo(
     val reasonCode: Int,
     val subReason: Int,
     val processInfo: ProcessInfo?,
-    private val isValid: Boolean = true
+    val isValid: Boolean = true
 ) : Parcelable {
 
     companion object {

@@ -9,6 +9,9 @@ import java.lang.reflect.Method
 
 @Suppress("Unused")
 data object HookProcessCleanerBase : ProcessGuard.Adapter() {
+
+    override val priority: Int = 0
+
     @SuppressLint("PrivateApi")
     override fun getMethodInner(): Method {
         return GraftClassLoader.loadClass("com.android.server.am.ProcessCleanerBase")

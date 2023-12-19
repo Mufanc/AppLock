@@ -18,7 +18,7 @@ object ProcessGuard : XposedInterface.Hooker {
     private lateinit var guardImpl: Adapter
 
     fun install(ixp: XposedInterface) {
-        val implements = Adapter::class.sealedSubclasses
+        val implements = Adapter::class.sealedSubclasses.sortedBy { it.objectInstance!!.priority }
 
         Log.d(TAG, "process guard implements: ${implements.joinToString(", ") { "${it.simpleName}" }}")
 
@@ -63,6 +63,9 @@ object ProcessGuard : XposedInterface.Hooker {
     }
 
     sealed class Adapter {
+
+        abstract val priority: Int  // the smaller the number, the higher the priority
+
         protected abstract fun getMethodInner(): Method
         protected abstract fun getProcessInfoInner(callback: XposedInterface.BeforeHookCallback): ProcessInfo?
         protected abstract fun skipForKillInner(callback: XposedInterface.BeforeHookCallback)

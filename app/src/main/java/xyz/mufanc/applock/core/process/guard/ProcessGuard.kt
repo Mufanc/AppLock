@@ -1,9 +1,10 @@
-package xyz.mufanc.applock.core.process.impl
+package xyz.mufanc.applock.core.process.guard
 
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.annotations.BeforeInvocation
 import io.github.libxposed.api.annotations.XposedHooker
 import xyz.mufanc.applock.core.process.model.ProcessInfo
+import xyz.mufanc.applock.core.scope.ScopeManager
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.core.util.signature
 import java.lang.reflect.Method
@@ -23,7 +24,7 @@ object ProcessGuard : XposedInterface.Hooker {
 
         for (klass in implements) {
             val impl = klass.objectInstance
-            val target = impl?.getHookTarget()
+            val target = impl?.getMethod()
 
             if (target != null) {
                 hookTarget = target
@@ -43,25 +44,44 @@ object ProcessGuard : XposedInterface.Hooker {
 
     @BeforeInvocation
     @JvmStatic
+    @Suppress("Unused", "SameReturnValue")
     fun before(callback: XposedInterface.BeforeHookCallback): ProcessGuard? {
         val pinfo = guardImpl.getProcessInfo(callback)
+        val pkg = pinfo?.packageList?.getOrNull(0)
 
-        Log.d(TAG, "kill process: $pinfo")
+        if (pkg == null) {
+            Log.d(TAG, "failed to get package name, skip")
+            return null
+        }
+
+        if (ScopeManager.query(pkg)) {
+            guardImpl.skipForKill(callback)
+            Log.d(TAG, "protected process: ${pinfo.name}")
+        }
 
         return null
     }
 
     sealed class Adapter {
-        abstract fun getMethod(): Method
-        abstract fun getProcessInfo(callback: XposedInterface.BeforeHookCallback): ProcessInfo?
+        protected abstract fun getMethodInner(): Method
+        protected abstract fun getProcessInfoInner(callback: XposedInterface.BeforeHookCallback): ProcessInfo?
+        protected abstract fun skipForKillInner(callback: XposedInterface.BeforeHookCallback)
 
-        fun getHookTarget(): Method? {
+        fun getMethod(): Method? {
             return try {
-                getMethod()
+                getMethodInner()
             } catch (err: Throwable) {
                 Log.d(TAG, "failed to load target for ${javaClass.simpleName}, try next rule")
                 null
             }
+        }
+
+        fun getProcessInfo(callback: XposedInterface.BeforeHookCallback): ProcessInfo? {
+            return getProcessInfoInner(callback)?.takeIf { it.isValid }
+        }
+
+        fun skipForKill(callback: XposedInterface.BeforeHookCallback) {
+            skipForKillInner(callback)
         }
     }
 }

@@ -39,6 +39,7 @@ object KillProcessMonitor : ApiAdapter<Unit, Method>(), XposedInterface.Hooker {
 
     @BeforeInvocation
     @JvmStatic
+    @Suppress("Unused")
     fun before(callback: XposedInterface.BeforeHookCallback): KillProcessMonitor? {
         if (isLoggable()) {
             val info = KillInfoFactory.create(callback)

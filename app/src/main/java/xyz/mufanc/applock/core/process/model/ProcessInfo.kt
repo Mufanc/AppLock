@@ -16,12 +16,12 @@ data class ProcessInfo(
     val isolated: Boolean,
     val name: String?,
     val packageList: List<String>?,
-    val processType: Int,  // ActivityManager.PROCESS_STATE_*
+    val state: Int,  // ActivityManager.PROCESS_STATE_*
     val isValid: Boolean = true
 ) : Parcelable {
 
     companion object {
-        val processTypeNames by lazy {
+        val processStateNames by lazy {
             ActivityManager::class.java
                 .declaredFields
                 .mapNotNull { field ->
@@ -48,8 +48,9 @@ data class ProcessInfo(
                 .append(indent).append("uid=").append(uid).append("\n")
                 .append(indent).append("gids=").append(gids).append("\n")
                 .append(indent).append("isolated=").append(isolated).append("\n")
-                .append(indent).append("processName=").append(name).append("\n")
-                .append(indent).append("processType=").append(processTypeNames[processType]).append("\n")
+                .append(indent).append("name=").append(name).append("\n")
+                .append(indent).append("pkgList=").append(packageList).append("\n")
+                .append(indent).append("state=").append(processStateNames[state]).append("\n")
         } else {
             builder.append(indent).append("[ failed to dump process info ]\n")
         }

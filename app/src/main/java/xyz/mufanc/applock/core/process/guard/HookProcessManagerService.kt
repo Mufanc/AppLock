@@ -1,4 +1,4 @@
-package xyz.mufanc.applock.core.process.impl
+package xyz.mufanc.applock.core.process.guard
 
 import android.annotation.SuppressLint
 import io.github.libxposed.api.XposedInterface
@@ -7,16 +7,21 @@ import xyz.mufanc.applock.core.process.model.ProcessInfoFactory
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import java.lang.reflect.Method
 
-data object HookProcessCleanerBase : ProcessGuard.Adapter() {
+@Suppress("Unused")
+data object HookProcessManagerService : ProcessGuard.Adapter() {
     @SuppressLint("PrivateApi")
-    override fun getMethod(): Method {
-        return GraftClassLoader.loadClass("com.android.server.am.ProcessCleanerBase")
+    override fun getMethodInner(): Method {
+        return GraftClassLoader.loadClass("com.android.server.am.ProcessManagerService")
             .declaredMethods
             .filter { it.name == "killOnce" && it.parameterTypes[0].simpleName == "ProcessRecord" }
-            .minByOrNull { it.parameterCount }!!
+            .maxByOrNull { it.parameterCount }!!
     }
 
-    override fun getProcessInfo(callback: XposedInterface.BeforeHookCallback): ProcessInfo? {
+    override fun getProcessInfoInner(callback: XposedInterface.BeforeHookCallback): ProcessInfo? {
         return ProcessInfoFactory.create(callback.args[0]).takeIf { it.isValid }
+    }
+
+    override fun skipForKillInner(callback: XposedInterface.BeforeHookCallback) {
+        callback.returnAndSkip(null)
     }
 }

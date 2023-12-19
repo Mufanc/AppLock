@@ -24,7 +24,7 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
             isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
             packageList = (ref["pkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
-            processType = ref["curProcState"].obtain()!!
+            state = ref["curProcState"].obtain()!!
         )
     }
 
@@ -46,7 +46,7 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
             isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
             packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
-            processType = ref["mState"]["mCurProcState"].obtain()!!
+            state = ref["mState"]["mCurProcState"].obtain()!!
         )
     }
 
@@ -60,7 +60,7 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
             isolated = ref["isolated"].obtain()!!,
             name = ref["processName"].obtain(),
             packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
-            processType = ref["mState"]["mCurProcState"].obtain()!!
+            state = ref["mState"]["mCurProcState"].obtain()!!
         )
     }
 

@@ -65,6 +65,16 @@ object ProcessInfoFactory : ApiAdapter<Any, ProcessInfo>() {
     }
 
     override fun doAndroidU(from: Any): ProcessInfo {
-        TODO("Not yet implemented")
+        val ref = Ref(from)
+        return ProcessInfo(
+            killedByAm = ref["mKilledByAm"].obtain()!!,
+            pid = ref["mPid"].obtain()!!,
+            uid = ref["uid"].obtain()!!,
+            gids = (ref["mGids"].obtain<IntArray>())?.toList(),
+            isolated = ref["isolated"].obtain()!!,
+            name = ref["processName"].obtain(),
+            packageList = (ref["mPkgList"]["mPkgList"].obtain<ArrayMap<String, *>>())?.keys?.toList(),
+            state = ref["mState"]["mCurProcState"].obtain()!!
+        )
     }
 }

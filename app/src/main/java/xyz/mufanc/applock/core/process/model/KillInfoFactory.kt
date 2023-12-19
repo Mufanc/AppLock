@@ -52,6 +52,12 @@ object KillInfoFactory : ApiAdapter<XposedInterface.BeforeHookCallback, KillInfo
     }
 
     override fun doAndroidU(from: XposedInterface.BeforeHookCallback): KillInfo {
-        TODO("Not yet implemented")
+        return KillInfo(
+            reason = from.args[0] as String?,
+            description = from.args[1] as String?,
+            reasonCode = from.args[2] as Int,
+            subReason = from.args[3] as Int,
+            processInfo = ProcessInfoFactory.create(from.thisObject!!)
+        )
     }
 }

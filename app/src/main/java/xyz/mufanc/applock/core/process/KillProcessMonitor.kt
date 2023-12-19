@@ -81,6 +81,9 @@ object KillProcessMonitor : ApiAdapter<Unit, Method>(), XposedInterface.Hooker {
     }
 
     override fun doAndroidU(from: Unit): Method {
-        TODO("Not yet implemented")
+        return ProcessRecord::class.java.getDeclaredMethod(
+            "killLocked",
+            String::class.java, String::class.java, Int::class.java, Int::class.java, Boolean::class.java, Boolean::class.java
+        )
     }
 }

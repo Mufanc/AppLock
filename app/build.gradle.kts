@@ -13,6 +13,32 @@ val androidSourceCompatibility: JavaVersion by rootProject.extra
 val androidTargetCompatibility: JavaVersion by rootProject.extra
 val androidKotlinJvmTarget: String by rootProject.extra
 
+val versionNamePrefix = "3.0.0"
+
+fun String.execute(): String {
+    return Runtime.getRuntime()
+        .exec(this.split("\\s+".toRegex()).toTypedArray())
+        .apply { waitFor() }
+        .inputStream.bufferedReader().readText().trim()
+}
+
+fun getVersionCode(): Int {
+    return "git rev-list --count HEAD".execute().toInt()
+}
+
+fun getVersionName(): String {
+    val hash = "git rev-parse --short HEAD".execute()
+    val count = "git rev-list --count HEAD".execute()
+
+    val versionName = "$versionNamePrefix.r$count.$hash"
+
+    return versionName
+}
+
+fun getCommitHash(): String {
+    return "git rev-parse HEAD".execute()
+}
+
 android {
     namespace = "xyz.mufanc.applock"
     compileSdk = androidCompileSdkVersion
@@ -21,8 +47,9 @@ android {
         applicationId = "xyz.mufanc.applock"
         minSdk = androidMinSdkVersion
         targetSdk = androidTargetSdkVersion
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = getVersionCode()
+        versionName = getVersionName()
+        buildConfigField("String", "COMMIT_HASH", "\"${getCommitHash()}\"")
     }
 
     buildTypes {

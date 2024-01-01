@@ -1,6 +1,5 @@
 package xyz.mufanc.applock.core.process
 
-import android.os.SystemProperties
 import com.android.server.am.ProcessRecord
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.annotations.BeforeInvocation
@@ -9,6 +8,7 @@ import xyz.mufanc.applock.core.process.model.KillInfo
 import xyz.mufanc.applock.core.process.model.KillInfoFactory
 import xyz.mufanc.applock.core.util.ApiAdapter
 import xyz.mufanc.applock.core.util.Log
+import xyz.mufanc.applock.util.Configs
 import java.lang.reflect.Method
 
 @XposedHooker
@@ -18,10 +18,6 @@ object KillProcessMonitor : ApiAdapter<Unit, Method>(), XposedInterface.Hooker {
 
     fun init(ixp: XposedInterface) {
         ixp.hook(adapt(Unit), KillProcessMonitor::class.java)
-    }
-
-    private fun isLoggable(): Boolean {
-        return !SystemProperties.getBoolean("debug.applock.disable_monitor_log", false)
     }
 
     private fun formatLog(info: KillInfo, backtrace: Sequence<StackTraceElement>): String {
@@ -41,7 +37,7 @@ object KillProcessMonitor : ApiAdapter<Unit, Method>(), XposedInterface.Hooker {
     @JvmStatic
     @Suppress("Unused")
     fun before(callback: XposedInterface.BeforeHookCallback): KillProcessMonitor? {
-        if (isLoggable()) {
+        if (Configs.isMonitorLogEnabled) {
             val info = KillInfoFactory.create(callback)
             val backtrace = Thread.currentThread().stackTrace.asSequence().drop(2)
 

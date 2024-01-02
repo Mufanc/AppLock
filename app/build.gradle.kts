@@ -1,7 +1,10 @@
+import dev.rikka.tools.materialthemebuilder.MaterialThemeBuilderExtension
+
 plugins {
     alias(libs.plugins.agp.app)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.material.color)
     id("kotlin-parcelize")
 }
 
@@ -30,9 +33,7 @@ fun getVersionName(): String {
     val hash = "git rev-parse --short HEAD".execute()
     val count = "git rev-list --count HEAD".execute()
 
-    val versionName = "$versionNamePrefix.r$count.$hash"
-
-    return versionName
+    return "$versionNamePrefix.r$count.$hash"
 }
 
 fun getCommitHash(): String {
@@ -70,6 +71,40 @@ android {
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true
+    }
+}
+
+materialThemeBuilder {
+    packageName = android.namespace
+
+    fun applyThemeConfigs(theme: MaterialThemeBuilderExtension.Theme) = theme.run {
+        lightThemeFormat = "Theme.AppLock.Light.%s"
+        lightThemeParent = "Theme.Material3.Light.NoActionBar"
+        darkThemeFormat = "Theme.AppLock.Dark.%s"
+        darkThemeParent = "Theme.Material3.Dark.NoActionBar"
+    }
+
+    themes {
+        for ((name, color) in listOf(
+            "Anemo" to "#75C3A9",
+            "Cryo" to "#A0D7E4",
+            "Dendro" to "#A6C938",
+            "Electro" to "#B08FC2",
+            "Geo" to "#FAB72E",
+            "Hydro" to "#4BC3F1",
+            "Pyro" to "#EF7A35"
+        )) {
+            create("NatureElement.$name") {
+                primaryColor = color
+                applyThemeConfigs(this)
+            }
+        }
+
+        create("NatureElement.Dynamic") {
+            isDynamicColors = true
+            applyThemeConfigs(this)
+        }
     }
 }
 
@@ -85,12 +120,18 @@ dependencies {
     ksp(libs.autox.ksp)
     implementation(libs.autox.annotation)
 
-    // Reflector
+    // Reflect
     implementation(kotlin("reflect"))
-    implementation(libs.reflector)
+    implementation(libs.joor)
 
     // App
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.crowdin.sdk)
+    implementation(libs.constraintlayout)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
 }

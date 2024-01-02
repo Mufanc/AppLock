@@ -1,14 +1,21 @@
 [versions]
 agp = "8.2.0"
 kotlin = "1.9.21"
-core-ktx = "1.10.1"
+core-ktx = "1.12.0"
 appcompat = "1.6.1"
-material = "1.9.0"
+material = "1.11.0"
 ksp = "1.9.21-1.0.15"
 autox = "1.0.0"
 xposed-api = "100"
 xposed-service = "100-1.0.0"
-reflector = "0.9.14"
+joor = "0.9.14"
+crowdin-sdk = "1.8.1"
+constraintlayout = "2.1.4"
+lifecycle-livedata-ktx = "2.6.2"
+lifecycle-viewmodel-ktx = "2.6.2"
+navigation-fragment-ktx = "2.7.6"
+navigation-ui-ktx = "2.7.6"
+material-color = "1.3.3"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -18,10 +25,17 @@ xposed-api = { module = "io.github.libxposed:api", version.ref = "xposed-api" }
 xposed-service = { module = "io.github.libxposed:service", version.ref = "xposed-service" }
 autox-ksp = { module = "xyz.mufanc.autox:ksp", version.ref = "autox" }
 autox-annotation = { module = "xyz.mufanc.autox:annotation", version.ref = "autox" }
-reflector = { module = "org.jooq:joor", version.ref = "reflector" }
+joor = { module = "org.jooq:joor", version.ref = "joor" }
+crowdin-sdk = { module = "com.github.crowdin.mobile-sdk-android:sdk", version.ref="crowdin-sdk" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle-livedata-ktx" }
+lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle-viewmodel-ktx" }
+navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }
+navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 
 [plugins]
 agp-app = { id = "com.android.application", version.ref = "agp" }
 agp-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+material-color = { id = "dev.rikka.tools.materialthemebuilder", version.ref = "material-color" }

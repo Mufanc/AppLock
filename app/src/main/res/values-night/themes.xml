@@ -1,16 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.AppLock" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-    </style>
+<resources>
+    <style name="Theme.AppLock.NatureElement.Anemo" parent="Theme.AppLock.Dark.NatureElement.Anemo"/>
+    <style name="Theme.AppLock.NatureElement.Cyro" parent="Theme.AppLock.Dark.NatureElement.Cryo"/>
+    <style name="Theme.AppLock.NatureElement.Dendro" parent="Theme.AppLock.Dark.NatureElement.Dendro"/>
+    <style name="Theme.AppLock.NatureElement.Electro" parent="Theme.AppLock.Dark.NatureElement.Electro"/>
+    <style name="Theme.AppLock.NatureElement.Geo" parent="Theme.AppLock.Dark.NatureElement.Geo"/>
+    <style name="Theme.AppLock.NatureElement.Hydro" parent="Theme.AppLock.Dark.NatureElement.Hydro"/>
+    <style name="Theme.AppLock.NatureElement.Pyro" parent="Theme.AppLock.Dark.NatureElement.Pyro"/>
+    <style name="Theme.AppLock.NatureElement.Dynamic" parent="Theme.AppLock.Dark.NatureElement.Dynamic"/>
 </resources>

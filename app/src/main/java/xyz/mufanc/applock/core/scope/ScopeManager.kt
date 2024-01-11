@@ -22,19 +22,19 @@ object ScopeManager {
         ScopeProvider::class.sealedSubclasses.forEach { klass ->
             val provider = klass.objectInstance!!
 
-            if (provider.isAvailable()) {
-                try {
-                    provider.registerOnScopeChangedListener(object : ScopeProvider.OnScopeChangedListener {
-                        override fun onScopeChanged(old: Set<String>, new: Set<String>) {
-                            updateScope(old, new)
-                        }
-                    })
+            if (!provider.isAvailable()) return@forEach
 
-                    Log.i(TAG, "initializing scope provider: ${klass.simpleName}")
-                    provider.init(ixp)
-                } catch (err: Throwable) {
-                    Log.e(TAG, "failed to initialize scope provider: ${klass.simpleName}")
-                }
+            try {
+                provider.registerOnScopeChangedListener(object : ScopeProvider.OnScopeChangedListener {
+                    override fun onScopeChanged(old: Set<String>, new: Set<String>) {
+                        updateScope(old, new)
+                    }
+                })
+
+                Log.i(TAG, "initializing scope provider: ${klass.simpleName}")
+                provider.init(ixp)
+            } catch (err: Throwable) {
+                Log.e(TAG, "failed to initialize scope provider: ${klass.simpleName}")
             }
         }
     }

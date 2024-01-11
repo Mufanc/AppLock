@@ -1,21 +1,41 @@
 package xyz.mufanc.applock.core.scope
 
-import android.util.ArraySet
+import io.github.libxposed.api.XposedInterface
+import xyz.mufanc.applock.core.scope.provider.ScopeProvider
 import xyz.mufanc.applock.core.util.Log
-import java.util.Collections
 
 object ScopeManager {
 
     private const val TAG = "ScopeManager"
 
-    private lateinit var observer: ScopeObserver
-    private val scope = Collections.synchronizedSet(ArraySet<String>())
+    private val scope = mutableSetOf<String>()
 
-    fun init() {
-        observer = ScopeObserver { pkgs ->
-            scope.clear()
-            scope.addAll(pkgs)
-            Log.i(TAG, "update scope: $scope")
+    @Synchronized
+    private fun updateScope(old: Set<String>, new: Set<String>) {
+        scope.removeAll(old)
+        scope.addAll(new)
+
+        Log.i(TAG, "update scope: { ${scope.joinToString(", ")} }")
+    }
+
+    fun init(ixp: XposedInterface) {
+        ScopeProvider::class.sealedSubclasses.forEach { klass ->
+            val provider = klass.objectInstance!!
+
+            if (provider.isAvailable()) {
+                try {
+                    provider.registerOnScopeChangedListener(object : ScopeProvider.OnScopeChangedListener {
+                        override fun onScopeChanged(old: Set<String>, new: Set<String>) {
+                            updateScope(old, new)
+                        }
+                    })
+
+                    Log.i(TAG, "initializing scope provider: ${klass.simpleName}")
+                    provider.init(ixp)
+                } catch (err: Throwable) {
+                    Log.e(TAG, "failed to initialize scope provider: ${klass.simpleName}")
+                }
+            }
         }
     }
 

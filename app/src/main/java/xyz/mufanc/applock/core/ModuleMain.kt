@@ -39,7 +39,7 @@ class ModuleMain(
         GraftClassLoader.init(param.classLoader)
 
         ProcessRecordUtil.init()
-        ScopeManager.init()
+        ScopeManager.init(ixp)
         ProcessGuard.install(ixp)
 
         if (Configs.isDebug) {

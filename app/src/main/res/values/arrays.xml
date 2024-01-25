@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="license_list">
-        <!-- project | license | url -->
-        <item>Google - AndroidX | Apache License 2.0 | https://source.android.com/</item>
-        <item>JetBrains - Kotlin | Apache License 2.0 | https://github.com/JetBrains/kotlin</item>
+        <!-- project | license | link -->
+        <item>JetBrains - Kotlin | Apache-2.0 License | https://github.com/JetBrains/kotlin</item>
+        <item>Google - AndroidX | Apache-2.0 License | https://source.android.com/</item>
+        <item>Material Components | Apache-2.0 License | https://github.com/material-components/material-components-android</item>
         <item>RikkaApps - MaterialThemeBuilder | MIT License | https://github.com/RikkaApps/MaterialThemeBuilder</item>
+        <item>Bumptech - Glide | BSD License | https://github.com/bumptech/glide</item>
+        <item>Mufanc - AutoX | MIT License | https://github.com/Mufanc/AutoX</item>
+        <item>jOOQ - jOOR | Apache-2.0 License | https://github.com/jOOQ/jOOR</item>
     </string-array>
 
 </resources>

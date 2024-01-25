@@ -4,39 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import xyz.mufanc.applock.databinding.FragmentSettingsBinding
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroup
+import androidx.preference.forEach
+import xyz.mufanc.applock.R
+import xyz.mufanc.applock.ui.util.ThemeManager
+import xyz.mufanc.applock.ui.widgets.LicenseListDialog
+import xyz.mufanc.applock.ui.widgets.ThemeColorSelectorDialog
 
-class SettingsFragment : Fragment() {
-
-    private var _binding: FragmentSettingsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        cache: Bundle?
     ): View {
-//        val notificationsViewModel =
-//            ViewModelProvider(this).get(SettingsViewModel::class.java)
-//
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-//
-//        val textView: TextView = binding.textNotifications
-//        notificationsViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-        return root
+        return super.onCreateView(inflater, container, cache).apply {
+            setDivider(null)
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onCreatePreferences(cache: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
+        preferenceScreen.forEach { preference ->
+            (preference as? PreferenceGroup)?.forEach {
+                it.layoutResource = R.layout.component_preference_card
+            }
+        }
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        return when (preference.key) {
+            ThemeManager.PREFERENCE_KEY -> {
+                ThemeColorSelectorDialog(requireActivity()).show()
+                true
+            }
+            "license" -> {
+                LicenseListDialog(requireActivity()).show()
+                true
+            }
+            else -> super.onPreferenceTreeClick(preference)
+        }
     }
 }

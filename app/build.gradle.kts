@@ -5,7 +5,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.material.color)
+    alias(libs.plugins.flexi.locale)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 val androidMinSdkVersion: Int by rootProject.extra
@@ -72,6 +74,7 @@ android {
     buildFeatures {
         buildConfig = true
         viewBinding = true
+        dataBinding = true
     }
 }
 
@@ -80,9 +83,9 @@ materialThemeBuilder {
 
     fun applyThemeConfigs(theme: MaterialThemeBuilderExtension.Theme) = theme.run {
         lightThemeFormat = "Theme.AppLock.Light.%s"
-        lightThemeParent = "Theme.Material3.Light.NoActionBar"
+//        lightThemeParent = "Theme.Material3.Light.NoActionBar"
         darkThemeFormat = "Theme.AppLock.Dark.%s"
-        darkThemeParent = "Theme.Material3.Dark.NoActionBar"
+//        darkThemeParent = "Theme.Material3.Dark.NoActionBar"
     }
 
     themes {
@@ -128,10 +131,11 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.crowdin.sdk)
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
+    implementation(libs.androidx.preference)
+    implementation(libs.androidx.preference.ktx)
 }

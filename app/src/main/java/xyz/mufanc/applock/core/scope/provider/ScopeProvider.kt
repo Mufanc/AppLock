@@ -1,6 +1,7 @@
 package xyz.mufanc.applock.core.scope.provider
 
 import io.github.libxposed.api.XposedInterface
+import xyz.mufanc.applock.core.scope.provider.ScopeProvider.ScopeType
 
 @Suppress("TopLevel_TypeAliases_Only")
 sealed class ScopeProvider {

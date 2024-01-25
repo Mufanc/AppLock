@@ -4,13 +4,13 @@ import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
-import xyz.mufanc.applock.util.Configs
-import xyz.mufanc.applock.core.scope.ScopeManager
 import xyz.mufanc.applock.core.process.KillProcessMonitor
 import xyz.mufanc.applock.core.process.ProcessRecordUtil
 import xyz.mufanc.applock.core.process.guard.ProcessGuard
+import xyz.mufanc.applock.core.scope.ScopeManager
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
+import xyz.mufanc.applock.util.Configs
 import xyz.mufanc.autox.annotation.XposedEntry
 
 @XposedEntry(["system"])

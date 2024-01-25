@@ -1,0 +1,73 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:key="applock"
+        app:title="@string/settings_category_settings">
+
+        <SwitchPreferenceCompat
+            app:key="hide_icon"
+            app:title="@string/settings_item_hide_icon"
+            app:summary="@string/settings_item_hide_icon_summary"
+            app:icon="@drawable/ic_settings_hide_icon" />
+
+        <Preference
+            app:key="@string/misc_theme_color_preference_key"
+            app:title="@string/settings_item_theme_color"
+            app:summary="@string/settings_item_theme_color_summary"
+            app:icon="@drawable/ic_settings_theme_color" />
+
+    </PreferenceCategory>
+
+<!--    <PreferenceCategory-->
+<!--        app:key="backup_and_restore"-->
+<!--        app:title="@string/settings_category_backup_restore">-->
+
+<!--        <Preference-->
+<!--            app:key="backup"-->
+<!--            app:title="@string/settings_item_backup"-->
+<!--            app:summary="@string/settings_item_backup_summary"-->
+<!--            app:icon="@drawable/ic_settings_backup" />-->
+
+<!--        <Preference-->
+<!--            app:key="restore"-->
+<!--            app:title="@string/settings_item_restore"-->
+<!--            app:summary="@string/settings_item_restore_summary"-->
+<!--            app:icon="@drawable/ic_settings_restore" />-->
+
+<!--    </PreferenceCategory>-->
+
+    <PreferenceCategory
+        app:key="about"
+        app:title="@string/settings_category_about">
+
+        <Preference
+            app:title="@string/settings_item_author"
+            app:summary="@string/settings_item_author_summary"
+            app:icon="@drawable/ic_settings_author">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/misc_author_link" />
+
+        </Preference>
+
+        <Preference
+            app:title="@string/settings_item_project_link"
+            app:summary="@string/settings_item_project_link_summary"
+            app:icon="@drawable/ic_settings_project_link">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/misc_project_link" />
+
+        </Preference>
+
+        <Preference
+            app:key="license"
+            app:title="@string/settings_item_license"
+            app:summary="@string/settings_item_license_summary"
+            app:icon="@drawable/ic_settings_license" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

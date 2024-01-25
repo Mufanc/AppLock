@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dim_full">16dp</dimen>
+    <dimen name="dim_mini">5dp</dimen>
+    <dimen name="dim_pico">2dp</dimen>
+</resources>

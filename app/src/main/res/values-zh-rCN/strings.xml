@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- nav -->
+    <string name="nav_title_apps">应用选择</string>
+    <string name="nav_title_settings">设置</string>
+
+    <!-- home fragment -->
+    <string name="home_status_module_loaded">模块已加载</string>
+    <string name="home_status_module_not_loaded">模块未加载</string>
+
+    <!-- settings fragment -->
+    <string name="settings_category_settings">设置</string>
+    <string name="settings_item_hide_icon">隐藏启动器图标</string>
+    <string name="settings_item_hide_icon_summary">仍可在 Xposed 管理器中打开此应用</string>
+    <string name="settings_item_theme_color">主题色</string>
+    <string name="settings_item_theme_color_summary">选择一种元素力来加持 AppLock！</string>
+    <string name="settings_category_about">关于</string>
+    <string name="settings_item_author">作者</string>
+    <string name="settings_item_project_link">项目链接</string>
+    <string name="settings_item_project_link_summary">@string/misc_project_link</string>
+    <string name="settings_item_license">开放源代码协议</string>
+    <string name="settings_item_license_summary">点击查看</string>
+
+    <!-- dialogs -->
+    <string name="dialog_theme_color_selector_title">@string/settings_item_theme_color</string>
+    <string name="dialog_theme_color_selector_dismiss">关闭</string>
+    <string name="dialog_license_list_title">开放源代码协议</string>
+    <string name="dialog_license_list_dismiss">@string/dialog_theme_color_selector_dismiss</string>
+</resources>

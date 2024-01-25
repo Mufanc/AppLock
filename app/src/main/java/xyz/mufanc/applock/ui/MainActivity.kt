@@ -7,13 +7,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import xyz.mufanc.applock.R
 import xyz.mufanc.applock.databinding.ActivityMainBinding
+import xyz.mufanc.applock.ui.base.BaseActivity
+import xyz.mufanc.applock.ui.util.ThemeManager
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(cache: Bundle?) {
+        setTheme(ThemeManager.getColorThemeStyle())
+
+        super.onCreate(cache)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 

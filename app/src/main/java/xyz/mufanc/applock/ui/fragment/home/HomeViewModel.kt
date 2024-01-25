@@ -22,7 +22,7 @@ class HomeViewModel : ViewModel() {
 
     val frameworkInfo = _frameworkInfo.map { info ->
         if (info != null) {
-            "${info.name} API version ${info.apiVersion}"
+            "${info.name} API ${info.apiVersion} (${info.version}-${info.versionCode})"
         } else {
             BuildConfig.VERSION_NAME
         }

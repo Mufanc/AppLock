@@ -10,16 +10,11 @@ import xyz.mufanc.applock.databinding.ActivityMainBinding
 import xyz.mufanc.applock.ui.base.BaseActivity
 import xyz.mufanc.applock.ui.util.ThemeManager
 
-class MainActivity : BaseActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
+class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onCreate(cache: Bundle?) {
         setTheme(ThemeManager.getColorThemeStyle())
 
         super.onCreate(cache)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
 
         binding.run {
             setContentView(root)

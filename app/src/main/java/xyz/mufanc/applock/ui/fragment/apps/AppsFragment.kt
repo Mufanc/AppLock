@@ -2,39 +2,50 @@ package xyz.mufanc.applock.ui.fragment.apps
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.view.MenuProvider
+import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import xyz.mufanc.applock.R
+import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.databinding.FragmentAppsBinding
+import xyz.mufanc.applock.ui.base.BaseFragment
 
-class AppsFragment : Fragment() {
+class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
 
-    private var _binding: FragmentAppsBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    companion object {
+        private const val TAG = "AppsFragment"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-//        val dashboardViewModel =
-//            ViewModelProvider(this).get(AppsViewModel::class.java)
+        cache: Bundle?
+    ): View? {
+        requireActivity().addMenuProvider(AppsFragmentMenuProvider(), viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        _binding = FragmentAppsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        Log.i(TAG, "onCreateView")
 
-//        val textView: TextView = binding.textHome
-//        dashboardViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
-        return root
+        return super.onCreateView(inflater, container, cache).also {
+            binding.run {
+                appList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                appList.adapter = AppListAdapter(viewLifecycleOwner, model)
+            }
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private class AppsFragmentMenuProvider : MenuProvider {
+        override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+            inflater.inflate(R.menu.menu_fragment_apps, menu)
+        }
+
+        override fun onMenuItemSelected(item: MenuItem): Boolean {
+            return true
+        }
+
     }
 }

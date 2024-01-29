@@ -8,6 +8,9 @@
     <string name="home_status_module_loaded">模块已加载</string>
     <string name="home_status_module_not_loaded">模块未加载</string>
 
+    <!-- apps fragment -->
+    <string name="menu_fragment_apps_more_title">更多</string>
+
     <!-- settings fragment -->
     <string name="settings_category_settings">设置</string>
     <string name="settings_item_hide_icon">隐藏启动器图标</string>

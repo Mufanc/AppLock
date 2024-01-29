@@ -127,6 +127,10 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(libs.joor)
 
+    // Glide
+    kapt(libs.glide.compiler)
+    implementation(libs.glide)
+
     // App
     implementation(libs.core.ktx)
     implementation(libs.appcompat)

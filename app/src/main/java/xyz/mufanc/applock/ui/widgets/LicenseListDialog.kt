@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import xyz.mufanc.applock.R
 import xyz.mufanc.applock.databinding.DialogLicenseListBinding
-import xyz.mufanc.applock.databinding.ItemLicenseListBinding
+import xyz.mufanc.applock.databinding.ItemDialogLicenseListBinding
 import xyz.mufanc.applock.util.I18n
 
 class LicenseListDialog private constructor(
@@ -47,7 +47,7 @@ class LicenseListDialog private constructor(
         private val licenseList: List<String>
     ) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-        class ViewHolder(binding: ItemLicenseListBinding) : RecyclerView.ViewHolder(binding.root) {
+        class ViewHolder(binding: ItemDialogLicenseListBinding) : RecyclerView.ViewHolder(binding.root) {
             val projectName: TextView = binding.projectName
             val licenseName: TextView = binding.licenseName
         }
@@ -56,7 +56,7 @@ class LicenseListDialog private constructor(
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
-                ItemLicenseListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemDialogLicenseListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
 

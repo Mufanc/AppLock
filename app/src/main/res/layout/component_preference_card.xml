@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/dim_full"
-    android:layout_marginVertical="@dimen/dim_mini">
+    android:layout_marginVertical="@dimen/dim_nano">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@android:id/title"
             app:layout_constraintBottom_toBottomOf="@android:id/summary"
-            android:layout_marginHorizontal="@dimen/dim_mini"
+            android:layout_marginHorizontal="@dimen/dim_nano"
             android:importantForAccessibility="no" />
 
         <TextView

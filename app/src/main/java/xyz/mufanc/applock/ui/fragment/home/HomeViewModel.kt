@@ -1,5 +1,6 @@
 package xyz.mufanc.applock.ui.fragment.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
@@ -8,11 +9,12 @@ import xyz.mufanc.applock.BuildConfig
 import xyz.mufanc.applock.util.I18n
 
 class HomeViewModel : ViewModel() {
+
     private val _frameworkInfo = App.frameworkInfo.asLiveData()
 
     val isModuleLoaded = _frameworkInfo.map { it != null }
 
-    val moduleLoadState = _frameworkInfo.map { info ->
+    val moduleLoadState: LiveData<String> = _frameworkInfo.map { info ->
         if (info != null) {
             I18n.strings.homeStatusModuleLoaded
         } else {

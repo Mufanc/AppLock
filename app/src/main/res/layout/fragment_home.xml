@@ -17,9 +17,9 @@
         <xyz.mufanc.applock.ui.widgets.StatusCard
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:ok="@{props.isModuleLoaded}"
-            app:title="@{props.moduleLoadState}"
-            app:description="@{props.frameworkInfo}" />
+            app:ok="@{ props.isModuleLoaded }"
+            app:title="@{ props.moduleLoadState }"
+            app:description="@{ props.frameworkInfo }" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

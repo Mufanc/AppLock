@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import xyz.mufanc.applock.App
 import xyz.mufanc.applock.databinding.DialogThemeColorSelectorBinding
-import xyz.mufanc.applock.databinding.ItemThemeColorListBinding
+import xyz.mufanc.applock.databinding.ItemDialogThemeColorListBinding
 import xyz.mufanc.applock.ui.util.ThemeManager
 import xyz.mufanc.applock.util.Configs
 import xyz.mufanc.applock.util.I18n
@@ -48,7 +48,7 @@ class ThemeColorSelectorDialog private constructor(
     ) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
         class ViewHolder(
-            binding: ItemThemeColorListBinding
+            binding: ItemDialogThemeColorListBinding
         ) : RecyclerView.ViewHolder(binding.root) {
             val icon = binding.icon
         }
@@ -60,7 +60,7 @@ class ThemeColorSelectorDialog private constructor(
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
-                ItemThemeColorListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemDialogThemeColorListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
 

@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/nav_activity_main" />
+        app:menu="@menu/menu_activity_main_navigator" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_activity_main"

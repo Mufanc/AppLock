@@ -10,6 +10,9 @@
     <string name="home_status_module_loaded">Module loaded</string>
     <string name="home_status_module_not_loaded">Module not loaded</string>
 
+    <!-- apps fragment -->
+    <string name="menu_fragment_apps_more_title">more</string>
+
     <!-- settings fragment -->
     <string name="settings_category_settings">Settings</string>
     <string name="settings_item_hide_icon">Hide module icon in launcher</string>

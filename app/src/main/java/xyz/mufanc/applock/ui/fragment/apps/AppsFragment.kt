@@ -7,6 +7,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +34,15 @@ class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
 
         return super.onCreateView(inflater, container, cache).also {
             binding.run {
-                appList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                 appList.adapter = AppListAdapter(viewLifecycleOwner, model)
+                appList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.fragment_apps_item_enter)
+
+                appList.layoutAnimation = LayoutAnimationController(animation).apply {
+                    order = LayoutAnimationController.ORDER_NORMAL
+                    delay = 0.05f
+                }
             }
         }
     }

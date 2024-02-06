@@ -34,7 +34,7 @@ class App : Application() {
             object : OnServiceListener {
                 override fun onServiceBind(service: XposedService) {
                     frameworkInfo.value = FrameworkInfo(service)
-                    scopePrefs.value = service.getRemotePreferences("scope")
+                    scopePrefs.value = service.getRemotePreferences("applock_scope")
                     Log.i(TAG, "onServiceBind: $service")
                 }
 

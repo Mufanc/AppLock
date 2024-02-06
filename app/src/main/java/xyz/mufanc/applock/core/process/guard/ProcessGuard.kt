@@ -38,7 +38,7 @@ object ProcessGuard : XposedInterface.Hooker {
             Log.i(TAG, "use impl: ${guardImpl.javaClass.simpleName}")
             Log.i(TAG, "hook target: ${hookTarget!!.signature()}")
         } else {
-            Log.e(TAG, "failed to find compatible adapter for process guard!")
+            Log.e(TAG, "failed to find compatible adapter!")
         }
     }
 

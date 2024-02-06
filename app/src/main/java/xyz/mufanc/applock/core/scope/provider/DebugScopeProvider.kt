@@ -40,6 +40,7 @@ data object DebugScopeProvider : ScopeProvider() {
 
     override fun isAvailable(): Boolean = true
 
+    @Suppress("Deprecation")
     override fun init(ixp: XposedInterface) {
         observer = object : FileObserver(TARGET_DIR, EVENTS) {
             override fun onEvent(event: Int, path: String?) {
@@ -49,7 +50,6 @@ data object DebugScopeProvider : ScopeProvider() {
 
                 refresh()
             }
-
         }
 
         observer.startWatching()

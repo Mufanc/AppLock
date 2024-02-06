@@ -15,7 +15,8 @@ object ScopeManager {
         scope.removeAll(old)
         scope.addAll(new)
 
-        Log.i(TAG, "update scope: { ${scope.joinToString(", ")} }")
+        // Todo: 节流
+        Log.i(TAG, "new scope: { ${scope.joinToString(", ")} }")
     }
 
     fun init(ixp: XposedInterface) {
@@ -25,11 +26,14 @@ object ScopeManager {
             if (!provider.isAvailable()) return@forEach
 
             try {
-                provider.registerOnScopeChangedListener(object : ScopeProvider.OnScopeChangedListener {
-                    override fun onScopeChanged(old: Set<String>, new: Set<String>) {
-                        updateScope(old, new)
+                provider.registerOnScopeChangedListener(
+                    object : ScopeProvider.OnScopeChangedListener {
+                        override fun onScopeChanged(old: Set<String>, new: Set<String>) {
+                            updateScope(old, new)
+                            Log.i(TAG, "update from: ${klass.simpleName}")
+                        }
                     }
-                })
+                )
 
                 Log.i(TAG, "initializing scope provider: ${klass.simpleName}")
                 provider.init(ixp)

@@ -17,6 +17,7 @@ class App : Application() {
         private const val TAG = "App"
 
         val frameworkInfo = MutableStateFlow<FrameworkInfo?>(null)
+        var scopePrefs = MutableStateFlow<SharedPreferences?>(null)
 
         lateinit var instance: Application
         lateinit var prefs: SharedPreferences
@@ -33,6 +34,7 @@ class App : Application() {
             object : OnServiceListener {
                 override fun onServiceBind(service: XposedService) {
                     frameworkInfo.value = FrameworkInfo(service)
+                    scopePrefs.value = service.getRemotePreferences("scope")
                     Log.i(TAG, "onServiceBind: $service")
                 }
 

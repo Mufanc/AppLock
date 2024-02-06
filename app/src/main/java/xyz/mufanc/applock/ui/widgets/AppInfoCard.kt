@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import xyz.mufanc.applock.App
 import xyz.mufanc.applock.R
+import xyz.mufanc.applock.bean.AppInfo
 import xyz.mufanc.applock.databinding.ComponentAppInfoCardBinding
 
 class AppInfoCard(
@@ -16,13 +17,9 @@ class AppInfoCard(
     attrs: AttributeSet? = null
 ) : MaterialCardView(context, attrs) {
 
-    companion object {
-        private val pm: PackageManager by lazy { App.instance.packageManager }
-    }
-
     private val binding = ComponentAppInfoCardBinding.inflate(LayoutInflater.from(context), this, true)
 
-    var info: ApplicationInfo? = null
+    var info: AppInfo? = null
         set(value) {
             field = value
             if (value == null) return
@@ -33,14 +30,10 @@ class AppInfoCard(
                     .placeholder(R.drawable.ic_app_icon_placeholder)
                     .into(appIcon)
 
-                appName.text = pm.getApplicationLabel(value)
+                appName.text = value.label
                 packageName.text = value.packageName
             }
         }
 
-    var inScope: Boolean = false
-        set(value) {
-            field = value
-            binding.checkbox.isChecked = value
-        }
+    val checkbox get() = binding.checkbox
 }

@@ -2,15 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search"
-        android:icon="@drawable/ic_apps_search"
-        android:title=""
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom" />
+    <group
+        android:id="@+id/menu_group_fragment_apps"
+        android:visible="false">
 
-    <item android:id="@+id/more"
-        android:icon="@drawable/ic_apps_more"
-        android:title="@string/menu_fragment_apps_more_title"
-        app:showAsAction="ifRoom" />
+        <item android:id="@+id/search"
+            android:icon="@drawable/ic_apps_search"
+            android:title=""
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:showAsAction="ifRoom" />
 
+        <item android:id="@+id/more"
+            android:icon="@drawable/ic_apps_more"
+            android:title="@string/menu_fragment_apps_more_title"
+            app:showAsAction="ifRoom" />
+
+    </group>
 </menu>

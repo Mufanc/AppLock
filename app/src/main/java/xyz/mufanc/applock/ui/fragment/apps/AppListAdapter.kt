@@ -1,26 +1,77 @@
 package xyz.mufanc.applock.ui.fragment.apps
 
-import android.content.pm.ApplicationInfo
 import android.util.ArraySet
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import xyz.mufanc.applock.bean.AppInfo
+import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.databinding.ItemFragmentAppsAppListBinding
 
 class AppListAdapter(
-    private val lifecycle: LifecycleOwner,
-    private val props: AppsViewModel
-) : RecyclerView.Adapter<AppListAdapter.ViewHolder>() {
+    private val props: AppsViewModel,
+    lifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<AppListAdapter.ViewHolder>(), Filterable {
+
+    companion object {
+        private const val TAG = "AppListAdapter"
+    }
 
     class ViewHolder(binding: ItemFragmentAppsAppListBinding) : RecyclerView.ViewHolder(binding.root) {
         val card = binding.appInfo
+        val checkbox = card.checkbox
     }
 
-    private val cache = mutableListOf<ApplicationInfo>()
+    private val prefs get() = props.scopePrefs.value!!
     private val scope = ArraySet<String>()
 
-    override fun getItemCount(): Int = cache.size
+    private val apps = ArrayList<AppInfo>()
+    private val filteredApps = ArrayList<AppInfo>()
+
+    private val filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val query = constraint.toString().lowercase()
+
+            return FilterResults().apply {
+                values = apps
+                    .filter { info ->
+                        info.label.lowercase().contains(query) ||
+                            info.packageName.lowercase().contains(query)
+                    }
+                    .sortedWith(
+                        compareBy<AppInfo> { if (scope.contains(it.packageName)) 0 else 1 }
+                            .then(compareBy { it.label })
+                    )
+            }
+        }
+
+        @Suppress("Unchecked_Cast")
+        override fun publishResults(query: CharSequence?, results: FilterResults) {
+            val filterResult = results.values as List<AppInfo>
+            val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+                override fun getOldListSize() = filteredApps.size
+                override fun getNewListSize() = filterResult.size
+                override fun areContentsTheSame(i: Int, j: Int) = areItemsTheSame(i, j)
+                override fun areItemsTheSame(i: Int, j: Int) =
+                    filteredApps[i].packageName == filterResult[j].packageName
+            })
+
+            filteredApps.replace(filterResult)
+
+            diff.dispatchUpdatesTo(this@AppListAdapter)
+        }
+    }
+
+    private fun <T> MutableCollection<T>.replace(new: Collection<T>) {
+        clear()
+        addAll(new)
+    }
+
+    override fun getItemCount(): Int = filteredApps.size
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         return ViewHolder(
@@ -29,15 +80,43 @@ class AppListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val info = cache[position]
+        val info = filteredApps[position]
+
         holder.card.info = info
-        holder.card.inScope = scope.contains(info.packageName)
+        holder.checkbox.isChecked = scope.contains(info.packageName)
+        holder.checkbox.setOnCheckedChangeListener { _, checked ->
+            val pkg = info.packageName
+            val editor = prefs.edit()
+
+            if (checked) {
+                scope.add(pkg)
+                editor.putBoolean(pkg, true)
+            } else {
+                scope.remove(pkg)
+                editor.remove(pkg)
+            }
+
+            editor.apply()
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return filter
     }
 
     init {
-        props.apps.observe(lifecycle) { list ->
-            cache.clear()
-            cache.addAll(list)
+        props.apps.observe(lifecycleOwner) { list ->
+            apps.replace(list)
         }
+
+        props.query.observe(lifecycleOwner) { query ->
+            filter.filter(query)
+        }
+
+        props.scopePrefs.observe(lifecycleOwner) { prefs ->
+            scope.replace(prefs?.all?.keys ?: emptySet())
+        }
+
+        Log.i(TAG, "initialize")
     }
 }

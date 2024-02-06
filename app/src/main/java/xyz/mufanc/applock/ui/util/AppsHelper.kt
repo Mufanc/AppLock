@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import xyz.mufanc.applock.App
+import xyz.mufanc.applock.bean.AppInfo
 
 object AppsHelper {
 
@@ -18,7 +19,7 @@ object AppsHelper {
 
     private val currentMode = MutableStateFlow(ResolveMode.LAUNCHER)
 
-    private val apps: Flow<List<ApplicationInfo>> = currentMode.map { mode ->
+    private val apps: Flow<List<AppInfo>> = currentMode.map { mode ->
         when (mode) {
             ResolveMode.LAUNCHER -> {
                 pm
@@ -38,11 +39,12 @@ object AppsHelper {
             }
         }
             .distinctBy { it.packageName }
+            .map { AppInfo(it) }
     }
 
     fun setResolveMode(mode: ResolveMode) {
         currentMode.value = mode
     }
 
-    fun getAppList(): Flow<List<ApplicationInfo>> = apps
+    fun getAppList(): Flow<List<AppInfo>> = apps
 }

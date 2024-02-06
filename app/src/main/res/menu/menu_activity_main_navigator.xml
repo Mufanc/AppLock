@@ -9,7 +9,8 @@
     <item
         android:id="@+id/nav_apps"
         android:icon="@drawable/ic_nav_apps"
-        android:title="@string/nav_title_apps" />
+        android:title="@string/nav_title_apps"
+        android:visible="false" />
 
     <item
         android:id="@+id/nav_settings"

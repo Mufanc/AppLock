@@ -1,13 +1,10 @@
 package xyz.mufanc.applock.ui.widgets
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
-import xyz.mufanc.applock.App
 import xyz.mufanc.applock.R
 import xyz.mufanc.applock.bean.AppInfo
 import xyz.mufanc.applock.databinding.ComponentAppInfoCardBinding

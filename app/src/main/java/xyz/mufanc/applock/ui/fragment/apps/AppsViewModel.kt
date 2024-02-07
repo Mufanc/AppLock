@@ -11,6 +11,7 @@ import xyz.mufanc.applock.ui.util.AppsHelper
 
 class AppsViewModel : ViewModel() {
     val apps: LiveData<List<AppInfo>> = AppsHelper.getAppList().asLiveData()
+    val loading = MutableLiveData(true)
     val scopePrefs: LiveData<SharedPreferences?> = App.scopePrefs.asLiveData()
     val query = MutableLiveData("")
 }

@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragment.home.HomeFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/dim_full">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/app_list"
+    <data>
+        <import type="android.view.View" />
+        <variable name="props" type="xyz.mufanc.applock.ui.fragment.apps.AppsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        tools:context=".ui.fragment.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:requiresFadingEdge="vertical"
-        android:fadingEdgeLength="@dimen/dim_full" />
+        android:paddingBottom="@dimen/dim_full">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent="0.6"
+            app:trackCornerRadius="10dp"
+            android:indeterminate="true"
+            android:visibility="@{ props.loading ? View.VISIBLE : View.GONE }" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/app_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:requiresFadingEdge="vertical"
+            android:fadingEdgeLength="@dimen/dim_full" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

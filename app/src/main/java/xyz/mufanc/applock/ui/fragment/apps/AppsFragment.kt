@@ -31,9 +31,11 @@ class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
     ): View? {
         requireActivity().addMenuProvider(AppsFragmentMenuProvider(), viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        Log.i(TAG, "onCreateView")
+        Log.d(TAG, "onCreateView")
 
         return super.onCreateView(inflater, container, cache).also {
+            model.loading.value = true
+
             binding.run {
                 appList.adapter = AppListAdapter(model, viewLifecycleOwner)
                 appList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -44,6 +46,9 @@ class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
                     order = LayoutAnimationController.ORDER_NORMAL
                     delay = 0.1f
                 }
+
+                props = model
+                lifecycleOwner = this@AppsFragment
             }
         }
     }

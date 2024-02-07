@@ -63,6 +63,7 @@ class AppListAdapter(
             filteredApps.replace(filterResult)
 
             diff.dispatchUpdatesTo(this@AppListAdapter)
+            props.loading.value = false
         }
     }
 
@@ -110,18 +111,19 @@ class AppListAdapter(
     }
 
     init {
-        props.apps.observe(lifecycleOwner) { list ->
-            apps.replace(list)
-        }
-
         props.scopePrefs.observe(lifecycleOwner) { prefs ->
             scope.replace(prefs?.all?.keys ?: emptySet())
+        }
+
+        props.apps.observe(lifecycleOwner) { list ->
+            apps.replace(list)
+            filter.filter(props.query.value)
         }
 
         props.query.observe(lifecycleOwner) { query ->
             filter.filter(query)
         }
 
-        Log.i(TAG, "initialize")
+        Log.d(TAG, "initialize")
     }
 }

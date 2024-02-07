@@ -85,7 +85,10 @@ class AppListAdapter(
         holder.card.info = info
         holder.checkbox.isChecked = scope.contains(info.packageName)
         holder.checkbox.setOnCheckedChangeListener { _, checked ->
-            val pkg = info.packageName
+            if (!holder.checkbox.userTriggered) return@setOnCheckedChangeListener
+
+            val current = filteredApps[holder.adapterPosition]
+            val pkg = current.packageName
             val editor = prefs.edit()
 
             if (checked) {
@@ -97,6 +100,8 @@ class AppListAdapter(
             }
 
             editor.apply()
+
+            Log.d(TAG, "update for $pkg: $checked")
         }
     }
 
@@ -109,12 +114,12 @@ class AppListAdapter(
             apps.replace(list)
         }
 
-        props.query.observe(lifecycleOwner) { query ->
-            filter.filter(query)
-        }
-
         props.scopePrefs.observe(lifecycleOwner) { prefs ->
             scope.replace(prefs?.all?.keys ?: emptySet())
+        }
+
+        props.query.observe(lifecycleOwner) { query ->
+            filter.filter(query)
         }
 
         Log.i(TAG, "initialize")

@@ -32,5 +32,5 @@ class AppInfoCard(
             }
         }
 
-    val checkbox get() = binding.checkbox
+    val checkbox: UserSensitiveCheckBox get() = binding.checkbox
 }

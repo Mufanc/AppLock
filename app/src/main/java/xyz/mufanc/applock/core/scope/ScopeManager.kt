@@ -11,12 +11,12 @@ object ScopeManager {
     private val scope = mutableSetOf<String>()
 
     @Synchronized
-    private fun updateScope(old: Set<String>, new: Set<String>) {
+    private fun updateScope(old: Set<String>, new: Set<String>, from: String? = null) {
         scope.removeAll(old)
         scope.addAll(new)
 
-        // Todo: 节流
-        Log.i(TAG, "new scope: { ${scope.joinToString(", ")} }")
+        val source = from ?: "unknown source"
+        Log.i(TAG, "update scope from $source: { ${scope.joinToString(", ")} }")
     }
 
     fun init(ixp: XposedInterface) {
@@ -29,8 +29,7 @@ object ScopeManager {
                 provider.registerOnScopeChangedListener(
                     object : ScopeProvider.OnScopeChangedListener {
                         override fun onScopeChanged(old: Set<String>, new: Set<String>) {
-                            updateScope(old, new)
-                            Log.i(TAG, "update from: ${klass.simpleName}")
+                            updateScope(old, new, klass.simpleName)
                         }
                     }
                 )

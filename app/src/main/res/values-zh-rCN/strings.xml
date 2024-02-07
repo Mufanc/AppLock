@@ -9,7 +9,10 @@
     <string name="home_status_module_not_loaded">模块未加载</string>
 
     <!-- apps fragment -->
-    <string name="menu_fragment_apps_more_title">更多</string>
+    <string name="menu_fragment_apps_filter_title">过滤</string>
+    <string name="menu_fragment_apps_filter_mode_launcher">桌面应用</string>
+    <string name="menu_fragment_apps_filter_mode_non_system">非系统应用</string>
+    <string name="menu_fragment_apps_filter_mode_all">所有应用</string>
 
     <!-- settings fragment -->
     <string name="settings_category_settings">设置</string>

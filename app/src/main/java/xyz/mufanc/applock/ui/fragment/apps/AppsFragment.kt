@@ -17,6 +17,8 @@ import xyz.mufanc.applock.R
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.databinding.FragmentAppsBinding
 import xyz.mufanc.applock.ui.base.BaseFragment
+import xyz.mufanc.applock.ui.util.AppsHelper
+import xyz.mufanc.applock.ui.util.AppsHelper.ResolveMode
 
 class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
 
@@ -35,6 +37,7 @@ class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
 
         return super.onCreateView(inflater, container, cache).also {
             model.loading.value = true
+            model.query.value = ""
 
             binding.run {
                 appList.adapter = AppListAdapter(model, viewLifecycleOwner)
@@ -77,6 +80,13 @@ class AppsFragment : BaseFragment<FragmentAppsBinding, AppsViewModel>() {
         }
 
         override fun onMenuItemSelected(item: MenuItem): Boolean {
+
+            when (item.itemId) {
+                R.id.filter_mode_launcher -> AppsHelper.setResolveMode(ResolveMode.LAUNCHER)
+                R.id.filter_mode_non_system -> AppsHelper.setResolveMode(ResolveMode.NON_SYSTEM)
+                R.id.filter_mode_all -> AppsHelper.setResolveMode(ResolveMode.ALL)
+            }
+
             return true
         }
     }

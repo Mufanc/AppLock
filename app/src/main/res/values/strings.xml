@@ -11,7 +11,10 @@
     <string name="home_status_module_not_loaded">Module not loaded</string>
 
     <!-- apps fragment -->
-    <string name="menu_fragment_apps_more_title">more</string>
+    <string name="menu_fragment_apps_filter_title">Filter</string>
+    <string name="menu_fragment_apps_filter_mode_launcher">Apps on launcher</string>
+    <string name="menu_fragment_apps_filter_mode_non_system">Non-system apps</string>
+    <string name="menu_fragment_apps_filter_mode_all">All apps</string>
 
     <!-- settings fragment -->
     <string name="settings_category_settings">Settings</string>

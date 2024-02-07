@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.util.FrameworkInfo
 import xyz.mufanc.applock.util.I18n
+import xyz.mufanc.applock.util.RemotePrefs
 
 class App : Application() {
 
@@ -17,7 +18,6 @@ class App : Application() {
         private const val TAG = "App"
 
         val frameworkInfo = MutableStateFlow<FrameworkInfo?>(null)
-        var scopePrefs = MutableStateFlow<SharedPreferences?>(null)
 
         lateinit var instance: Application
         lateinit var prefs: SharedPreferences
@@ -34,7 +34,7 @@ class App : Application() {
             object : OnServiceListener {
                 override fun onServiceBind(service: XposedService) {
                     frameworkInfo.value = FrameworkInfo(service)
-                    scopePrefs.value = service.getRemotePreferences("applock_scope")
+                    RemotePrefs.init(service)
                     Log.i(TAG, "onServiceBind: $service")
                 }
 

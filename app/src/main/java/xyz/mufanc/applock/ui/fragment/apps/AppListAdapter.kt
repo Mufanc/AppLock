@@ -26,7 +26,7 @@ class AppListAdapter(
         val checkbox = card.checkbox
     }
 
-    private val prefs get() = props.scopePrefs.value!!
+    private val prefs get() = props.scope.value!!
     private val scope = ArraySet<String>()
 
     private val apps = ArrayList<AppInfo>()
@@ -111,7 +111,7 @@ class AppListAdapter(
     }
 
     init {
-        props.scopePrefs.observe(lifecycleOwner) { prefs ->
+        props.scope.observe(lifecycleOwner) { prefs ->
             scope.replace(prefs?.all?.keys ?: emptySet())
         }
 

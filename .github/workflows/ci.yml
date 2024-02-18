@@ -1,0 +1,90 @@
+name: Build CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '**.md'
+      - '**.txt'
+      - '.github/**'
+      - '!.github/workflows/**'
+
+jobs:
+  build:
+    name: Build CI
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.head_commit.message, '[skip ci]') }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout libxposed/api
+        uses: actions/checkout@v4
+        with:
+          repository: libxposed/api
+          path: libxposed/api
+          fetch-depth: 0
+
+      - name: Checkout libxposed/service
+        uses: actions/checkout@v4
+        with:
+          repository: libxposed/service
+          path: libxposed/service
+          fetch-depth: 0
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '17'
+
+      - name: Write key
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > key.jks
+          echo keystore.store.file=`pwd`/key.jks >> local.properties
+          echo keystore.store.password='${{ secrets.KEYSTORE_PASSWORD }}' >> local.properties
+          echo keystore.key.alias='${{ secrets.KEYSTORE_KEY }}' >> local.properties
+          echo keystore.key.password='${{ secrets.KEYSTORE_KEY_PASSWORD }}' >> local.properties
+
+      - name: Build with Gradle
+        id: build_apk
+        run: |
+          # gradle properties
+          mkdir -p ~/.gradle
+          echo 'org.gradle.caching=true' >> ~/.gradle/gradle.properties
+          echo 'org.gradle.parallel=true' >> ~/.gradle/gradle.properties
+          echo 'org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8 -XX:+UseParallelGC' >> ~/.gradle/gradle.properties
+          echo 'android.native.buildOutput=verbose' >> ~/.gradle/gradle.properties
+          # build dependencies
+          cd libxposed/api && ./gradlew publishToMavenLocal && cd ../..
+          cd libxposed/service && ./gradlew publishToMavenLocal && cd ../..
+          # build AppLock
+          ./gradlew :app:assemble
+          echo "debug=$(ls app/build/outputs/apk/debug/*-debug.apk | grep -Po '[^/]*?(?=\.apk)')" >> $GITHUB_OUTPUT
+          echo "release=$(ls app/build/outputs/apk/release/*-release.apk | grep -Po '[^/]*?(?=\.apk)')" >> $GITHUB_OUTPUT
+
+      - name: Upload debug
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build_apk.outputs.debug }}
+          path: "app/build/outputs/apk/debug/*-debug.apk"
+
+      - name: Upload release
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.build_apk.outputs.release }}
+          path: "app/build/outputs/apk/release/*-release.apk"
+
+      - name: Upload mappings
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mappings
+          path: "app/build/outputs/mapping/release"

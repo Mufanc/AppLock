@@ -1,4 +1,6 @@
 import dev.rikka.tools.materialthemebuilder.MaterialThemeBuilderExtension
+import org.bouncycastle.util.encoders.Base64
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.agp.app)
@@ -42,9 +44,26 @@ fun getCommitHash(): String {
     return "git rev-parse HEAD".execute()
 }
 
+fun decodeBase64(data: String): String {
+    return Base64.decode(data).decodeToString().trim()
+}
+
 android {
     namespace = "xyz.mufanc.applock"
     compileSdk = androidCompileSdkVersion
+
+    signingConfigs {
+        create("release") {
+            val props = Properties().apply {
+                load(rootProject.file("local.properties").inputStream())
+            }
+
+            storeFile = file(props["keystore.store.file"] as String)
+            storePassword = decodeBase64(props["keystore.store.password"] as String)
+            keyAlias = props["keystore.key.alias"] as String
+            keyPassword = decodeBase64(props["keystore.key.password"] as String)
+        }
+    }
 
     defaultConfig {
         applicationId = "xyz.mufanc.applock"
@@ -57,8 +76,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles("proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 

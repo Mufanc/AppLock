@@ -1,5 +1,6 @@
 package xyz.mufanc.applock.core
 
+import androidx.annotation.Keep
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
@@ -13,6 +14,7 @@ import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.util.Configs
 import xyz.mufanc.autox.annotation.XposedEntry
 
+@Keep
 @XposedEntry(["system"])
 @Suppress("Unused")
 class ModuleMain(
@@ -22,10 +24,6 @@ class ModuleMain(
 
     companion object {
         private const val TAG: String = "ModuleMain"
-    }
-
-    override fun onPackageLoaded(param: XposedModuleInterface.PackageLoadedParam) {
-
     }
 
     override fun onSystemServerLoaded(param: XposedModuleInterface.SystemServerLoadedParam) {

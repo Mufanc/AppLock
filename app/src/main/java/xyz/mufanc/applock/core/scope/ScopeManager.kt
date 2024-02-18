@@ -20,7 +20,11 @@ object ScopeManager {
     }
 
     fun init(ixp: XposedInterface) {
-        ScopeProvider::class.sealedSubclasses.forEach { klass ->
+        val providers = ScopeProvider::class.sealedSubclasses
+
+        Log.d(TAG, "scope providers: ${providers.joinToString(", ") { "${it.simpleName}" }}")
+
+        providers.forEach { klass ->
             val provider = klass.objectInstance!!
 
             if (!provider.isAvailable()) return@forEach

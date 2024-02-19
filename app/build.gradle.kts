@@ -98,6 +98,25 @@ android {
     }
 }
 
+afterEvaluate {
+    android.applicationVariants.forEach { variant ->
+        variant.assembleProvider.get().doLast {
+            for (output in variant.outputs) {
+                val outputFile = output.outputFile
+
+                if (outputFile.relativeTo(projectDir).startsWith("build/intermediates")) {
+                    continue
+                }
+
+                val targetName = "AppLock-v${variant.versionName}-${variant.name}.apk"
+                val targetFile = File(outputFile.parentFile, targetName)
+
+                outputFile.renameTo(targetFile)
+            }
+        }
+    }
+}
+
 materialThemeBuilder {
     packageName = android.namespace
 

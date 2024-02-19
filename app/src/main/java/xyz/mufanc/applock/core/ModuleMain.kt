@@ -37,6 +37,7 @@ class ModuleMain(
         GraftClassLoader.init(param.classLoader)
 
         ProcessRecordUtil.init()
+        AppLockService.init(ixp)
         ScopeManager.init(ixp)
         ProcessGuard.install(ixp)
 

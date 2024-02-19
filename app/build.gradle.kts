@@ -92,6 +92,7 @@ android {
     }
 
     buildFeatures {
+        aidl = true
         buildConfig = true
         viewBinding = true
         dataBinding = true

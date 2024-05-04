@@ -48,6 +48,11 @@ fun decodeBase64(data: String): String {
     return Base64.decode(data).decodeToString().trim()
 }
 
+fun Properties.require(key: String): String {
+    val value = this[key] as? String
+    return value ?: throw NullPointerException("property missing: $key")
+}
+
 android {
     namespace = "xyz.mufanc.applock"
     compileSdk = androidCompileSdkVersion
@@ -58,10 +63,10 @@ android {
                 load(rootProject.file("local.properties").inputStream())
             }
 
-            storeFile = file(props["keystore.store.file"] as String)
-            storePassword = decodeBase64(props["keystore.store.password"] as String)
-            keyAlias = props["keystore.key.alias"] as String
-            keyPassword = decodeBase64(props["keystore.key.password"] as String)
+            storeFile = file(props.require("keystore.store.file"))
+            storePassword = decodeBase64(props.require("keystore.store.password"))
+            keyAlias = props.require("keystore.key.alias")
+            keyPassword = decodeBase64(props.require("keystore.key.password"))
         }
     }
 

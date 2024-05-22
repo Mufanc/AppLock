@@ -9,6 +9,7 @@ object ScopeManager {
     private const val TAG = "ScopeManager"
 
     private val scope = mutableSetOf<String>()
+    private val availableProviders = mutableListOf<String>()
 
     @Synchronized
     private fun updateScope(old: Set<String>, new: Set<String>, from: String? = null) {
@@ -21,13 +22,15 @@ object ScopeManager {
 
     fun init(ixp: XposedInterface) {
         val providers = ScopeProvider::class.sealedSubclasses
+        val disabledProviders = ixp.getRemotePreferences("applock_disabled_providers").all.keys
 
         Log.d(TAG, "scope providers: ${providers.joinToString(", ") { "${it.simpleName}" }}")
 
         providers.forEach { klass ->
             val provider = klass.objectInstance!!
-
             if (!provider.isAvailable()) return@forEach
+            availableProviders.add(klass.simpleName!!)
+            if (klass.simpleName in disabledProviders) return@forEach
 
             try {
                 provider.registerOnScopeChangedListener(
@@ -48,5 +51,9 @@ object ScopeManager {
 
     fun query(pkg: String): Boolean {
         return scope.contains(pkg)
+    }
+
+    fun getAvailableProviders(): List<String> {
+        return availableProviders
     }
 }

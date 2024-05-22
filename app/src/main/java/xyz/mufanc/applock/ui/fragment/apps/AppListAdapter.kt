@@ -86,8 +86,6 @@ class AppListAdapter(
         holder.card.info = info
         holder.checkbox.isChecked = scope.contains(info.packageName)
         holder.checkbox.setOnCheckedChangeListener { _, checked ->
-            if (!holder.checkbox.userTriggered) return@setOnCheckedChangeListener
-
             val current = filteredApps[holder.adapterPosition]
             val pkg = current.packageName
             val editor = prefs.edit()

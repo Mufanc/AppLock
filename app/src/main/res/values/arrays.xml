@@ -11,4 +11,13 @@
         <item>jOOQ - jOOR | Apache-2.0 License | https://github.com/jOOQ/jOOR</item>
     </string-array>
 
+    <string-array name="scope_providers">
+        <item>PreferenceScopeProvider</item>
+        <item>MediaScopeProvider</item>
+    </string-array>
+
+    <string-array name="scope_provider_names">
+        <item>@string/scope_provider_default</item>
+        <item>@string/scope_provider_media_session</item>
+    </string-array>
 </resources>

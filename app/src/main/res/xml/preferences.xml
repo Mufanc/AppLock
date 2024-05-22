@@ -12,6 +12,12 @@
             app:icon="@drawable/ic_settings_hide_icon" />
 
         <Preference
+            android:key="scope_providers"
+            android:title="@string/settings_item_scope_providers"
+            android:summary="@string/settings_item_scope_providers_summary"
+            android:icon="@drawable/ic_settings_scope_provider" />
+
+        <Preference
             app:key="@string/misc_theme_color_preference_key"
             app:title="@string/settings_item_theme_color"
             app:summary="@string/settings_item_theme_color_summary"

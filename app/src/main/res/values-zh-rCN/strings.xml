@@ -18,6 +18,8 @@
     <string name="settings_category_settings">设置</string>
     <string name="settings_item_hide_icon">隐藏启动器图标</string>
     <string name="settings_item_hide_icon_summary">仍可在 Xposed 管理器中打开此应用</string>
+    <string name="settings_item_scope_providers">作用域提供器</string>
+    <string name="settings_item_scope_providers_summary">选择要启用的提供器（重启生效）</string>
     <string name="settings_item_theme_color">主题色</string>
     <string name="settings_item_theme_color_summary">选择一种元素力来加持 AppLock！</string>
     <string name="settings_category_about">关于</string>
@@ -27,9 +29,14 @@
     <string name="settings_item_license">开放源代码协议</string>
     <string name="settings_item_license_summary">点击查看</string>
 
+    <!-- scope providers -->
+    <string name="scope_provider_default">默认</string>
+    <string name="scope_provider_media_session">媒体会话</string>
+
     <!-- dialogs -->
     <string name="dialog_theme_color_selector_title">@string/settings_item_theme_color</string>
     <string name="dialog_theme_color_selector_dismiss">关闭</string>
     <string name="dialog_license_list_title">开放源代码协议</string>
     <string name="dialog_license_list_dismiss">@string/dialog_theme_color_selector_dismiss</string>
+    <string name="dialog_scope_provider_btn_dismiss">关闭</string>
 </resources>

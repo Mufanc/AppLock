@@ -20,6 +20,8 @@
     <string name="settings_category_settings">Settings</string>
     <string name="settings_item_hide_icon">Hide module icon in launcher</string>
     <string name="settings_item_hide_icon_summary">You can still open the app in Xposed manager</string>
+    <string name="settings_item_scope_providers">Scope providers</string>
+    <string name="settings_item_scope_providers_summary">Select providers to enable (reboot required)</string>
     <string name="settings_item_theme_color">Theme color</string>
     <string name="settings_item_theme_color_summary">Choose an element you like!</string>
     <string name="settings_category_about">About</string>
@@ -30,11 +32,16 @@
     <string name="settings_item_license">Open source license</string>
     <string name="settings_item_license_summary">Click to show</string>
 
+    <!-- scope providers -->
+    <string name="scope_provider_default">Default</string>
+    <string name="scope_provider_media_session">Default</string>
+
     <!-- dialogs -->
     <string name="dialog_theme_color_selector_title">@string/settings_item_theme_color</string>
-    <string name="dialog_theme_color_selector_dismiss">Close</string>
+    <string name="dialog_theme_color_selector_dismiss">Dismiss</string>
     <string name="dialog_license_list_title">Open source licenses</string>
     <string name="dialog_license_list_dismiss">@string/dialog_theme_color_selector_dismiss</string>
+    <string name="dialog_scope_provider_btn_dismiss">Dismiss</string>
 
     <!-- misc -->
     <string name="misc_theme_color_preference_key" translatable="false">theme_color</string>

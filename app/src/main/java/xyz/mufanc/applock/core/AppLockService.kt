@@ -3,12 +3,14 @@ package xyz.mufanc.applock.core
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.IBinder
+import android.os.ServiceManager
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedInterface.BeforeHookCallback
 import io.github.libxposed.api.annotations.BeforeInvocation
 import io.github.libxposed.api.annotations.XposedHooker
 import xyz.mufanc.applock.BuildConfig
 import xyz.mufanc.applock.IAppLockService
+import xyz.mufanc.applock.core.scope.ScopeManager
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import java.lang.reflect.Method
@@ -17,8 +19,16 @@ object AppLockService : IAppLockService.Stub() {
 
     private const val TAG = "AppLockService"
 
+    private val client by lazy {
+        asInterface(ServiceManager.getService("applock"))
+    }
+
     override fun handshake(): Bundle {
         return Bundle()
+    }
+
+    override fun getAvailableProviders(): List<String> {
+        return ScopeManager.getAvailableProviders()
     }
 
     @SuppressLint("PrivateApi")
@@ -29,6 +39,10 @@ object AppLockService : IAppLockService.Stub() {
                 .find { it.name == "bindApplication" }!!,
             BindApplicationHook::class.java
         )
+    }
+
+    fun client(): IAppLockService {
+        return client
     }
 
     @XposedHooker

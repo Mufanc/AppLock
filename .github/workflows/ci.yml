@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: corretto
-          java-version: '17'
+          java-version: '21'
 
       - name: Write key
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'

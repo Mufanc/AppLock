@@ -30,6 +30,7 @@
     <string name="settings_item_license_summary">点击查看</string>
 
     <!-- scope providers -->
+    <string name="message_no_available_provider">无可用的提供器</string>
     <string name="scope_provider_default">默认</string>
     <string name="scope_provider_media_session">媒体会话</string>
 

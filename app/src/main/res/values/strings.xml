@@ -33,6 +33,7 @@
     <string name="settings_item_license_summary">Click to show</string>
 
     <!-- scope providers -->
+    <string name="message_no_available_provider">No available provider</string>
     <string name="scope_provider_default">Default</string>
     <string name="scope_provider_media_session">Default</string>
 

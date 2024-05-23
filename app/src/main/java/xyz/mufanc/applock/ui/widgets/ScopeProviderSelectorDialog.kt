@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.asLiveData
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,6 +31,11 @@ class ScopeProviderSelectorDialog private constructor(
         operator fun invoke(activity: Activity): ScopeProviderSelectorDialog? {
             val service = AppLockService.client() ?: return null
             val availableProviders = service.availableProviders.toSet()
+
+            if (availableProviders.isEmpty()) {
+                Toast.makeText(activity, R.string.message_no_available_provider, Toast.LENGTH_SHORT).show()
+                return null
+            }
 
             Log.d(TAG, "available providers: $availableProviders")
             Log.d(TAG, "disabled providers: ${disabledProviders.value?.all?.keys}")

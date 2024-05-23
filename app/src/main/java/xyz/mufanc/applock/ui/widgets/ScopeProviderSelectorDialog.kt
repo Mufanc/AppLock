@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application.ActivityLifecycleCallbacks
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +27,10 @@ class ScopeProviderSelectorDialog private constructor(
 
         private val disabledProviders = RemotePrefs.disabledProviders.asLiveData()
 
-        operator fun invoke(activity: Activity): ScopeProviderSelectorDialog {
-            val availableProviders = AppLockService.client().availableProviders.toSet()
+        operator fun invoke(activity: Activity): ScopeProviderSelectorDialog? {
+            val service = AppLockService.client() ?: return null
+            val availableProviders = service.availableProviders.toSet()
+
             Log.d(TAG, "available providers: $availableProviders")
             Log.d(TAG, "disabled providers: ${disabledProviders.value?.all?.keys}")
 
@@ -52,18 +55,22 @@ class ScopeProviderSelectorDialog private constructor(
                 .create()
 
 
-            activity.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-                override fun onActivityDestroyed(activity: Activity) {
-                    dialog.dismiss()
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                activity.registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+                    override fun onActivityDestroyed(activity: Activity) {
+                        dialog.dismiss()
+                    }
 
-                override fun onActivityCreated(activity: Activity, bundle: Bundle?) = Unit
-                override fun onActivityStarted(activity: Activity) = Unit
-                override fun onActivityResumed(activity: Activity) = Unit
-                override fun onActivityPaused(activity: Activity) = Unit
-                override fun onActivityStopped(activity: Activity) = Unit
-                override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
-            })
+                    override fun onActivityCreated(activity: Activity, bundle: Bundle?) = Unit
+                    override fun onActivityStarted(activity: Activity) = Unit
+                    override fun onActivityResumed(activity: Activity) = Unit
+                    override fun onActivityPaused(activity: Activity) = Unit
+                    override fun onActivityStopped(activity: Activity) = Unit
+                    override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
+                })
+            } else {
+                // Todo:
+            }
 
             return ScopeProviderSelectorDialog(dialog)
         }

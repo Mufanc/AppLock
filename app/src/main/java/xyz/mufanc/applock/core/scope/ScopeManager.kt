@@ -44,7 +44,7 @@ object ScopeManager {
                 Log.i(TAG, "initializing scope provider: ${klass.simpleName}")
                 provider.init(ixp)
             } catch (err: Throwable) {
-                Log.e(TAG, "failed to initialize scope provider: ${klass.simpleName}")
+                Log.e(TAG, "failed to initialize scope provider: ${klass.simpleName}", err)
             }
         }
     }

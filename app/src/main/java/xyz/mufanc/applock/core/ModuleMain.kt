@@ -1,5 +1,7 @@
 package xyz.mufanc.applock.core
 
+import android.os.Handler
+import android.os.Looper
 import androidx.annotation.Keep
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
@@ -13,6 +15,7 @@ import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.util.Configs
 import xyz.mufanc.autox.annotation.XposedEntry
+import kotlin.concurrent.thread
 
 @Keep
 @XposedEntry(["system"])
@@ -37,12 +40,33 @@ class ModuleMain(
         GraftClassLoader.init(param.classLoader)
 
         ProcessRecordUtil.init()
-        AppLockService.init(ixp)
-        ScopeManager.init(ixp)
-        ProcessGuard.install(ixp)
 
-        if (Configs.isDebug) {
-            KillProcessMonitor.init(ixp)
+        Log.d(TAG, "waiting for system...")
+
+        runOnSystemReady {
+            AppLockService.init(ixp)
+            ScopeManager.init(ixp)
+            ProcessGuard.install(ixp)
+
+            if (Configs.isDebug) {
+                KillProcessMonitor.init(ixp)
+            }
+        }
+    }
+
+    private fun runOnSystemReady(block: () -> Unit) {
+        thread {
+            try {
+                while (Looper.getMainLooper() == null) {
+                    Thread.sleep(1000)
+                }
+
+                Handler(Looper.getMainLooper()).post {
+                    block()
+                }
+            } catch (err: Throwable) {
+                Log.e(TAG, "", err)
+            }
         }
     }
 }

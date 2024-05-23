@@ -9,8 +9,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
 import androidx.preference.forEach
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import xyz.mufanc.applock.R
 import xyz.mufanc.applock.ui.util.ThemeManager
 import xyz.mufanc.applock.ui.widgets.LicenseListDialog
@@ -60,7 +58,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 true
             }
             "scope_providers" -> {
-                ScopeProviderSelectorDialog(requireActivity()).show()
+                ScopeProviderSelectorDialog(requireActivity())?.show()
                 true
             }
             else -> super.onPreferenceTreeClick(preference)

@@ -41,7 +41,7 @@ object AppLockService : IAppLockService.Stub() {
         )
     }
 
-    fun client(): IAppLockService {
+    fun client(): IAppLockService? {
         return client
     }
 

@@ -37,7 +37,7 @@ data object PowerManagerProvider : ScopeProvider() {
             field.name.matches("this\\$\\d+".toRegex())
         } ?: return false
 
-        val controller = controllerField.get(binderService)
+        val controller = controllerField.apply { isAccessible = true }.get(binderService)
         whitelistApps = Reflect.on(controller).get("mPowerSaveWhitelistUserApps")
 
         return whitelistApps != null

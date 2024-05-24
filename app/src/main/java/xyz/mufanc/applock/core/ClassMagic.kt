@@ -1,6 +1,5 @@
 package xyz.mufanc.applock.core
 
-import android.util.ArrayMap
 import xyz.mufanc.applock.core.util.ClassUtil
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log

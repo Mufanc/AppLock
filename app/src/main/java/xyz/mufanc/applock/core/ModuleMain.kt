@@ -2,15 +2,16 @@ package xyz.mufanc.applock.core
 
 import android.os.Handler
 import android.os.Looper
+import android.util.ArrayMap
 import androidx.annotation.Keep
 import io.github.libxposed.api.XposedInterface
 import io.github.libxposed.api.XposedModule
 import io.github.libxposed.api.XposedModuleInterface
 import io.github.libxposed.api.XposedModuleInterface.ModuleLoadedParam
 import xyz.mufanc.applock.core.process.KillProcessMonitor
-import xyz.mufanc.applock.core.process.ProcessRecordUtil
 import xyz.mufanc.applock.core.process.guard.ProcessGuard
 import xyz.mufanc.applock.core.scope.ScopeManager
+import xyz.mufanc.applock.core.util.ClassUtil
 import xyz.mufanc.applock.core.util.GraftClassLoader
 import xyz.mufanc.applock.core.util.Log
 import xyz.mufanc.applock.util.Configs
@@ -38,8 +39,7 @@ class ModuleMain(
         Log.d(TAG, "${param.classLoader}")
 
         GraftClassLoader.init(param.classLoader)
-
-        ProcessRecordUtil.init()
+        ClassMagic.init()
 
         Log.d(TAG, "waiting for system...")
 

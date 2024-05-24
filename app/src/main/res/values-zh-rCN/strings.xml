@@ -33,6 +33,7 @@
     <string name="message_no_available_provider">无可用的提供器</string>
     <string name="scope_provider_default">默认</string>
     <string name="scope_provider_media_session">媒体会话</string>
+    <string name="scope_provider_power_manager">电源管理</string>
 
     <!-- dialogs -->
     <string name="dialog_theme_color_selector_title">@string/settings_item_theme_color</string>

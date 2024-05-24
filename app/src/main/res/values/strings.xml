@@ -35,7 +35,8 @@
     <!-- scope providers -->
     <string name="message_no_available_provider">No available provider</string>
     <string name="scope_provider_default">Default</string>
-    <string name="scope_provider_media_session">Default</string>
+    <string name="scope_provider_media_session">Media sessions</string>
+    <string name="scope_provider_power_manager">Power manager</string>
 
     <!-- dialogs -->
     <string name="dialog_theme_color_selector_title">@string/settings_item_theme_color</string>

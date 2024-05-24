@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.material.color)
     alias(libs.plugins.flexi.locale)
+    alias(libs.plugins.hiddenapi.refine)
     id("kotlin-parcelize")
     id("kotlin-kapt")
 }

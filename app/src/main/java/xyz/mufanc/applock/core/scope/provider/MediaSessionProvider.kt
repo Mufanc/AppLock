@@ -4,6 +4,7 @@ import android.media.session.MediaSessionManager
 import android.media.session.MediaSessionManager.OnActiveSessionsChangedListener
 import android.app.ActivityThread
 import io.github.libxposed.api.XposedInterface
+import xyz.mufanc.applock.core.util.ContextHelper
 import xyz.mufanc.applock.core.util.Log
 
 @Suppress("Unused")
@@ -12,8 +13,7 @@ data object MediaSessionProvider : ScopeProvider() {
     private const val TAG = "MediaSessionProvider"
 
     private val manager: MediaSessionManager by lazy {
-        ActivityThread.currentActivityThread()
-            .systemContext
+        ContextHelper.systemContext()
             .getSystemService(MediaSessionManager::class.java)
     }
 

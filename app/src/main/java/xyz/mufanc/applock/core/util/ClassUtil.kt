@@ -15,4 +15,10 @@ object ClassUtil {
         val flags = theUnsafe.getInt(klass, offset)
         theUnsafe.putInt(klass, offset, flags or Modifier.PUBLIC)
     }
+
+    fun makeNonFinal(klass: Class<*>) {
+        val offset = theUnsafe.objectFieldOffset(sAccessFlags)
+        val flags = theUnsafe.getInt(klass, offset)
+        theUnsafe.putInt(klass, offset, flags and Modifier.FINAL.inv())
+    }
 }

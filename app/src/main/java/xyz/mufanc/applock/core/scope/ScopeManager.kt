@@ -28,7 +28,14 @@ object ScopeManager {
 
         providers.forEach { klass ->
             val provider = klass.objectInstance!!
-            if (!provider.isAvailable()) return@forEach
+
+            try {
+                if (!provider.isAvailable()) return@forEach
+            } catch (err: Throwable) {
+                Log.e(TAG, "failed to check availability for scope provider: ${klass.simpleName}", err)
+                return@forEach
+            }
+
             availableProviders.add(klass.simpleName!!)
             if (klass.simpleName in disabledProviders) return@forEach
 

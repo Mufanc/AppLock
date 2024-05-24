@@ -14,10 +14,12 @@
     <string-array name="scope_providers">
         <item>PreferenceScopeProvider</item>
         <item>MediaSessionProvider</item>
+        <item>PowerManagerProvider</item>
     </string-array>
 
     <string-array name="scope_provider_names">
         <item>@string/scope_provider_default</item>
         <item>@string/scope_provider_media_session</item>
+        <item>@string/scope_provider_power_manager</item>
     </string-array>
 </resources>

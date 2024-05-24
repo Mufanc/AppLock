@@ -31,6 +31,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    compileOnly(libs.hiddenapi.annotation)
+    annotationProcessor(libs.hiddenapi.annotation.processor)
 }

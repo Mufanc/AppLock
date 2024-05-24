@@ -2,7 +2,6 @@ package xyz.mufanc.applock.core.scope.provider
 
 import android.media.session.MediaSessionManager
 import android.media.session.MediaSessionManager.OnActiveSessionsChangedListener
-import android.app.ActivityThread
 import io.github.libxposed.api.XposedInterface
 import xyz.mufanc.applock.core.util.ContextHelper
 import xyz.mufanc.applock.core.util.Log
@@ -17,9 +16,17 @@ data object MediaSessionProvider : ScopeProvider() {
             .getSystemService(MediaSessionManager::class.java)
     }
 
+    private var hash: Int = 0
     private val listener = OnActiveSessionsChangedListener { controllers ->
         if (controllers != null) {
-            emit(controllers.map { it.packageName }.toSet())
+            val packages = controllers.map { it.packageName }.sorted()
+            val hashCode = packages.joinToString("|").hashCode()
+
+            if (hash != hashCode) {
+                emit(packages.toSet())
+            }
+
+            hash = hashCode
         }
     }
 
